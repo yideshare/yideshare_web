@@ -1,9 +1,8 @@
 type Ride = {
-    id: String;
-    beginning: String;
-    destination: String;
-    date: String;
-    startTime: String;
+    id: string;
+    beginning: string;
+    destination: string;
+    dateTime: Date;
 }
 
 export type { Ride };
