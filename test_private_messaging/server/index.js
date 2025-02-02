@@ -72,6 +72,7 @@ io.on("connection", (socket) => {
       messages: messagesPerUser.get(session.userID) || [],
     });
   });
+  console.log("hi",users);
   socket.emit("users", users);
 
   // notify existing users

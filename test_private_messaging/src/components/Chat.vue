@@ -1,4 +1,4 @@
-<template>
+<template> <!-- currently inactive -->
   <div>
     <div class="left-panel">
       <user
@@ -47,7 +47,7 @@ export default {
     },
     onSelectUser(user) {
       this.selectedUser = user;
-      user.hasNewMessages = false;
+      user.hasNewMessages = false; 
     },
   },
   created() {
