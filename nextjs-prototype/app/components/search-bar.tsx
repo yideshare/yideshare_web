@@ -1,8 +1,15 @@
-export default function SearchBar()
-{
+"use client"
+
+import { Input } from "@/components/ui/input"
+
+export default function SearchBar() {
   return (
-    <div className='text-center'>
-      <input className='border rounded-lg p-4 m-4 w-96 bg-black placeholder-white' type='text' placeholder='Search for a ride' />
+    <div className="text-center">
+      <Input
+        type="search"
+        placeholder="Search for a ride"
+        className="max-w-md"
+      />
     </div>
-  );
+  )
 }
