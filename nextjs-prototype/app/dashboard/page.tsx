@@ -1,6 +1,6 @@
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
-import ProfileRideCard from "@/app/components/ride-card/profile-ride-card"
+import ProfileRideCard from "@/components/ride-card/profile-ride-card"
 import { Separator } from "@/components/ui/separator"
 import type { Ride } from "@/app/types/main"
 
