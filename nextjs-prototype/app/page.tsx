@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/separator"
 import { AppSidebar } from "@/components/app-sidebar"
 import FeedClient from "@/app/feed-client"
 import { TopBar } from "@/app/components/top-bar"
+import Link from "next/link"
 
 export default async function Home() {
   // Example: fetch 5 rides from the DB, sorting by recency.
@@ -27,6 +28,14 @@ export default async function Home() {
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
             <h1 className="font-bold text-xl">Yideshare</h1>
+            <div className="ml-auto">
+              <Link 
+                href="/api/auth"
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+              >
+                Login with Yale CAS
+              </Link>
+            </div>
           </div>
           {/* Render the TopBar (with search fields, date/time picker, and modal) */}
           <TopBar />
