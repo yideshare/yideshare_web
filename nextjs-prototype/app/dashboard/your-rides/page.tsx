@@ -5,7 +5,7 @@ import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/s
 import { Separator } from "@/components/ui/separator"
 import { AppSidebar } from "@/components/app-sidebar"
 import FeedClient from "@/app/feed-client"
-import { TopBar } from "@/app/components/top-bar"
+import { TopBar } from "@/components/top-bar"
 
 // SHADCN "Select" for the Sort By. 
 // If you don't have these installed, see: https://ui.shadcn.com/docs/components/select

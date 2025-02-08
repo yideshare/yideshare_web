@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { DatePickerWithTimeRange } from "@/app/components/date-picker"
+import { DatePickerWithTimeRange } from "@/components/date-picker"
 
 export function TopBar() {
   // Quick search fields

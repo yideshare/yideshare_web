@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { Separator } from "@/components/ui/separator"
-import FeedRideCard from "@/app/components/ride-card/feed-ride-card"
+import FeedRideCard from "@/components/ride-card/feed-ride-card"
 import {
   Select,
   SelectTrigger,

@@ -2,7 +2,7 @@
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import { Separator } from "@/components/ui/separator"
-import ProfileRideCard from "@/app/components/ride-card/profile-ride-card"
+import ProfileRideCard from "@/components/ride-card/profile-ride-card"
 import type { Ride } from "@/app/types/main"
 
 // Suppose you fetch from DB or mock
