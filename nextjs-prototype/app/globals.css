@@ -6,6 +6,11 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* supress all nextjs errors for pretty website look */
+nextjs-portal {
+  display: none;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
