@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 
 export async function GET(req: Request) {
   try {
@@ -9,22 +8,23 @@ export async function GET(req: Request) {
 
     if (!ticket) {
       console.error("CAS Error: No ticket provided");
-      return NextResponse.redirect(baseUrl); // Fix: Absolute URL
+      return NextResponse.redirect(baseUrl); 
     }
 
-    // Validate CAS ticket
+    // validate CAS ticket
     const casValidateUrl = `https://secure.its.yale.edu/cas/serviceValidate?service=${encodeURIComponent(baseUrl + "/api/auth/cas-validate")}&ticket=${ticket}`;
-    
-    const response = await fetch(casValidateUrl);
+
+    // mode no-cors must be replaced before deployment!
+    const response = await fetch(casValidateUrl, { "mode": "no-cors" });
     if (!response.ok) {
       console.error("CAS Request Failed:", response.status, response.statusText);
       return NextResponse.redirect(baseUrl);
     }
 
     const text = await response.text();
-    console.log("CAS Response:", text); // Debug CAS response
+    console.log("CAS Response:", text); // debug CAS response
 
-    // Extract NetID
+    // extract NetID
     const match = text.match(/<cas:user>(.*?)<\/cas:user>/);
     if (!match) {
       console.error("CAS Validation Failed: No valid user found");
@@ -34,13 +34,12 @@ export async function GET(req: Request) {
     const netID = match[1];
     console.log("Authenticated User:", netID);
 
-    // Fix: Use `NextResponse` for setting cookies
     const res = NextResponse.redirect(`${baseUrl}/feed`);
     res.cookies.set("session", netID, { httpOnly: true, path: "/" });
 
     return res;
   } catch (error) {
     console.error("Unexpected CAS Validation Error:", error);
-    return NextResponse.redirect(process.env.NEXTAUTH_URL || "http://localhost:3000"); // Fix: Absolute URL
+    return NextResponse.redirect(process.env.NEXTAUTH_URL || "http://localhost:3000"); 
   }
 }
