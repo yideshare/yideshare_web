@@ -2,7 +2,7 @@ import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import ProfileRideCard from "@/components/ride-card/profile-ride-card"
 import { Separator } from "@/components/ui/separator"
-import type { Ride } from "@/app/types/main"
+import type { Ride } from "@/app/interface/main"
 
 export default async function DashboardPage() {
   const mockRides: Ride[] = [
