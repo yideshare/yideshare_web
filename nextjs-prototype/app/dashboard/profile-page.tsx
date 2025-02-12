@@ -3,7 +3,7 @@ import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import { Separator } from "@/components/ui/separator"
 import ProfileRideCard from "@/components/ride-card/profile-ride-card"
-import type { Ride } from "@/app/types/main"
+import type { Ride } from "@/app/interface/main"
 
 // Suppose you fetch from DB or mock
 // This is a server component if you omit "use client"
