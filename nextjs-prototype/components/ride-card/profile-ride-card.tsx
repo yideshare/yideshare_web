@@ -20,40 +20,29 @@ import {
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
 import { X, Check, MessageSquare } from "lucide-react"
+import { Ride, User, RideRequest } from "@/app/interface/main"
+import { randomUUID } from "crypto"
 
-interface Ride {
-  id: string
-  title?: string
-  beginning?: string
-  destination?: string
-  dateTime: Date
-  occupantNames?: string[]
-  totalSeats?: number
-  requests?: Array<{ name: string; message: string }>
-  isClosed?: boolean
-}
-
-export default function ProfileRideCard(ride: Ride) {
+export default function ProfileRideCard(ride: Ride, occupants: User[], requests: RideRequest[]) {
   const { toast } = useToast()
 
-  const cardTitle = ride.title
-    ? ride.title
-    : `${ride.beginning} → ${ride.destination}`
-
-  const occupantNames = ride.occupantNames ?? ["You"]
-  const occupantCount = occupantNames.length
-  const totalSeats = ride.totalSeats ?? 4
-  const isClosed = ride.isClosed ?? false
+  const cardTitle = `${ride.beginning} → ${ride.destination}`
+  const occupantNames = occupants ?? ["You"]
+  const totalSeats = ride.totalSeats
+  const occupantCount = ride.currentTakenSeats
+  const isClosed = ride.isClosed
 
   // local state for requests
-  const [requests, setRequests] = React.useState(ride.requests ?? [])
+  //const [requests, setRequests] = React.useState(ride.requests ?? [])
 
-  const dateObj = new Date(ride.dateTime)
+  const dateObj = new Date(ride.startTime)
   const month = dateObj.getMonth() + 1
   const day = dateObj.getDate()
   const year = dateObj.getFullYear()
   const hours = dateObj.getHours()
   const minutes = String(dateObj.getMinutes()).padStart(2, "0")
+
+  const defaultRequestSenderName = "default sender"
 
   function handleCloseListing() {
     toast({
@@ -69,21 +58,27 @@ export default function ProfileRideCard(ride: Ride) {
     })
   }
 
-  function handleAcceptRequest(name: string) {
-    setRequests((prev) => prev.filter((r) => r.name !== name))
-    toast({
-      title: "Request Accepted",
-      description: `You accepted ${name}'s request.`,
-    })
-  }
+  // frontend function,
+  // TODO: replace with a fetch later
 
-  function handleRejectRequest(name: string) {
-    setRequests((prev) => prev.filter((r) => r.name !== name))
-    toast({
-      title: "Request Rejected",
-      description: `You rejected ${name}'s request.`,
-    })
-  }
+  // function handleAcceptRequest(name: string) {
+  //   setRequests((prev) => prev.filter((r) => r.name !== name))
+  //   toast({
+  //     title: "Request Accepted",
+  //     description: `You accepted ${name}'s request.`,
+  //   })
+  // }
+
+  // frontend function,
+  // TODO: replace with a fetch later
+  
+  // function handleRejectRequest(name: string) {
+  //   setRequests((prev) => prev.filter((r) => r.name !== name))
+  //   toast({
+  //     title: "Request Rejected",
+  //     description: `You rejected ${name}'s request.`,
+  //   })
+  // }
 
   function handleMessageAll() {
     toast({
@@ -142,27 +137,29 @@ export default function ProfileRideCard(ride: Ride) {
               <ul className="space-y-2">
                 {requests.map((r) => (
                   <li
-                    key={r.name}
+                  // why use name as a key?
+                  // use random uuid instead
+                    key={randomUUID()}
                     className="flex items-center justify-between bg-muted/20 p-2 rounded"
                   >
                     <div>
-                      <p className="text-sm font-medium">{r.name}</p>
+                      <p className="text-sm font-medium">{defaultRequestSenderName}</p>
                       <p className="text-xs italic text-muted-foreground">
-                        {r.message}
+                        {r.payload}
                       </p>
                     </div>
                     <div className="flex gap-2">
                       <Button
                         variant="outline"
                         size="icon"
-                        onClick={() => handleRejectRequest(r.name)}
+                        // onClick={() => handleRejectRequest(r.name)}
                       >
                         <X className="h-4 w-4" />
                       </Button>
                       <Button
                         variant="outline"
                         size="icon"
-                        onClick={() => handleAcceptRequest(r.name)}
+                        // onClick={() => handleAcceptRequest(r.name)}
                       >
                         <Check className="h-4 w-4" />
                       </Button>

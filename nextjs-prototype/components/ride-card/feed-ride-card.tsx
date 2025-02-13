@@ -26,32 +26,25 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { Ride, User } from "@/app/interface/main"
 
-interface Ride {
-  id: string
-  dateTime: Date
-  beginning: string
-  destination: string
-  totalSeats?: number
-  occupants?: Array<{ name: string }>
-  postedAgo?: string
-  rideDescription?: string
-}
-
-export default function FeedRideCard(ride: Ride) {
+export default function FeedRideCard(ride: Ride, occupants: User[]) {
   const { toast } = useToast()
 
-  const totalSeats = ride.totalSeats ?? 4
-  const occupantCount = ride.occupants ? ride.occupants.length : 1
-  const postedAgo = ride.postedAgo || "1d ago"
-  const driverName = ride.occupants?.[0]?.name || "Raymond Hou"
-  const occupantNames = ride.occupants?.map((o) => o.name).join(", ") || "Unknown"
+  const totalSeats = ride.totalSeats
+  const occupantCount = ride.currentTakenSeats
+  // TODO: Timestamp rides and calculate postedAgo
+  const postedAgo = "1d ago"
+  const ownerName = ride.ownerName || "Raymond Hou"
+  const occupantNames = "Unknown"
+  // NB: we definitely need to store user's name
+  // const occupantNames = occupants.map((o) => o.name).join(", ") || "Unknown"
 
   const [requestSeat, setRequestSeat] = React.useState(false)
   const [message, setMessage] = React.useState("")
 
   // Format date/time
-  const dateObj = new Date(ride.dateTime)
+  const dateObj = new Date(ride.startTime)
   const month = dateObj.getMonth() + 1
   const day = dateObj.getDate()
   const year = dateObj.getFullYear()
@@ -73,7 +66,7 @@ export default function FeedRideCard(ride: Ride) {
   function handleSend() {
     toast({
       title: "Message Sent",
-      description: `Message sent to ${driverName}. (Request seat: ${requestSeat ? "Yes" : "No"})`,
+      description: `Message sent to ${ownerName}. (Request seat: ${requestSeat ? "Yes" : "No"})`,
     })
     setMessage("")
   }
@@ -92,7 +85,7 @@ export default function FeedRideCard(ride: Ride) {
               {ride.beginning} → {ride.destination}
             </CardTitle>
             <CardDescription className="text-sm text-muted-foreground">
-              Posted by: {driverName} • {occupantCount}/{totalSeats} seats filled
+              Posted by: {ownerName} • {occupantCount}/{totalSeats} seats filled
             </CardDescription>
           </CardHeader>
 
@@ -118,7 +111,7 @@ export default function FeedRideCard(ride: Ride) {
           <DialogDescription asChild>
             <div className="text-muted-foreground text-sm mt-1">
               <div className="flex items-center gap-2">
-                Posted by: <strong>{driverName}</strong>
+                Posted by: <strong>{ownerName}</strong>
                 <span>•</span>
                 <TooltipProvider>
                   <Tooltip>
@@ -139,7 +132,7 @@ export default function FeedRideCard(ride: Ride) {
 
         <div className="space-y-3 mt-2">
           <div className="text-sm text-muted-foreground italic">
-            “{ride.rideDescription ?? "I have two suitcases, might share an UberXL..."}”
+            “{ride.description ?? "I have two suitcases, might share an UberXL..."}”
           </div>
 
           <div className="flex items-center justify-between">
