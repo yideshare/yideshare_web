@@ -7,9 +7,9 @@ body {
 }
 
 /* supress all nextjs errors for pretty website look */
-nextjs-portal {
+/* nextjs-portal {
   display: none;
-}
+} */
 
 @layer base {
   :root {
