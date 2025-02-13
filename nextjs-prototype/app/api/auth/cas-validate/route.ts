@@ -15,14 +15,15 @@ export async function GET(req: Request) {
     const casValidateUrl = `https://secure.its.yale.edu/cas/serviceValidate?service=${encodeURIComponent(baseUrl + "/api/auth/cas-validate")}&ticket=${ticket}`;
 
     // mode no-cors must be replaced before deployment!
-    const response = await fetch(casValidateUrl, { "mode": "no-cors" });
-    if (!response.ok) {
-      console.error("CAS Request Failed:", response.status, response.statusText);
+    const CASResponse = await fetch(casValidateUrl, { "mode": "no-cors" });
+    if (!CASResponse.ok) {
+      console.error("CAS Request Failed:", CASResponse.status, CASResponse.statusText);
       return NextResponse.redirect(baseUrl);
     }
 
-    const text = await response.text();
-    console.log("CAS Response:", text); // debug CAS response
+    const text = await CASResponse.text();
+    // debug CAS response
+    // console.log("CAS Response:", text);
 
     // extract NetID
     const match = text.match(/<cas:user>(.*?)<\/cas:user>/);
@@ -34,10 +35,30 @@ export async function GET(req: Request) {
     const netID = match[1];
     console.log("Authenticated User:", netID);
 
-    const res = NextResponse.redirect(`${baseUrl}/feed`);
-    res.cookies.set("session", netID, { httpOnly: true, path: "/" });
+    const authorizationToken = `Bearer ${process.env.YALIES_API_KEY}`;
+    console.log("Authorization Token:", authorizationToken);
 
-    return res;
+    const YaliesResponse = await fetch("https://api.yalies.io/v2/people", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": authorizationToken,
+      },
+      body: JSON.stringify({
+        query: "",
+        filters: {
+          netid: netID
+        },
+      }),
+    });
+
+    const YaliesData = await YaliesResponse.json();
+    console.log("Yalies Data:", YaliesData[0].first_name, YaliesData[0].last_name);
+
+    const successResponse = NextResponse.redirect(`${baseUrl}/feed`);
+    successResponse.cookies.set("session", netID, { httpOnly: true, path: "/" });
+
+    return successResponse;
   } catch (error) {
     console.error("Unexpected CAS Validation Error:", error);
     return NextResponse.redirect(process.env.NEXTAUTH_URL || "http://localhost:3000"); 
