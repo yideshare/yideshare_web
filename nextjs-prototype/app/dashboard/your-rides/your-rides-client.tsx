@@ -12,19 +12,8 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
-import { Checkbox } from "@/components/ui/checkbox"
 import { X, Check, UserMinus } from "lucide-react"
-
-// Represent a single ride
-interface Ride {
-  id: string
-  title: string
-  dateTime: Date
-  occupantNames: string[]
-  totalSeats: number
-  requests: Array<{ name: string; message: string }>
-  isClosed?: boolean
-}
+import { Ride, RideRequest } from "@/app/interface/main"
 
 export default function YourRidesClient({ initialRides }: { initialRides: Ride[] }) {
   const [rides, setRides] = React.useState(initialRides)
@@ -50,11 +39,16 @@ function RideCard({
 }: {
   ride: Ride
   onUpdate: (updatedRide: Ride) => void
-}) {
+},
+  requests: RideRequest[]) {
   const { toast } = useToast()
 
+  // create card title
+  const cardTitle = `${ride.beginning} → ${ride.destination}`
+  const defaultRequestSenderName = "default sender"
+
   // Format date/time
-  const date = new Date(ride.dateTime)
+  const date = new Date(ride.startTime)
   const month = date.getMonth() + 1
   const day = date.getDate()
   const year = date.getFullYear()
@@ -74,7 +68,7 @@ function RideCard({
       <DialogTrigger asChild>
         <Card className="shadow-md cursor-pointer transition hover:shadow-lg">
           <CardHeader>
-            <CardTitle className="text-base">{ride.title}</CardTitle>
+            <CardTitle className="text-base">{cardTitle}</CardTitle>
             <CardDescription className="text-sm text-muted-foreground">
               {ride.isClosed ? "Listing closed" : "Active"}
             </CardDescription>
@@ -84,8 +78,10 @@ function RideCard({
               <strong>Date:</strong> {month}/{day}/{year} at {hours}:{minutes}
             </p>
             <p className="text-sm text-muted-foreground">
-              <strong>Riders:</strong> {ride.occupantNames.join(", ")} (
-              {ride.occupantNames.length}/{ride.totalSeats} seats)
+              {/* NB: we really, really need to store the name */}
+              <strong>Riders:</strong> 
+              {defaultRequestSenderName}
+              {/* {ride.occupantNames.join(", ")} ({ride.occupantNames.length}/{ride.totalSeats} seats) */}
             </p>
           </CardContent>
         </Card>
@@ -96,7 +92,7 @@ function RideCard({
         <DialogHeader>
           <DialogTitle>Manage Your Ride</DialogTitle>
           <DialogDescription>
-            {ride.title} on {month}/{day}/{year} at {hours}:{minutes}
+            {cardTitle} on {month}/{day}/{year} at {hours}:{minutes}
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
