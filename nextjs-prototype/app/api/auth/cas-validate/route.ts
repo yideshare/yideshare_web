@@ -15,7 +15,7 @@ export async function GET(req: Request) {
     const casValidateUrl = `https://secure.its.yale.edu/cas/serviceValidate?service=${encodeURIComponent(baseUrl + "/api/auth/cas-validate")}&ticket=${ticket}`;
 
     // mode no-cors must be replaced before deployment!
-    const response = await fetch(casValidateUrl, { "mode": "no-cors" });
+    const response = await fetch(casValidateUrl);
     if (!response.ok) {
       console.error("CAS Request Failed:", response.status, response.statusText);
       return NextResponse.redirect(baseUrl);
