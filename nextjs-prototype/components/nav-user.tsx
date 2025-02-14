@@ -8,7 +8,6 @@ import {
   LogOut,
   Sparkles,
 } from "lucide-react"
-
 import {
   Avatar,
   AvatarFallback,

@@ -1,7 +1,9 @@
-// app/components/top-bar.tsx
 "use client"
 
 import * as React from "react"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { DatePickerWithTimeRange } from "@/components/date-picker"
 import {
   Dialog,
   DialogContent,
@@ -11,9 +13,6 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { DatePickerWithTimeRange } from "@/components/date-picker"
 
 export function TopBar() {
   // Quick search fields

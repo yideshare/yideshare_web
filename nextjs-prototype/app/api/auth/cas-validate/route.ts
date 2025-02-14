@@ -15,17 +15,14 @@ export async function GET(req: Request) {
     const casValidateUrl = `https://secure.its.yale.edu/cas/serviceValidate?service=${encodeURIComponent(baseUrl + "/api/auth/cas-validate")}&ticket=${ticket}`;
 
     // mode no-cors must be replaced before deployment!
-    const response = await fetch(casValidateUrl);
-    if (!response.ok) {
-      console.error("CAS Request Failed:", response.status, response.statusText);
+    const casResponse = await fetch(casValidateUrl);
+    if (!casResponse.ok) {
+      console.error("CAS Request Failed:", casResponse.status, casResponse.statusText);
       return NextResponse.redirect(baseUrl);
     }
 
-    const text = await CASResponse.text();
-    // debug CAS response
-    // console.log("CAS Response:", text);
-
     // extract NetID
+    const text = await casResponse.text();
     const match = text.match(/<cas:user>(.*?)<\/cas:user>/);
     if (!match) {
       console.error("CAS Validation Failed: No valid user found");

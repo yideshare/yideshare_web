@@ -1,16 +1,15 @@
-// app/components/app-sidebar.tsx
 "use client"
 
+import Link from "next/link"
+import { NavUser } from "@/components/nav-user"
+import { Calendar, User, Users, Settings, MessageSquare } from "lucide-react"
+import { cn } from "@/lib/utils"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { NavUser } from "@/components/nav-user"
-import Link from "next/link"
-import { Calendar, User, Users, Settings, MessageSquare } from "lucide-react"
-import { cn } from "@/lib/utils"
 
 const navItems = [
   {

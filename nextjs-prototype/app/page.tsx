@@ -1,6 +1,6 @@
 // app/page.tsx
 
-"use client"; // Ensure this runs on the client-side
+"use client"; 
 
 export default function Home() {
   return (
