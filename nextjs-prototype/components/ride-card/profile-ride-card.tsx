@@ -1,7 +1,10 @@
-// app/components/ride-card/profile-ride-card.tsx
 "use client"
 
 import * as React from "react"
+import { Button } from "@/components/ui/button"
+import { useToast } from "@/hooks/use-toast"
+import { X, Check, MessageSquare } from "lucide-react"
+import { Ride, User, RideRequest } from "@/app/interface/main"
 import {
   Card,
   CardHeader,
@@ -17,11 +20,6 @@ import {
   DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { useToast } from "@/hooks/use-toast"
-import { X, Check, MessageSquare } from "lucide-react"
-import { Ride, User, RideRequest } from "@/app/interface/main"
-import { randomUUID } from "crypto"
 
 export default function ProfileRideCard(ride: Ride, occupants: User[], requests: RideRequest[]) {
   const { toast } = useToast()

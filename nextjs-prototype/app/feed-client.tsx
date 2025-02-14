@@ -1,9 +1,8 @@
-// app/feed-client.tsx
 "use client"
 
 import * as React from "react"
-import { Separator } from "@/components/ui/separator"
 import FeedRideCard from "@/components/ride-card/feed-ride-card"
+import { Separator } from "@/components/ui/separator"
 import {
   Select,
   SelectTrigger,

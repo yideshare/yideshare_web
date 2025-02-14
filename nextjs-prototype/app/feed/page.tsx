@@ -1,6 +1,6 @@
 // app/feed/page.tsx
 
-import { prisma } from "@/lib/db"
+import { prisma } from "@/lib/prisma"
 import {
   SidebarProvider,
   SidebarInset,
@@ -14,10 +14,12 @@ import Link from "next/link"
 
 export default async function Home() {
   // Example: fetch 5 rides from the DB, sorting by recency.
-  const fetchedRides = await prisma.ride.findMany({
-    take: 5,
-    orderBy: { dateTime: "desc" },
-  })
+  // const fetchedRides = await prisma.ride.findMany({
+  //   take: 5,
+  //   orderBy: { dateTime: "desc" },
+  // })
+
+  const fetchedRides = []
 
   return (
     <SidebarProvider>
