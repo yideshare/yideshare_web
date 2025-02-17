@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { DatePickerWithTimeRange } from "@/components/date-picker"
+import * as React from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { DatePickerWithTimeRange } from "@/components/date-picker";
 import {
   Dialog,
   DialogContent,
@@ -12,39 +12,76 @@ import {
   DialogDescription,
   DialogTrigger,
   DialogFooter,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 
 export function TopBar() {
   // Quick search fields
-  const [from, setFrom] = React.useState("")
-  const [to, setTo] = React.useState("")
-  const [dateTime, setDateTime] = React.useState<Date | undefined>(undefined)
-  const [startTime, setStartTime] = React.useState("")
-  const [endTime, setEndTime] = React.useState("")
+  const [from, setFrom] = React.useState("");
+  const [to, setTo] = React.useState("");
+  const [dateTime, setDateTime] = React.useState<Date | undefined>(undefined);
+  const [startTime, setStartTime] = React.useState("");
+  const [endTime, setEndTime] = React.useState("");
 
   // “Share a Yide” form fields
-  const [organizerName, setOrganizerName] = React.useState("")
-  const [phoneNumber, setPhoneNumber] = React.useState("")
-  const [additionalPassengers, setAdditionalPassengers] = React.useState(0)
-  const [description, setDescription] = React.useState("")
+  const [organizerName, setOrganizerName] = React.useState("");
+  const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [additionalPassengers, setAdditionalPassengers] = React.useState(0);
+  const [description, setDescription] = React.useState("");
 
   // Modal open state
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false);
 
-  function handleShareYide(e: React.FormEvent) {
-    e.preventDefault()
-    console.log("Posting new ride:", {
-      from,
-      to,
-      dateTime,
-      organizerName,
-      phoneNumber,
-      startTime,
-      endTime,
-      additionalPassengers,
+  async function handleShareYide(e: React.FormEvent) {
+    e.preventDefault();
+    
+    const selectedDate = dateTime ? new Date(dateTime) : new Date();  // Use current date if undefined
+
+    // Split startTime and endTime strings into hours and minutes
+    const [startHours, startMinutes] = startTime.split(":").map(Number);  // e.g., "10:00" -> [10, 0]
+    const [endHours, endMinutes] = endTime.split(":").map(Number);        
+  
+    // Create valid Date objects by combining the selected date with the start and end times
+    const startDate = new Date(selectedDate);  // Use the selected date
+    const endDate = new Date(selectedDate);    
+  
+    // Set the correct hours and minutes for start and end times
+    startDate.setHours(startHours, startMinutes, 0, 0);  // Set start time on the selected date
+    endDate.setHours(endHours, endMinutes, 0, 0);        
+  
+    // Convert to ISO string format for Prisma
+    const formattedStartTime = startDate.toISOString();  
+    const formattedEndTime = endDate.toISOString();      
+
+    const rideData = {
+      ownerName: organizerName,
+      ownerPhone: phoneNumber,
+      beginning: from,
+      destination: to,
       description,
-    })
-    setOpen(false)
+      startTime: formattedStartTime,
+      endTime: formattedEndTime,
+      totalSeats: additionalPassengers + 1,
+    };
+
+    console.log("Posting new ride:", rideData);
+    try {
+      const response = await fetch("/api/ride", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(rideData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create ride");
+      }
+
+      const data = await response.json();
+      console.log("Ride created successfully:", data);
+
+      setOpen(false); // Close modal on success
+    } catch (error) {
+      console.error("Error creating ride:", error);
+    }
   }
 
   return (
@@ -99,7 +136,8 @@ export function TopBar() {
             <form className="space-y-4" onSubmit={handleShareYide}>
               <div>
                 <label className="block text-sm font-medium mb-[0.75rem]">
-                  Organizer name <span className="text-gray-400">(optional)</span>
+                  Organizer name{" "}
+                  <span className="text-gray-400">(optional)</span>
                 </label>
                 <Input
                   placeholder="Peter Salovey"
@@ -122,7 +160,9 @@ export function TopBar() {
               {/* New adjacent input fields for "Leaving from" and "Going to" */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium">Leaving from</label>
+                  <label className="block text-sm font-medium">
+                    Leaving from
+                  </label>
                   <Input
                     placeholder="e.g. Yale"
                     value={from}
@@ -130,7 +170,9 @@ export function TopBar() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium">Heading to</label>
+                  <label className="block text-sm font-medium">
+                    Heading to
+                  </label>
                   <Input
                     placeholder="e.g. Hartford (BDL)"
                     value={to}
@@ -142,7 +184,9 @@ export function TopBar() {
               {/* Start & End time side-by-side */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium">Start time</label>
+                  <label className="block text-sm font-medium">
+                    Start time
+                  </label>
                   <Input
                     type="time"
                     value={startTime}
@@ -171,12 +215,15 @@ export function TopBar() {
                   onChange={(e) => setAdditionalPassengers(+e.target.value)}
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  This does <em>not</em> include you. (So total seats = you + additional.)
+                  This does <em>not</em> include you. (So total seats = you +
+                  additional.)
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium">Description (optional)</label>
+                <label className="block text-sm font-medium">
+                  Description (optional)
+                </label>
                 <textarea
                   className="w-full border p-2 rounded text-sm"
                   rows={3}
@@ -194,5 +241,5 @@ export function TopBar() {
         </Dialog>
       </div>
     </div>
-  )
+  );
 }
