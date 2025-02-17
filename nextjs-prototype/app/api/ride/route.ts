@@ -6,14 +6,20 @@ import { NextResponse } from "next/server"
 export async function POST(request: Request) {
   try {
     const ride = await request.json()
+    console.log("Creating ride:", ride)
     const newRide = await prisma.ride.create({
+
         data: {
+          ownerName: ride.ownerName || "", // Optional field 
+          ownerPhone: ride.ownerPhone || "", // Optional field
           beginning: ride.beginning,    
           destination: ride.destination,  
-          startTime: ride.startTime,    
-          endTime: ride.endTime,
-          totalSeats: ride.totalSeats,
-          ownerId: ride.ownerId,
+          description: ride.description || "", // Optional field
+          startTime: new Date(ride.startTime),    
+          endTime: new Date(ride.endTime),
+          totalSeats: ride.totalSeats || 4, // Default value when ride is created
+          currentTakenSeats: 0,  // Default value when ride is created
+          isClosed: false, // Ride should be open by default
         },
     })
 
@@ -22,6 +28,7 @@ export async function POST(request: Request) {
       { status: 201 }
     )
   } catch (error) {
+    console.error("Error creating ride (Full details):", error)
     return NextResponse.json(
       { message: "Error creating ride" },
       { status: 500 }
