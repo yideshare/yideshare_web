@@ -14,67 +14,68 @@ datasource db {
 }
 
 model User {
-  netId    String   @id
+  netId String @id
+  name  String
 
   // many-to-many relationship with Rides
-  rides    RideParticipant[]
-  sentMessages    Message[]     @relation("MessageSender")
-  receivedMessages Message[]    @relation("MessageReceiver")
-  sentRequests    RideRequest[] @relation("RequestSender")
-  receivedRequests RideRequest[] @relation("RequestReceiver")
+  rides            RideParticipant[]
+  sentMessages     Message[]         @relation("MessageSender")
+  receivedMessages Message[]         @relation("MessageReceiver")
+  sentRequests     RideRequest[]     @relation("RequestSender")
+  receivedRequests RideRequest[]     @relation("RequestReceiver")
 }
 
 model Ride {
-  id          String   @id @default(cuid())
-  ownerName   String
-  ownerPhone  String
-  beginning   String
-  destination String
-  description String
-  startTime   DateTime
-  endTime     DateTime
-  totalSeats  Int
+  id                String   @id @default(cuid())
+  ownerName         String
+  ownerPhone        String
+  beginning         String
+  destination       String
+  description       String
+  startTime         DateTime
+  endTime           DateTime
+  totalSeats        Int
   currentTakenSeats Int
-  isClosed    Boolean
+  isClosed          Boolean
 
   // many-to-many relationship with Users
   participants RideParticipant[]
-  requests     RideRequest[] @relation("RideRequests")
+  requests     RideRequest[]     @relation("RideRequests")
 }
 
 // junction table for many-to-many relationship
 model RideParticipant {
-  userId    String
-  rideId    String
-  joinedAt  DateTime @default(now())
+  userId   String
+  rideId   String
+  joinedAt DateTime @default(now())
 
-  user      User     @relation(fields: [userId], references: [netId])
-  ride      Ride     @relation(fields: [rideId], references: [id])
+  user User @relation(fields: [userId], references: [netId])
+  ride Ride @relation(fields: [rideId], references: [id])
 
   @@id([userId, rideId])
 }
 
 model RideRequest {
-  id          String   @id @default(cuid())
-  rideId      String
-  senderId    String
-  receiverId  String
-  timestamp   DateTime @default(now())
-  payload     String
-  isAccepted  Boolean  @default(false)
+  id         String   @id @default(cuid())
+  rideId     String
+  senderId   String
+  receiverId String
+  timestamp  DateTime @default(now())
+  payload    String
+  isAccepted Boolean  @default(false)
 
-  ride        Ride     @relation("RideRequests", fields: [rideId], references: [id])
-  sender      User     @relation("RequestSender", fields: [senderId], references: [netId])
-  receiver    User     @relation("RequestReceiver", fields: [receiverId], references: [netId])
+  ride     Ride @relation("RideRequests", fields: [rideId], references: [id])
+  sender   User @relation("RequestSender", fields: [senderId], references: [netId])
+  receiver User @relation("RequestReceiver", fields: [receiverId], references: [netId])
 }
 
 model Message {
-  id          String   @id @default(cuid())
-  senderId    String
-  receiverId  String
-  timestamp   DateTime @default(now())
-  payload     String
+  id         String   @id @default(cuid())
+  senderId   String
+  receiverId String
+  timestamp  DateTime @default(now())
+  payload    String
 
-  sender      User     @relation("MessageSender", fields: [senderId], references: [netId])
-  receiver    User     @relation("MessageReceiver", fields: [receiverId], references: [netId])
+  sender   User @relation("MessageSender", fields: [senderId], references: [netId])
+  receiver User @relation("MessageReceiver", fields: [receiverId], references: [netId])
 }
