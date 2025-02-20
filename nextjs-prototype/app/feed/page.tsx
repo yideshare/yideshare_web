@@ -13,13 +13,14 @@ import { TopBar } from "@/components/top-bar"
 import Link from "next/link"
 
 export default async function Home() {
-  // Example: fetch 5 rides from the DB, sorting by recency.
-  // const fetchedRides = await prisma.ride.findMany({
-  //   take: 5,
-  //   orderBy: { dateTime: "desc" },
-  // })
-
-  const fetchedRides = []
+  const fetchedRides = await prisma.ride.findMany({
+    take: 5,
+    orderBy: { startTime: "desc" },
+    where: { 
+      isClosed: false,
+      startTime: { gte: new Date() },
+    }
+  })
 
   return (
     <SidebarProvider>

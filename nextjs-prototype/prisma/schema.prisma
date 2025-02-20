@@ -16,6 +16,8 @@ datasource db {
 model User {
   netId String @id
   name  String
+  avatar Bytes?
+  avatarType String?
 
   // one-to-many relationship with Rides
   ridesOwned Ride[]
