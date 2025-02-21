@@ -50,10 +50,22 @@ export async function GET(req: Request) {
     });
 
     const YaliesData = await YaliesResponse.json();
-    console.log("Yalies Data:", YaliesData[0].first_name, YaliesData[0].last_name);
+    if (!YaliesData || YaliesData.length === 0) {
+      console.error("Yalies API Error: No data returned for NetID", netID);
+      return NextResponse.redirect(baseUrl);
+    }
+
+    const FirstName = YaliesData[0].first_name;
+    const LastName = YaliesData[0].last_name;
+    const Email = YaliesData[0].email;
+
+    console.log("Authenticated User:", FirstName, LastName, Email);
 
     const successResponse = NextResponse.redirect(`${baseUrl}/feed`);
-    successResponse.cookies.set("session", netID, { httpOnly: true, path: "/" });
+    successResponse.cookies.set("user", JSON.stringify({ firstName: FirstName, lastName: LastName, email: Email }), {
+      httpOnly: false, // Make it accessible from the frontend
+      path: "/",
+    });
 
     return successResponse;
   } catch (error) {
