@@ -10,7 +10,8 @@ import { Separator } from "@/components/ui/separator"
 import { AppSidebar } from "@/components/app-sidebar"
 import FeedClient from "@/app/feed-client"
 import { TopBar } from "@/components/top-bar"
-import Link from "next/link"
+import { LogoutButton } from "@/components/logout-button"
+
 
 export default async function Home() {
   // Example: fetch 5 rides from the DB, sorting by recency.
@@ -31,12 +32,7 @@ export default async function Home() {
             <Separator orientation="vertical" className="mr-2 h-4" />
             <h1 className="font-bold text-xl">Yideshare</h1>
             <div className="ml-auto">
-              <Link
-                href="/api/auth/logout"
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
-              >
-                Logout
-              </Link>
+              <LogoutButton />
             </div>
           </div>
           {/* Render the TopBar (with search fields, date/time picker, and modal) */}
