@@ -3,6 +3,8 @@
 import * as React from "react"
 import FeedRideCard from "@/components/ride-card/feed-ride-card"
 import { Separator } from "@/components/ui/separator"
+import { Ride } from "@prisma/client"
+
 import {
   Select,
   SelectTrigger,
@@ -11,12 +13,6 @@ import {
   SelectItem,
 } from "@/components/ui/select"
 
-type Ride = {
-  id: string
-  dateTime: Date
-  beginning?: string
-  destination?: string
-}
 
 export default function FeedClient({ initialRides }: { initialRides: Ride[] }) {
   const [rides, setRides] = React.useState<Ride[]>(initialRides)

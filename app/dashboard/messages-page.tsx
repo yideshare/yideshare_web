@@ -2,8 +2,8 @@
 
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
-import MessagesClient from "./messages-client"
 import { Separator } from "@/components/ui/separator"
+import MessagesClient from "./messages-client"
 
 export default function MessagesPage() {
   return (

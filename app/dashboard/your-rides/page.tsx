@@ -4,7 +4,7 @@ import { prisma } from "@/lib/db"
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
 import { Separator } from "@/components/ui/separator"
 import { AppSidebar } from "@/components/app-sidebar"
-import FeedClient from "@/app/feed-client"
+import FeedClient from "@/app/feed/feed-client"
 import { TopBar } from "@/components/top-bar"
 
 // SHADCN "Select" for the Sort By. 
