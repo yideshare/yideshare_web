@@ -1,6 +1,6 @@
 "use client";
 
-import { prisma } from "@/lib/db"
+import { prisma } from "@/lib/prisma"
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
 import { Separator } from "@/components/ui/separator"
 import { AppSidebar } from "@/components/app-sidebar"
@@ -20,11 +20,12 @@ import {
 import * as React from "react"
 
 export default async function Home() {
-  // Example: fetch 5 rides from DB, sorting by recency
-  // const fetchedRides = await prisma.ride.findMany({
-  //   take: 5,
-  //   orderBy: { dateTime: "desc" },
-  // })
+  // Fetch the rides from the database, will probably change to backend API call  
+  const fetchedRides = await prisma.ride.findMany({
+    // where: { ownerName: }, # what is the owner name?
+    // take: 5,
+    orderBy: { startTime: "desc" },
+  })
 
   // If we want to store the user's selected sort:
   // (We'll do it in client state, just for demonstration.)
@@ -62,7 +63,7 @@ function SortByAndFeed({ initialRides }: { initialRides: any[] }) {
 
   return (
     <div className="px-4 mt-2">
-      {/* Right-aligned "Sort by" in the same main section, just beneath TopBar */}
+      {/* Sort By Dropdown */}
       <div className="flex justify-end mb-4">
         <div className="flex items-center gap-2">
           <span className="text-sm text-muted-foreground">Sort by:</span>
@@ -80,8 +81,33 @@ function SortByAndFeed({ initialRides }: { initialRides: any[] }) {
         </div>
       </div>
 
-      {/* The main feed, passing in the rides + selected sort criteria */}
+      {/* Display Rides Feed */}
       <FeedClient initialRides={initialRides} sortBy={sortBy} />
     </div>
   )
 }
+  // return (
+  //   <div className="px-4 mt-2">
+  //     {/* Right-aligned "Sort by" in the same main section, just beneath TopBar */}
+  //     <div className="flex justify-end mb-4">
+  //       <div className="flex items-center gap-2">
+  //         <span className="text-sm text-muted-foreground">Sort by:</span>
+  //         <Select value={sortBy} onValueChange={(v) => setSortBy(v)}>
+  //           <SelectTrigger className="w-[150px]">
+  //             <SelectValue placeholder="Most Recent" />
+  //           </SelectTrigger>
+  //           <SelectContent>
+  //             <SelectItem value="recent">Most Recent</SelectItem>
+  //             <SelectItem value="oldest">Oldest</SelectItem>
+  //             <SelectItem value="alphabetical">Alphabetical</SelectItem>
+  //             <SelectItem value="popularity">Popularity</SelectItem>
+  //           </SelectContent>
+  //         </Select>
+  //       </div>
+  //     </div>
+
+  //     {/* The main feed, passing in the rides + selected sort criteria */}
+  //     <FeedClient initialRides={initialRides} sortBy={sortBy} />
+  //   </div>
+  // )
+// }
