@@ -16,13 +16,18 @@ datasource db {
 model User {
   netId String @id
   name  String
+  avatar Bytes?
+  avatarType String?
+
+  // one-to-many relationship with Rides
+  ridesOwned Ride[]
 
   // many-to-many relationship with Rides
-  rides            RideParticipant[]
-  sentMessages     Message[]         @relation("MessageSender")
-  receivedMessages Message[]         @relation("MessageReceiver")
-  sentRequests     RideRequest[]     @relation("RequestSender")
-  receivedRequests RideRequest[]     @relation("RequestReceiver")
+  ridesParticipated RideParticipant[]
+  sentMessages      Message[]         @relation("MessageSender")
+  receivedMessages  Message[]         @relation("MessageReceiver")
+  sentRequests      RideRequest[]     @relation("RequestSender")
+  receivedRequests  RideRequest[]     @relation("RequestReceiver")
 }
 
 model Ride {
@@ -38,6 +43,10 @@ model Ride {
   currentTakenSeats Int
   isClosed          Boolean
 
+  // many-to-one relationship with User
+  ownerId String
+  owner   User   @relation(fields: [ownerId], references: [netId])
+
   // many-to-many relationship with Users
   participants RideParticipant[]
   requests     RideRequest[]     @relation("RideRequests")
@@ -45,14 +54,14 @@ model Ride {
 
 // junction table for many-to-many relationship
 model RideParticipant {
-  userId   String
+  netId    String
   rideId   String
   joinedAt DateTime @default(now())
 
-  user User @relation(fields: [userId], references: [netId])
+  user User @relation(fields: [netId], references: [netId])
   ride Ride @relation(fields: [rideId], references: [id])
 
-  @@id([userId, rideId])
+  @@id([netId, rideId])
 }
 
 model RideRequest {

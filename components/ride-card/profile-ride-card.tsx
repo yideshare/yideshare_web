@@ -4,7 +4,8 @@ import * as React from "react"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
 import { X, Check, MessageSquare } from "lucide-react"
-import { Ride, User, RideRequest } from "@/app/interface/main"
+import { Ride, User, RideRequest } from "@prisma/client"
+
 import {
   Card,
   CardHeader,
@@ -12,6 +13,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card"
+
 import {
   Dialog,
   DialogContent,
@@ -58,25 +60,23 @@ export default function ProfileRideCard(ride: Ride, occupants: User[], requests:
 
   // frontend function,
   // TODO: replace with a fetch later
-
-  // function handleAcceptRequest(name: string) {
-  //   setRequests((prev) => prev.filter((r) => r.name !== name))
-  //   toast({
-  //     title: "Request Accepted",
-  //     description: `You accepted ${name}'s request.`,
-  //   })
-  // }
+  function handleAcceptRequest(name: string) {
+    setRequests((prev) => prev.filter((r) => r.name !== name))
+    toast({
+      title: "Request Accepted",
+      description: `You accepted ${name}'s request.`,
+    })
+  }
 
   // frontend function,
   // TODO: replace with a fetch later
-  
-  // function handleRejectRequest(name: string) {
-  //   setRequests((prev) => prev.filter((r) => r.name !== name))
-  //   toast({
-  //     title: "Request Rejected",
-  //     description: `You rejected ${name}'s request.`,
-  //   })
-  // }
+  function handleRejectRequest(name: string) {
+    setRequests((prev) => prev.filter((r) => r.name !== name))
+    toast({
+      title: "Request Rejected",
+      description: `You rejected ${name}'s request.`,
+    })
+  }
 
   function handleMessageAll() {
     toast({
