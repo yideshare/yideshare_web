@@ -3,17 +3,28 @@ import { NextResponse } from "next/server"
 
 export async function POST(request: Request) {
   try {
+    const cookie = request.headers.get("cookie") || "";
+    const match = cookie.match(/user=([^;]*)/);
+    if (!match) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    const userData = JSON.parse(decodeURIComponent(match[1])); //currently boiler plate, needs to be updated
+    console.log("User data:", userData);
+    const netID = userData.netID; //TODO: we need cas-validate to be implemented to get netID.
+    console.log("NetID:", netID);
+
     const ride = await request.json()
     console.log("Creating ride:", ride)
     console.log("Owner ID:", ride.ownerId);
 
     // Ensure the user exists in the database
-    let user = await prisma.user.findUnique({
+    let user = await prisma.user.findUnique({ //TODO: not adding to data base
       where: { netId: ride.ownerId },
     });
     console.log("User found:", user);
     if (!user) {
-      user = await prisma.user.create({
+      user = await prisma.user.create({ //TODO: update logic
         data: {
           netId: ride.ownerId,
           name: ride.ownerName || "Unknown", // Default name if missing
