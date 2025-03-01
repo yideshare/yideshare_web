@@ -4,7 +4,8 @@ import * as React from "react"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
 import { X, Check, MessageSquare } from "lucide-react"
-import { Ride, User, RideRequest } from "@/app/interface/main"
+import { Ride, User, RideRequest } from "@prisma/client"
+
 import {
   Card,
   CardHeader,
@@ -12,6 +13,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card"
+
 import {
   Dialog,
   DialogContent,

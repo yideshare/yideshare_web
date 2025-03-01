@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
 import { X, Check, UserMinus } from "lucide-react"
-import { Ride, RideRequest } from "@/app/interface/main"
+import { Ride, RideRequest } from "@prisma/client"
 
 export default function YourRidesClient({ initialRides }: { initialRides: Ride[] }) {
   const [rides, setRides] = React.useState(initialRides)

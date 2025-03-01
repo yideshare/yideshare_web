@@ -1,23 +1,24 @@
 // app/feed/page.tsx
 
 import { prisma } from "@/lib/prisma"
+import { Separator } from "@/components/ui/separator"
+import { AppSidebar } from "@/components/app-sidebar"
+import { TopBar } from "@/components/top-bar"
+import { LogoutButton } from "@/components/logout-button"
+import FeedClient from "@/app/feed/feed-client"
+
 import {
   SidebarProvider,
   SidebarInset,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { Separator } from "@/components/ui/separator"
-import { AppSidebar } from "@/components/app-sidebar"
-import FeedClient from "@/app/feed-client"
-import { TopBar } from "@/components/top-bar"
-import { LogoutButton } from "@/components/logout-button"
 
 
 export default async function Home() {
   const fetchedRides = await prisma.ride.findMany({
     take: 5,
     orderBy: { startTime: "desc" },
-    where: { 
+    where: {
       isClosed: false,
       startTime: { gte: new Date() },
     }
