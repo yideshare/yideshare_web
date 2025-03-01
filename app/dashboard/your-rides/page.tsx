@@ -19,11 +19,13 @@ import {
 import * as React from "react"
 
 export default async function Home() {
-  // Example: fetch 5 rides from DB, sorting by recency
-  // const fetchedRides = await prisma.ride.findMany({
-  //   take: 5,
-  //   orderBy: { dateTime: "desc" },
-  // })
+  // Fetch the rides from the database, will probably change to backend API call  
+  const fetchedRides = await prisma.ride.findMany({
+    // where: { ownerName: }, # what is the owner name?
+    // take: 5,
+    orderBy: { startTime: "desc" },
+  })
+
 
   // If we want to store the user's selected sort:
   // (We'll do it in client state, just for demonstration.)

@@ -60,7 +60,6 @@ export default function ProfileRideCard(ride: Ride, occupants: User[], requests:
 
   // frontend function,
   // TODO: replace with a fetch later
-
   function handleAcceptRequest(name: string) {
     setRequests((prev) => prev.filter((r) => r.name !== name))
     toast({
@@ -71,7 +70,6 @@ export default function ProfileRideCard(ride: Ride, occupants: User[], requests:
 
   // frontend function,
   // TODO: replace with a fetch later
-  
   function handleRejectRequest(name: string) {
     setRequests((prev) => prev.filter((r) => r.name !== name))
     toast({

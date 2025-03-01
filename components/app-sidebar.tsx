@@ -84,7 +84,6 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
           })}
         </nav>
       </SidebarContent>
-
       <SidebarFooter className="border-t p-2">
         {user ? (
           <NavUser
