@@ -61,24 +61,24 @@ export default function ProfileRideCard(ride: Ride, occupants: User[], requests:
   // frontend function,
   // TODO: replace with a fetch later
 
-  // function handleAcceptRequest(name: string) {
-  //   setRequests((prev) => prev.filter((r) => r.name !== name))
-  //   toast({
-  //     title: "Request Accepted",
-  //     description: `You accepted ${name}'s request.`,
-  //   })
-  // }
+  function handleAcceptRequest(name: string) {
+    setRequests((prev) => prev.filter((r) => r.name !== name))
+    toast({
+      title: "Request Accepted",
+      description: `You accepted ${name}'s request.`,
+    })
+  }
 
   // frontend function,
   // TODO: replace with a fetch later
   
-  // function handleRejectRequest(name: string) {
-  //   setRequests((prev) => prev.filter((r) => r.name !== name))
-  //   toast({
-  //     title: "Request Rejected",
-  //     description: `You rejected ${name}'s request.`,
-  //   })
-  // }
+  function handleRejectRequest(name: string) {
+    setRequests((prev) => prev.filter((r) => r.name !== name))
+    toast({
+      title: "Request Rejected",
+      description: `You rejected ${name}'s request.`,
+    })
+  }
 
   function handleMessageAll() {
     toast({

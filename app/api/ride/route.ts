@@ -10,6 +10,7 @@ export async function POST(request: Request) {
     const newRide = await prisma.ride.create({
 
         data: {
+          ownerId: "ns2235", // hardcode
           ownerName: ride.ownerName || "", // Optional field 
           ownerPhone: ride.ownerPhone || "", // Optional field
           beginning: ride.beginning,    

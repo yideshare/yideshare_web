@@ -22,9 +22,9 @@ export default function FeedClient({ initialRides }: { initialRides: Ride[] }) {
   React.useEffect(() => {
     const sorted = [...rides]
     if (sortBy === "recent") {
-      sorted.sort((a, b) => +new Date(b.dateTime) - +new Date(a.dateTime))
+      sorted.sort((a, b) => +new Date(b.startTime) - +new Date(a.startTime))
     } else if (sortBy === "oldest") {
-      sorted.sort((a, b) => +new Date(a.dateTime) - +new Date(b.dateTime))
+      sorted.sort((a, b) => +new Date(a.startTime) - +new Date(b.startTime))
     } else if (sortBy === "alphabetical") {
       sorted.sort((a, b) => (a.beginning ?? "").localeCompare(b.beginning ?? ""))
     }
