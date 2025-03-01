@@ -1,8 +1,8 @@
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
-import ProfileRideCard from "@/components/ride-card/profile-ride-card"
 import { Separator } from "@/components/ui/separator"
-import type { Ride } from "@/app/interface/main"
+import { Ride } from "@prisma/client"
+import ProfileRideCard from "@/components/ride-card/profile-ride-card"
 
 export default async function DashboardPage() {
   const mockRides: Ride[] = [

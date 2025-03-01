@@ -1,8 +1,9 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { NavUser } from "@/components/nav-user"
-import { Calendar, User, Users, Settings, MessageSquare } from "lucide-react"
+import { Calendar, User, Settings, MessageSquare } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   Sidebar,
@@ -18,11 +19,11 @@ const navItems = [
     url: "/feed",
     icon: Calendar,
   },
-  {
-    title: "Your Friends",
-    url: "/friends",
-    icon: Users,
-  },
+  // {
+  //   title: "Your Friends",
+  //   url: "/friends",
+  //   icon: Users,
+  // },
   {
     title: "Your Rides",
     url: "/dashboard",
@@ -41,6 +42,26 @@ const navItems = [
 ]
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
+
+  const [user, setUser] = useState<{ firstName: string; lastName: string; email: string } | null>(null)
+
+  useEffect(() => {
+    async function fetchUserData() {
+      try {
+        const response = await fetch("/api/cookies/user")
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data")
+        }
+        const data = await response.json()
+        setUser(data)
+      } catch (error) {
+        console.error("Failed to fetch user data:", error)
+      }
+    }
+
+    fetchUserData()
+  }, []);
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarContent className="flex flex-col">
@@ -63,15 +84,18 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
           })}
         </nav>
       </SidebarContent>
-
       <SidebarFooter className="border-t p-2">
-        <NavUser
-          user={{
-            name: "Midhun Sadanand",
-            email: "midhun.sadanand@yale.edu",
-            avatar: "/avatars/midhun.jpg",
-          }}
-        />
+        {user ? (
+          <NavUser
+            user={{
+              name: user.firstName + " " + user.lastName,
+              email: user.email,
+              avatar: ""
+            }}
+          />
+        ) : (
+          "Loading..."
+        )}
       </SidebarFooter>
 
       <SidebarRail />
