@@ -29,40 +29,40 @@ export async function GET(req: Request) {
       return NextResponse.redirect(baseUrl);
     }
 
-    const netID = match[1];
-    console.log("Authenticated User:", netID);
+    // const netID = match[1];
+    // console.log("Authenticated User:", netID);
 
-    const authorizationToken = `Bearer ${process.env.YALIES_API_KEY}`;
-    console.log("Authorization Token:", authorizationToken);
+    // const authorizationToken = `Bearer ${process.env.YALIES_API_KEY}`;
+    // console.log("Authorization Token:", authorizationToken);
 
-    const YaliesResponse = await fetch("https://api.yalies.io/v2/people", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": authorizationToken,
-      },
-      body: JSON.stringify({
-        query: "",
-        filters: {
-          netid: netID
-        },
-      }),
-    });
+    // const YaliesResponse = await fetch("https://api.yalies.io/v2/people", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     "Authorization": authorizationToken,
+    //   },
+    //   body: JSON.stringify({
+    //     query: "",
+    //     filters: {
+    //       netid: netID
+    //     },
+    //   }),
+    // });
 
-    const YaliesData = await YaliesResponse.json();
-    if (!YaliesData || YaliesData.length === 0) {
-      console.error("Yalies API Error: No data returned for NetID", netID);
-      return NextResponse.redirect(baseUrl);
-    }
+    // const YaliesData = await YaliesResponse.json();
+    // if (!YaliesData || YaliesData.length === 0) {
+    //   console.error("Yalies API Error: No data returned for NetID", netID);
+    //   return NextResponse.redirect(baseUrl);
+    // }
 
-    const FirstName = YaliesData[0].first_name;
-    const LastName = YaliesData[0].last_name;
-    const Email = YaliesData[0].email;
+    // const FirstName = YaliesData[0].first_name;
+    // const LastName = YaliesData[0].last_name;
+    // const Email = YaliesData[0].email;
 
-    console.log("Authenticated User:", FirstName, LastName, Email);
+    // console.log("Authenticated User:", FirstName, LastName, Email);
 
     const successResponse = NextResponse.redirect(`${baseUrl}/feed`);
-    successResponse.cookies.set("user", JSON.stringify({ firstName: FirstName, lastName: LastName, email: Email }), {
+    successResponse.cookies.set("user", JSON.stringify({ firstName: "FirstName", lastName: "LastName", email: "Email" }), {
       httpOnly: false, // Make it accessible from the frontend
       path: "/",
     });

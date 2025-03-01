@@ -16,13 +16,13 @@ import {
 
 export default async function Home() {
   const fetchedRides = await prisma.ride.findMany({
-    take: 5,
-    orderBy: { startTime: "desc" },
+    take: 3,
     where: {
       isClosed: false,
-      startTime: { gte: new Date() },
     }
   })
+
+  console.log(fetchedRides)
 
   return (
     <SidebarProvider>

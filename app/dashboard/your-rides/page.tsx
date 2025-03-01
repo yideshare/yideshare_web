@@ -1,6 +1,5 @@
 "use client";
 
-import { prisma } from "@/lib/db"
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
 import { Separator } from "@/components/ui/separator"
 import { AppSidebar } from "@/components/app-sidebar"

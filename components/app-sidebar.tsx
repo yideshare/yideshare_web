@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { NavUser } from "@/components/nav-user"
-import { Calendar, User, Users, Settings, MessageSquare } from "lucide-react"
+import { Calendar, User, Settings, MessageSquare } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   Sidebar,
@@ -48,7 +48,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   useEffect(() => {
     async function fetchUserData() {
       try {
-        const response = await fetch("/api/auth/user")
+        const response = await fetch("/api/cookies/user")
         if (!response.ok) {
           throw new Error("Failed to fetch user data")
         }
@@ -91,7 +91,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
             user={{
               name: user.firstName + " " + user.lastName,
               email: user.email,
-              avatar: "/avatars/midhun.jpg",
+              avatar: ""
             }}
           />
         ) : (
