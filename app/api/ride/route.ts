@@ -24,9 +24,7 @@ export async function POST(request: Request) {
     // Create the ride with the existing user's netId
     const newRide = await prisma.ride.create({
       data: {
-        owner: {
-          connect: { netId: user.netId }, // Connect to existing user
-        },
+        ownerId: user.netId,
         ownerName: ride.ownerName || "", 
         ownerPhone: ride.ownerPhone || "", 
         beginning: ride.beginning,    
