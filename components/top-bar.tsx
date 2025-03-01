@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog";
 
 export function TopBar() {
+
   // Quick search fields
   const [from, setFrom] = React.useState("");
   const [to, setTo] = React.useState("");

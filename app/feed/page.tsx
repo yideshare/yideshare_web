@@ -13,7 +13,6 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 
-
 export default async function Home() {
   const fetchedRides = await prisma.ride.findMany({
     take: 3,

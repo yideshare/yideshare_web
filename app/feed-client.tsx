@@ -3,8 +3,6 @@
 import * as React from "react"
 import FeedRideCard from "@/components/ride-card/feed-ride-card"
 import { Separator } from "@/components/ui/separator"
-import { Ride } from "@prisma/client"
-
 import {
   Select,
   SelectTrigger,
@@ -12,6 +10,13 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select"
+
+type Ride = {
+  id: string
+  dateTime: Date
+  beginning?: string
+  destination?: string
+}
 
 export default function FeedClient({ initialRides }: { initialRides: Ride[] }) {
   const [rides, setRides] = React.useState<Ride[]>(initialRides)
@@ -21,9 +26,9 @@ export default function FeedClient({ initialRides }: { initialRides: Ride[] }) {
   React.useEffect(() => {
     const sorted = [...rides]
     if (sortBy === "recent") {
-      sorted.sort((a, b) => +new Date(b.startTime) - +new Date(a.startTime))
+      sorted.sort((a, b) => +new Date(b.dateTime) - +new Date(a.dateTime))
     } else if (sortBy === "oldest") {
-      sorted.sort((a, b) => +new Date(a.startTime) - +new Date(b.startTime))
+      sorted.sort((a, b) => +new Date(a.dateTime) - +new Date(b.dateTime))
     } else if (sortBy === "alphabetical") {
       sorted.sort((a, b) => (a.beginning ?? "").localeCompare(b.beginning ?? ""))
     }

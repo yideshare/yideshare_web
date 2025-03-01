@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/hooks/use-toast"
 import { Bookmark } from "lucide-react"
+
 import { Ride, User } from "@prisma/client"
 
 import {
@@ -30,7 +31,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-
 
 export default function FeedRideCard(ride: Ride, occupants: User[]) {
   const { toast } = useToast()
