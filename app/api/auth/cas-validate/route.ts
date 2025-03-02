@@ -32,7 +32,7 @@ export async function GET(req: Request) {
     const netID = match[1];
     console.log("Authenticated User:", netID);
 
-    const authorizationToken = `Bearer ${process.env.YALIES_API_KEY}`;
+    const authorizationToken = `Bearer ${process.env.YALIES_API_KEY}`; //need API key
     console.log("Authorization Token:", authorizationToken);
 
     const YaliesResponse = await fetch("https://api.yalies.io/v2/people", {
