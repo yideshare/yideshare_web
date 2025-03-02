@@ -28,16 +28,16 @@ export function TopBar() {
   const [showCalendar, setShowCalendar] = useState(false);
   const [mounted, setMounted] = useState(false); // Ensure it renders only on the client
   //TODO: print out where the error is
-  const [errors, setErrors] = useState({ //requires these fields
-      from: "",
-      to: "",
-      date: "",
-      startTime: "",
-      endTime: "",
-      organizerName: "",
-      phoneNumber: "",
-    
-    });
+  const [errors, setErrors] = useState({
+    //requires these fields
+    from: "",
+    to: "",
+    date: "",
+    startTime: "",
+    endTime: "",
+    organizerName: "",
+    phoneNumber: "",
+  });
   useEffect(() => {
     setMounted(true); // Mark component as mounted
     setDate(new Date()); // Ensure date is only set on the client
@@ -51,13 +51,48 @@ export function TopBar() {
 
   // Modal open state
   const [open, setOpen] = React.useState(false);
+  const handleFindRide = async (e: React.FormEvent) => { //TODO:
+    e.preventDefault();
+
+    // Ensure required fields are filled
+    if (!from || !to || !date || !startTime || !endTime) {
+      setErrors({
+        from: !from ? "Leaving from is required" : "",
+        to: !to ? "Heading to is required" : "",
+        date: !date ? "Date is required" : "",
+        startTime: !startTime ? "Start time is required" : "",
+        endTime: !endTime ? "End time is required" : "",
+      });
+      return;
+    }
+
+    // Send search request to the backend
+    try {
+      const response = await fetch("/api/findRide", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ from, to, date, startTime, endTime }),
+      });
+
+      const data = await response.json();
+
+      if (data.rides.length > 0) {
+        console.log("Matching rides found:", data.rides);
+        // Handle displaying the results (e.g., navigate to a results page or show a modal)
+      } else {
+        alert("No matching rides found.");
+      }
+    } catch (error) {
+      console.error("Error searching for rides:", error);
+    }
+  };
 
   async function handleShareYide(e: React.FormEvent) {
     e.preventDefault();
 
     let hasError = false;
     const newErrors = { ...errors };
-  
+
     // Validate the fields
     if (!from) {
       newErrors.from = "Leaving from is required";
@@ -65,28 +100,28 @@ export function TopBar() {
     } else {
       newErrors.from = "";
     }
-  
+
     if (!to) {
       newErrors.to = "Heading to is required";
       hasError = true;
     } else {
       newErrors.to = "";
     }
-  
+
     if (!date) {
       newErrors.date = "Date is required";
       hasError = true;
     } else {
       newErrors.date = "";
     }
-  
+
     if (!startTime) {
       newErrors.startTime = "Start time is required";
       hasError = true;
     } else {
       newErrors.startTime = "";
     }
-  
+
     if (!endTime) {
       newErrors.endTime = "End time is required";
       hasError = true;
@@ -107,9 +142,8 @@ export function TopBar() {
       newErrors.phoneNumber = "";
     }
 
-  
     setErrors(newErrors);
-  
+
     if (hasError) {
       return; // Don't submit if there are errors
     }
@@ -173,8 +207,9 @@ export function TopBar() {
           placeholder="e.g. Yale"
           value={from}
           onChange={(e) => setFrom(e.target.value)}
-          className={`border p-2 rounded-md ${errors.from ? 'border-red-500' : ''}`}
-
+          className={`border p-2 rounded-md ${
+            errors.from ? "border-red-500" : ""
+          }`}
         />
       </div>
 
@@ -185,7 +220,9 @@ export function TopBar() {
           placeholder="e.g. Hartford (BDL)"
           value={to}
           onChange={(e) => setTo(e.target.value)}
-          className={`border p-2 rounded-md ${errors.to ? 'border-red-500' : ''}`}
+          className={`border p-2 rounded-md ${
+            errors.to ? "border-red-500" : ""
+          }`}
         />
       </div>
       {/* Date Picker */}
@@ -219,8 +256,6 @@ export function TopBar() {
         )}
       </div>
 
-
-
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium">Start time</label>
@@ -239,9 +274,21 @@ export function TopBar() {
           />
         </div>
       </div>
+      <div className="ml-auto flex flex-col gap-4">
+      <Button
+        // type="button"
+        onClick={handleFindRide}
+        className="mt-5"
+      >
+        Find a Ride
+      </Button>
+
+      {/* </div> */}
+
 
       {/* “Share a Yide” button (aligned to the right) */}
-      <div className="ml-auto">
+      {/* <div className="ml-auto"> */}
+        
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button className="mt-5">Share a Yide</Button>
@@ -250,7 +297,9 @@ export function TopBar() {
             <DialogHeader>
               <DialogTitle>Share a Yide</DialogTitle>
               <DialogDescription>
-                Fill out the additional details below to create a new ride listing. If it doesn't submit, you didn't fill out all required fields. TODO on FRONTEND.
+                Fill out the additional details below to create a new ride
+                listing. If it doesn't submit, you didn't fill out all required
+                fields. TODO on FRONTEND.
               </DialogDescription>
             </DialogHeader>
 
@@ -263,13 +312,12 @@ export function TopBar() {
                   placeholder="Peter Salovey"
                   value={organizerName}
                   onChange={(e) => setOrganizerName(e.target.value)}
-
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-[0.75rem]">Phone Number
-
+                <label className="block text-sm font-medium mb-[0.75rem]">
+                  Phone Number
                 </label>
                 <Input
                   placeholder="555-555-5555"
