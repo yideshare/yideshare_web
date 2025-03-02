@@ -15,7 +15,7 @@ import {
 
 export default async function Home() {
   const fetchedRides = await prisma.ride.findMany({
-    take: 3,
+    take: 6,
     where: {
       isClosed: false,
     }

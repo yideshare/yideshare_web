@@ -38,7 +38,7 @@ export default function FeedRideCard(ride: Ride, occupants: User[]) {
   const totalSeats = ride.totalSeats
   const occupantCount = ride.currentTakenSeats
   // TODO: Timestamp rides and calculate postedAgo
-  const postedAgo = "1d ago"
+  const postedAgo = "" 
   const ownerName = ride.ownerName || "Raymond Hou"
   const occupantNames = "Unknown"
   // NB: we definitely need to store user's name
