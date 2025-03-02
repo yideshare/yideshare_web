@@ -27,6 +27,17 @@ export function TopBar() {
   const [endTime, setEndTime] = React.useState("");
   const [showCalendar, setShowCalendar] = useState(false);
   const [mounted, setMounted] = useState(false); // Ensure it renders only on the client
+  //TODO: print out where the error is
+  const [errors, setErrors] = useState({ //requires these fields
+      from: "",
+      to: "",
+      date: "",
+      startTime: "",
+      endTime: "",
+      organizerName: "",
+      phoneNumber: "",
+    
+    });
   useEffect(() => {
     setMounted(true); // Mark component as mounted
     setDate(new Date()); // Ensure date is only set on the client
@@ -43,6 +54,65 @@ export function TopBar() {
 
   async function handleShareYide(e: React.FormEvent) {
     e.preventDefault();
+
+    let hasError = false;
+    const newErrors = { ...errors };
+  
+    // Validate the fields
+    if (!from) {
+      newErrors.from = "Leaving from is required";
+      hasError = true;
+    } else {
+      newErrors.from = "";
+    }
+  
+    if (!to) {
+      newErrors.to = "Heading to is required";
+      hasError = true;
+    } else {
+      newErrors.to = "";
+    }
+  
+    if (!date) {
+      newErrors.date = "Date is required";
+      hasError = true;
+    } else {
+      newErrors.date = "";
+    }
+  
+    if (!startTime) {
+      newErrors.startTime = "Start time is required";
+      hasError = true;
+    } else {
+      newErrors.startTime = "";
+    }
+  
+    if (!endTime) {
+      newErrors.endTime = "End time is required";
+      hasError = true;
+    } else {
+      newErrors.endTime = "";
+    }
+
+    if (!organizerName) {
+      newErrors.organizerName = "Organizer name is required";
+      hasError = true;
+    } else {
+      newErrors.organizerName = "";
+    }
+    if (!phoneNumber) {
+      newErrors.phoneNumber = "Phone number is required";
+      hasError = true;
+    } else {
+      newErrors.phoneNumber = "";
+    }
+
+  
+    setErrors(newErrors);
+  
+    if (hasError) {
+      return; // Don't submit if there are errors
+    }
 
     const selectedDate = date ? new Date(date) : new Date(); // Use current date if undefined
 
@@ -103,6 +173,8 @@ export function TopBar() {
           placeholder="e.g. Yale"
           value={from}
           onChange={(e) => setFrom(e.target.value)}
+          className={`border p-2 rounded-md ${errors.from ? 'border-red-500' : ''}`}
+
         />
       </div>
 
@@ -113,6 +185,7 @@ export function TopBar() {
           placeholder="e.g. Hartford (BDL)"
           value={to}
           onChange={(e) => setTo(e.target.value)}
+          className={`border p-2 rounded-md ${errors.to ? 'border-red-500' : ''}`}
         />
       </div>
       {/* Date Picker */}
