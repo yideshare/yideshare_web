@@ -9,33 +9,32 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const userData = JSON.parse(decodeURIComponent(match[1])); //currently boiler plate, needs to be updated
+    const userData = JSON.parse(decodeURIComponent(match[1])); 
     console.log("User data:", userData);
-    const netID = userData.netID; //TODO: we need cas-validate to be implemented to get netID.
+    const netID = userData.netID; 
     console.log("NetID:", netID);
 
     const ride = await request.json()
     console.log("Creating ride:", ride)
-    console.log("Owner ID:", ride.ownerId);
 
     // Ensure the user exists in the database
-    let user = await prisma.user.findUnique({ //TODO: not adding to data base
-      where: { netId: ride.ownerId },
-    });
-    console.log("User found:", user);
-    if (!user) {
-      user = await prisma.user.create({ //TODO: update logic
-        data: {
-          netId: ride.ownerId,
-          name: ride.ownerName || "Unknown", // Default name if missing
-        },
-      });
-    }
+    // let user = await prisma.user.findUnique({ //TODO: not adding to data base
+    //   where: { netId: ride.ownerId },
+    // });
+    // console.log("User found:", user);
+    // if (!user) {
+    //   user = await prisma.user.create({ //TODO: update logic
+    //     data: {
+    //       netId: ride.ownerId,
+    //       name: ride.ownerName || "Unknown", // Default name if missing
+    //     },
+    //   });
+    // }
 
     // Create the ride with the existing user's netId
     const newRide = await prisma.ride.create({
       data: {
-        ownerId: user.netId,
+        ownerId: netID,
         ownerName: ride.ownerName || "", 
         ownerPhone: ride.ownerPhone || "", 
         beginning: ride.beginning,    
