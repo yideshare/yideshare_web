@@ -3,7 +3,11 @@
 import * as React from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { DatePickerWithTimeRange } from "@/components/date-picker";
+import { useState, useEffect } from "react";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/dist/style.css";
+import { format } from "date-fns";
+
 import {
   Dialog,
   DialogContent,
@@ -15,13 +19,18 @@ import {
 } from "@/components/ui/dialog";
 
 export function TopBar() {
-
   // Quick search fields
   const [from, setFrom] = React.useState("");
   const [to, setTo] = React.useState("");
-  const [dateTime, setDateTime] = React.useState<Date | undefined>(undefined);
+  const [date, setDate] = useState(new Date()); // Default to today's date
   const [startTime, setStartTime] = React.useState("");
   const [endTime, setEndTime] = React.useState("");
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [mounted, setMounted] = useState(false); // Ensure it renders only on the client
+  useEffect(() => {
+    setMounted(true); // Mark component as mounted
+    setDate(new Date()); // Ensure date is only set on the client
+  }, []);
 
   // “Share a Yide” form fields
   const [organizerName, setOrganizerName] = React.useState("");
@@ -34,24 +43,24 @@ export function TopBar() {
 
   async function handleShareYide(e: React.FormEvent) {
     e.preventDefault();
-    
-    const selectedDate = dateTime ? new Date(dateTime) : new Date();  // Use current date if undefined
+
+    const selectedDate = date ? new Date(date) : new Date(); // Use current date if undefined
 
     // Split startTime and endTime strings into hours and minutes
-    const [startHours, startMinutes] = startTime.split(":").map(Number);  // e.g., "10:00" -> [10, 0]
-    const [endHours, endMinutes] = endTime.split(":").map(Number);        
-  
+    const [startHours, startMinutes] = startTime.split(":").map(Number); // e.g., "10:00" -> [10, 0]
+    const [endHours, endMinutes] = endTime.split(":").map(Number);
+
     // Create valid Date objects by combining the selected date with the start and end times
-    const startDate = new Date(selectedDate);  // Use the selected date
-    const endDate = new Date(selectedDate);    
-  
+    const startDate = new Date(selectedDate); // Use the selected date
+    const endDate = new Date(selectedDate);
+
     // Set the correct hours and minutes for start and end times
-    startDate.setHours(startHours, startMinutes, 0, 0);  // Set start time on the selected date
-    endDate.setHours(endHours, endMinutes, 0, 0);        
-  
+    startDate.setHours(startHours, startMinutes, 0, 0); // Set start time on the selected date
+    endDate.setHours(endHours, endMinutes, 0, 0);
+
     // Convert to ISO string format for Prisma
-    const formattedStartTime = startDate.toISOString();  
-    const formattedEndTime = endDate.toISOString();      
+    const formattedStartTime = startDate.toISOString();
+    const formattedEndTime = endDate.toISOString();
 
     const rideData = {
       ownerName: organizerName,
@@ -106,18 +115,56 @@ export function TopBar() {
           onChange={(e) => setTo(e.target.value)}
         />
       </div>
+      {/* Date Picker */}
+      <div className="flex flex-col relative">
+        <label className="block text-sm font-medium">Date</label>
+        {mounted ? (
+          <button
+            onClick={() => setShowCalendar(!showCalendar)}
+            className="border rounded-md p-2 w-full text-sm bg-muted/50 text-foreground"
+          >
+            {date ? format(date, "yyyy-MM-dd") : "Select a date"}
+          </button>
+        ) : (
+          <div className="border rounded-md p-2 w-full text-sm bg-muted/50 text-foreground">
+            Loading...
+          </div>
+        )}
+        {showCalendar && mounted && (
+          <div className="absolute z-10 bg-white p-2 shadow-lg rounded-md">
+            <DayPicker
+              mode="single"
+              selected={date}
+              onSelect={(selectedDate) => {
+                if (selectedDate) {
+                  setDate(selectedDate);
+                }
+                setShowCalendar(false);
+              }}
+            />
+          </div>
+        )}
+      </div>
 
-      {/* Date & Time picker */}
-      <div className="flex flex-col">
-        <label className="mb-1 text-sm font-medium">Date & Time</label>
-        <DatePickerWithTimeRange
-          date={dateTime}
-          onDateChange={(date) => setDateTime(date)}
-          startTime={startTime}
-          onStartTimeChange={(time) => setStartTime(time)}
-          endTime={endTime}
-          onEndTimeChange={(time) => setEndTime(time)}
-        />
+
+
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium">Start time</label>
+          <Input
+            type="time"
+            value={startTime}
+            onChange={(e) => setStartTime(e.target.value)}
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">End time</label>
+          <Input
+            type="time"
+            value={endTime}
+            onChange={(e) => setEndTime(e.target.value)}
+          />
+        </div>
       </div>
 
       {/* “Share a Yide” button (aligned to the right) */}
@@ -138,7 +185,6 @@ export function TopBar() {
               <div>
                 <label className="block text-sm font-medium mb-[0.75rem]">
                   Organizer name{" "}
-                  <span className="text-gray-400">(optional)</span>
                 </label>
                 <Input
                   placeholder="Peter Salovey"
@@ -148,62 +194,13 @@ export function TopBar() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium">
-                  Phone number <span className="text-gray-400">(optional)</span>
-                </label>
+                <label className="block text-sm font-medium"></label>
                 <Input
                   placeholder="555-555-5555"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                 />
               </div>
-
-              {/* New adjacent input fields for "Leaving from" and "Going to" */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium">
-                    Leaving from
-                  </label>
-                  <Input
-                    placeholder="e.g. Yale"
-                    value={from}
-                    onChange={(e) => setFrom(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium">
-                    Heading to
-                  </label>
-                  <Input
-                    placeholder="e.g. Hartford (BDL)"
-                    value={to}
-                    onChange={(e) => setTo(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              {/* Start & End time side-by-side */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium">
-                    Start time
-                  </label>
-                  <Input
-                    type="time"
-                    value={startTime}
-                    onChange={(e) => setStartTime(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium">End time</label>
-                  <Input
-                    type="time"
-                    value={endTime}
-                    onChange={(e) => setEndTime(e.target.value)}
-                  />
-                </div>
-              </div>
-
               <div>
                 <label className="block text-sm font-medium">
                   Number of additional passengers
