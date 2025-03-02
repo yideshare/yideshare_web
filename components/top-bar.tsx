@@ -250,7 +250,7 @@ export function TopBar() {
             <DialogHeader>
               <DialogTitle>Share a Yide</DialogTitle>
               <DialogDescription>
-                Fill out the details below to create a new ride listing.
+                Fill out the additional details below to create a new ride listing. If it doesn't submit, you didn't fill out all required fields. TODO on FRONTEND.
               </DialogDescription>
             </DialogHeader>
 
@@ -263,11 +263,14 @@ export function TopBar() {
                   placeholder="Peter Salovey"
                   value={organizerName}
                   onChange={(e) => setOrganizerName(e.target.value)}
+
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium"></label>
+                <label className="block text-sm font-medium mb-[0.75rem]">Phone Number
+
+                </label>
                 <Input
                   placeholder="555-555-5555"
                   value={phoneNumber}
