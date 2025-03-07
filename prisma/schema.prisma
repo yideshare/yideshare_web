@@ -1,55 +1,69 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db "
+  url      = "file:./dev.db"
 }
 
 model User {
-  netId String @id
-  name  String
-  avatar Bytes?
-  avatarType String?
+  netId              String           @id
+  name               String
+  avatar             Bytes?
+  avatarType         String?
 
   // one-to-many relationship with Rides
-  ridesOwned Ride[]
+  ridesOwned         Ride[]
 
   // many-to-many relationship with Rides
-  ridesParticipated RideParticipant[]
-  sentMessages      Message[]         @relation("MessageSender")
-  receivedMessages  Message[]         @relation("MessageReceiver")
-  sentRequests      RideRequest[]     @relation("RequestSender")
-  receivedRequests  RideRequest[]     @relation("RequestReceiver")
+  ridesParticipated  RideParticipant[]
+
+  sentMessages       Message[]        @relation("MessageSender")
+  receivedMessages   Message[]        @relation("MessageReceiver")
+  sentRequests       RideRequest[]    @relation("RequestSender")
+  receivedRequests   RideRequest[]    @relation("RequestReceiver")
+
+  // relationship for bookmarks
+  bookmarks          Bookmark[]
 }
 
 model Ride {
-  id                String   @id @default(cuid())
-  ownerName         String
-  ownerPhone        String
-  beginning         String
-  destination       String
-  description       String
-  startTime         DateTime
-  endTime           DateTime
-  totalSeats        Int
-  currentTakenSeats Int
-  isClosed          Boolean
+  id                 String           @id @default(cuid())
+  ownerName          String
+  ownerPhone         String
+  beginning          String
+  destination        String
+  description        String
+  startTime          DateTime
+  endTime            DateTime
+  totalSeats         Int
+  currentTakenSeats  Int
+  isClosed           Boolean
 
   // many-to-one relationship with User
-  ownerId String
-  owner   User   @relation(fields: [ownerId], references: [netId])
+  ownerId            String
+  owner              User             @relation(fields: [ownerId], references: [netId])
 
   // many-to-many relationship with Users
-  participants RideParticipant[]
-  requests     RideRequest[]     @relation("RideRequests")
+  participants       RideParticipant[]
+  requests           RideRequest[]    @relation("RideRequests")
+
+  // relationship for bookmarks
+  bookmarks          Bookmark[]
+}
+
+// junction table for many-to-many relationship between User and Ride for bookmarks
+model Bookmark {
+  id       String   @id @default(cuid())
+  userId   String
+  rideId   String
+  createdAt DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [netId])
+  ride     Ride     @relation(fields: [rideId], references: [id])
+
+  @@unique([userId, rideId])
 }
 
 // junction table for many-to-many relationship
@@ -58,8 +72,8 @@ model RideParticipant {
   rideId   String
   joinedAt DateTime @default(now())
 
-  user User @relation(fields: [netId], references: [netId])
-  ride Ride @relation(fields: [rideId], references: [id])
+  user     User     @relation(fields: [netId], references: [netId])
+  ride     Ride     @relation(fields: [rideId], references: [id])
 
   @@id([netId, rideId])
 }
@@ -73,9 +87,9 @@ model RideRequest {
   payload    String
   isAccepted Boolean  @default(false)
 
-  ride     Ride @relation("RideRequests", fields: [rideId], references: [id])
-  sender   User @relation("RequestSender", fields: [senderId], references: [netId])
-  receiver User @relation("RequestReceiver", fields: [receiverId], references: [netId])
+  ride       Ride     @relation("RideRequests", fields: [rideId], references: [id])
+  sender     User     @relation("RequestSender", fields: [senderId], references: [netId])
+  receiver   User     @relation("RequestReceiver", fields: [receiverId], references: [netId])
 }
 
 model Message {
@@ -85,6 +99,6 @@ model Message {
   timestamp  DateTime @default(now())
   payload    String
 
-  sender   User @relation("MessageSender", fields: [senderId], references: [netId])
-  receiver User @relation("MessageReceiver", fields: [receiverId], references: [netId])
+  sender     User     @relation("MessageSender", fields: [senderId], references: [netId])
+  receiver   User     @relation("MessageReceiver", fields: [receiverId], references: [netId])
 }

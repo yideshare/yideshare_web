@@ -1,6 +1,7 @@
 // app/feed/page.tsx
 
 import { prisma } from "@/lib/prisma"
+import { cookies } from "next/headers"
 import { Separator } from "@/components/ui/separator"
 import { AppSidebar } from "@/components/app-sidebar"
 import { TopBar } from "@/components/top-bar"
@@ -14,6 +15,15 @@ import {
 } from "@/components/ui/sidebar"
 
 export default async function Home() {
+  const cookieStore = await cookies()
+  const userCookie = cookieStore.get("user")
+
+  if(!userCookie) {
+    return <div>Please log in to view your rides.</div>
+  }
+
+  const { netID } = JSON.parse(userCookie.value)
+
   const fetchedRides = await prisma.ride.findMany({
     take: 6,
     where: {
@@ -22,6 +32,13 @@ export default async function Home() {
   })
 
   console.log(fetchedRides)
+
+  const bookmarks = await prisma.bookmark.findMany({
+    where: { userNetId: netID },
+    select: { rideId: true }
+  })
+
+  const bookmarkedRideIDs = bookmarks.map(b => b.rideId)
 
   return (
     <SidebarProvider>
@@ -41,7 +58,10 @@ export default async function Home() {
         </header>
 
         {/* The main feed area */}
-        <FeedClient initialRides={fetchedRides} />
+        <FeedClient 
+          initialRides={fetchedRides}
+          bookmarkedRideIDs={bookmarkedRideIDs} 
+        />
       </SidebarInset>
     </SidebarProvider>
   )

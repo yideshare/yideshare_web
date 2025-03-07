@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { NavUser } from "@/components/nav-user"
-import { Calendar, User, Settings, MessageSquare } from "lucide-react"
+import { Calendar, User, Settings, MessageSquare, Bookmark, PowerOffIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   Sidebar,
@@ -25,20 +25,31 @@ const navItems = [
   //   icon: Users,
   // },
   {
-    title: "Your Rides",
+    title: "My Rides",
     url: "/dashboard",
     icon: User,
   },
   {
-    title: "Messages",
-    url: "/messages", // Make sure we have the "Messages" item
-    icon: MessageSquare,
+    title: "My Bookmarks",
+    url: "/bookmarks",
+    icon: Bookmark,
   },
+  // TODO: same cors error with redirecting to CAS logout (href or something i forgot)
   {
-    title: "Settings",
-    url: "/settings",
-    icon: Settings,
+    title: "Logout",
+    url: "/api/auth/logout",
+    icon: PowerOffIcon,
   },
+  // {
+  //   title: "Messages",
+  //   url: "/messages", // Make sure we have the "Messages" item
+  //   icon: MessageSquare,
+  // },
+  // {
+  //   title: "Settings",
+  //   url: "/settings",
+  //   icon: Settings,
+  // },
 ]
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
