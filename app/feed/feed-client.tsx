@@ -13,7 +13,12 @@ import {
   SelectItem,
 } from "@/components/ui/select"
 
-export default function FeedClient({ initialRides }: { initialRides: Ride[] }) {
+interface FeedClientProps {
+  initialRides: Ride[]
+  bookmarkedRideIDs: string[]
+}
+
+export default function FeedClient({ initialRides, bookmarkedRideIDs }: FeedClientProps) {
   const [rides, setRides] = React.useState<Ride[]>(initialRides)
   const [sortBy, setSortBy] = React.useState("recent")
 
@@ -56,7 +61,13 @@ export default function FeedClient({ initialRides }: { initialRides: Ride[] }) {
       <div className="pt-16 flex justify-center">
         <div className="flex flex-col gap-4 center max-w-[1200px] w-full">
           {rides.length > 0 ? (
-            rides.map((ride) => <FeedRideCard key={ride.id} {...ride} />)
+            rides.map((ride) => (
+              <FeedRideCard
+                key={ride.id}
+                ride={ride}
+                isBookmarkedInitial={bookmarkedRideIDs.includes(ride.id)} // queries whether the ride is bookmarked or not
+              />
+            ))
           ) : (
             <p>No rides available.</p>
           )}

@@ -23,7 +23,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 
-export default function ProfileRideCard(ride: Ride, occupants: User[], requests: RideRequest[]) {
+export default function ProfileRideCard(ride: Ride, occupants: User[], initialRequests: RideRequest[]) {
   const { toast } = useToast()
 
   const cardTitle = `${ride.beginning} → ${ride.destination}`
@@ -33,7 +33,7 @@ export default function ProfileRideCard(ride: Ride, occupants: User[], requests:
   const isClosed = ride.isClosed
 
   // local state for requests
-  //const [requests, setRequests] = React.useState(ride.requests ?? [])
+  const [requests, setRequests] = React.useState(initialRequests ?? [])
 
   const dateObj = new Date(ride.startTime)
   const month = dateObj.getMonth() + 1
