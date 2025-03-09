@@ -34,7 +34,7 @@ export default async function Home() {
   console.log(fetchedRides)
 
   const bookmarks = await prisma.bookmark.findMany({
-    where: { userNetId: netID },
+    where: { userId: netID },
     select: { rideId: true }
   })
 
