@@ -18,7 +18,7 @@ export default async function BookmarkPage() {
 
   // Query bookmarks for the authenticated user and include the related ride
   const bookmarks = await prisma.bookmark.findMany({
-    where: { userNetId: netID },
+    where: { userId: netID },
     include: { ride: true },
   });
 
