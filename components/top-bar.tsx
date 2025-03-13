@@ -164,7 +164,7 @@ export function TopBar() {
 
     console.log("Posting new ride:", rideData);
     try {
-      const response = await fetch("/api/ride", {
+      const response = await fetch("/api/post-ride", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(rideData),

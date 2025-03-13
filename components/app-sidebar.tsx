@@ -1,16 +1,20 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import Link from "next/link"
-import { NavUser } from "@/components/nav-user"
-import { Calendar, User, Settings, MessageSquare, Bookmark, PowerOffIcon } from "lucide-react"
-import { cn } from "@/lib/utils"
+import Link from "next/link";
+
+import { NavUser } from "@/components/nav-user";
+import { useEffect, useState } from "react";
+import { Calendar, User, Bookmark } from "lucide-react";
+
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+
+import { cn } from "@/lib/utils/general";
+import { getAuthenticatedUser } from "@/lib/utils/user";
 
 const navItems = [
   {
@@ -50,27 +54,30 @@ const navItems = [
   //   url: "/settings",
   //   icon: Settings,
   // },
-]
+];
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
-
-  const [user, setUser] = useState<{ firstName: string; lastName: string; email: string } | null>(null)
+  const [user, setUser] = useState<{
+    firstName: string;
+    lastName: string;
+    email: string;
+  } | null>(null);
 
   useEffect(() => {
-    async function fetchUserData() {
+    async function fetchAndSetUserData() {
       try {
-        const response = await fetch("/api/cookies/user")
+        const response = await fetch("/api/user-cookies");
         if (!response.ok) {
-          throw new Error("Failed to fetch user data")
+          throw new Error("Bad Cookies Response");
         }
-        const data = await response.json()
-        setUser(data)
+        const data = await response.json();
+        setUser(data);
       } catch (error) {
-        console.error("Failed to fetch user data:", error)
+        console.error("Failed to fetch user data:", error);
       }
     }
 
-    fetchUserData()
+    fetchAndSetUserData();
   }, []);
 
   return (
@@ -78,7 +85,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent className="flex flex-col">
         <nav className="flex-1 space-y-1 px-2 pt-2 mt-[0.3rem]">
           {navItems.map((item) => {
-            const Icon = item.icon
+            const Icon = item.icon;
             return (
               <Link
                 key={item.title}
@@ -91,7 +98,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                 <Icon className="h-4 w-4 shrink-0" />
                 <span className="truncate">{item.title}</span>
               </Link>
-            )
+            );
           })}
         </nav>
       </SidebarContent>
@@ -101,15 +108,14 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
             user={{
               name: user.firstName + " " + user.lastName,
               email: user.email,
-              avatar: ""
+              avatar: "",
             }}
           />
         ) : (
           "Loading..."
         )}
       </SidebarFooter>
-
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
