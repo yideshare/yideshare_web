@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 export async function createRide(ride: any, netId: string) {
   return prisma.ride.create({
     data: {
-      ownerId: netId,
+      ownerNetId: netId,
       ownerName: ride.ownerName || "",
       ownerPhone: ride.ownerPhone || "",
       beginning: ride.beginning,
@@ -18,24 +18,44 @@ export async function createRide(ride: any, netId: string) {
   });
 }
 
-
-export async function bookmarkRide(userId: string, rideId: string) {
+export async function bookmarkRide(netId: string, rideId: string) {
   // try to find bookmark
   const existing = await prisma.bookmark.findUnique({
-    where: { userId_rideId: { userId, rideId } },
+    where: { netId_rideId: { netId, rideId } },
   });
 
   // if a bookmark exists
   if (existing) {
     await prisma.bookmark.delete({
-      where: { userId_rideId: { userId, rideId } },
+      where: { netId_rideId: { netId, rideId } },
     });
     return { bookmarked: false };
-  // otherwise
+    // otherwise
   } else {
     await prisma.bookmark.create({
-      data: { userId, rideId },
+      data: { netId, rideId },
     });
     return { bookmarked: true };
   }
+}
+
+export async function findOwnedRide(netId: string) {
+  return await prisma.ride.findMany({
+    where: {
+      ownerName: netId,
+    },
+    orderBy: {
+      startTime: "desc", // Sort rides by most recent
+    },
+    select: {
+      id: true,
+      beginning: true,
+      destination: true,
+      startTime: true,
+      endTime: true,
+      totalSeats: true,
+      currentTakenSeats: true,
+      isClosed: true,
+    },
+  });
 }

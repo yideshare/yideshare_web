@@ -15,10 +15,10 @@ import {
 
 interface FeedClientProps {
   initialRides: Ride[]
-  bookmarkedRideIDs: string[]
+  bookmarkedRideIds: string[]
 }
 
-export default function FeedClient({ initialRides, bookmarkedRideIDs }: FeedClientProps) {
+export default function FeedClient({ initialRides, bookmarkedRideIds }: FeedClientProps) {
   const [rides, setRides] = React.useState<Ride[]>(initialRides)
   const [sortBy, setSortBy] = React.useState("recent")
 
@@ -65,7 +65,7 @@ export default function FeedClient({ initialRides, bookmarkedRideIDs }: FeedClie
               <FeedRideCard
                 key={ride.id}
                 ride={ride}
-                isBookmarkedInitial={bookmarkedRideIDs.includes(ride.id)} // queries whether the ride is bookmarked or not
+                isBookmarkedInitial={bookmarkedRideIds.includes(ride.id)} // queries whether the ride is bookmarked or not
               />
             ))
           ) : (

@@ -14,11 +14,11 @@ export default async function BookmarkPage() {
     return <div>Please log in to view your rides.</div>;
   }
 
-  const { netID } = JSON.parse(userCookie.value);
+  const { netId } = JSON.parse(userCookie.value);
 
   // Query bookmarks for the authenticated user and include the related ride
   const bookmarks = await prisma.bookmark.findMany({
-    where: { userId: netID },
+    where: { netId: netId },
     include: { ride: true },
   });
 

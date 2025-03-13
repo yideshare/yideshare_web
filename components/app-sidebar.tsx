@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { NavUser } from "@/components/nav-user";
 import { useEffect, useState } from "react";
-import { Calendar, User, Bookmark } from "lucide-react";
+import { Calendar, User, Bookmark, PowerOffIcon } from "lucide-react";
 
 import {
   Sidebar,
@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/sidebar";
 
 import { cn } from "@/lib/utils/general";
-import { getAuthenticatedUser } from "@/lib/utils/user";
 
 const navItems = [
   {
@@ -39,11 +38,11 @@ const navItems = [
     icon: Bookmark,
   },
   // TODO: same cors error with redirecting to CAS logout (href or something i forgot)
-  // {
-  //   title: "Logout",
-  //   url: "/api/auth/logout",
-  //   icon: PowerOffIcon,
-  // },
+  {
+    title: "Logout",
+    url: "/api/auth/logout",
+    icon: PowerOffIcon,
+  },
   // {
   //   title: "Messages",
   //   url: "/messages", // Make sure we have the "Messages" item
