@@ -24,21 +24,18 @@ export default async function Home() {
 
   const { netID } = JSON.parse(userCookie.value)
 
+  const bookmarks = await prisma.bookmark.findMany({
+    where: { userId: netID },
+    select: { rideId: true }
+  })
+  const bookmarkedRideIDs = bookmarks.map(b => b.rideId)
+  
   const fetchedRides = await prisma.ride.findMany({
     take: 6,
     where: {
       isClosed: false,
     }
   })
-
-  console.log(fetchedRides)
-
-  const bookmarks = await prisma.bookmark.findMany({
-    where: { userId: netID },
-    select: { rideId: true }
-  })
-
-  const bookmarkedRideIDs = bookmarks.map(b => b.rideId)
 
   return (
     <SidebarProvider>
@@ -53,11 +50,8 @@ export default async function Home() {
               <LogoutButton />
             </div>
           </div>
-          {/* Render the TopBar (with search fields, date/time picker, and modal) */}
           <TopBar />
         </header>
-
-        {/* The main feed area */}
         <FeedClient 
           initialRides={fetchedRides}
           bookmarkedRideIDs={bookmarkedRideIDs} 

@@ -35,11 +35,11 @@ const navItems = [
     icon: Bookmark,
   },
   // TODO: same cors error with redirecting to CAS logout (href or something i forgot)
-  {
-    title: "Logout",
-    url: "/api/auth/logout",
-    icon: PowerOffIcon,
-  },
+  // {
+  //   title: "Logout",
+  //   url: "/api/auth/logout",
+  //   icon: PowerOffIcon,
+  // },
   // {
   //   title: "Messages",
   //   url: "/messages", // Make sure we have the "Messages" item
