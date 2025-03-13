@@ -54,37 +54,22 @@ export function TopBar() {
   const handleFindRide = async (e: React.FormEvent) => { //TODO:
     e.preventDefault();
 
-    // Ensure required fields are filled
-    if (!from || !to || !date || !startTime || !endTime) {
-      setErrors({
-        from: !from ? "Leaving from is required" : "",
-        to: !to ? "Heading to is required" : "",
-        date: !date ? "Date is required" : "",
-        startTime: !startTime ? "Start time is required" : "",
-        endTime: !endTime ? "End time is required" : "",
-      });
-      return;
-    }
+    // // Ensure required fields are filled
+    // if (!from || !to || !date || !startTime || !endTime) {
+    //   setErrors({
+    //     from: !from ? "Leaving from is required" : "",
+    //     to: !to ? "Heading to is required" : "",
+    //     date: !date ? "Date is required" : "",
+    //     startTime: !startTime ? "Start time is required" : "",
+    //     endTime: !endTime ? "End time is required" : "",
+    //   });
+    //   return;
+    // }
 
-    // Send search request to the backend
-    try {
-      const response = await fetch("/api/findRide", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ from, to, date, startTime, endTime }),
-      });
-
-      const data = await response.json();
-
-      if (data.rides.length > 0) {
-        console.log("Matching rides found:", data.rides);
-        // Handle displaying the results (e.g., navigate to a results page or show a modal)
-      } else {
-        alert("No matching rides found.");
-      }
-    } catch (error) {
-      console.error("Error searching for rides:", error);
-    }
+    const queryString = `from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${encodeURIComponent(date.toISOString())}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}`;
+  
+    // Redirect to results page
+    window.location.href = `http://localhost:3000//results?${queryString}`
   };
 
   async function handleShareYide(e: React.FormEvent) {
