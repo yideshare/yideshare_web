@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 
+const BASE_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
+
 export async function GET() {
-  const response = NextResponse.redirect("https://secure.its.yale.edu/cas/logout?service=http://localhost:3000/");
+  const response = NextResponse.redirect(
+    `https://secure.its.yale.edu/cas/logout?service=${BASE_URL}/`
+  );
 
   response.cookies.delete("user");
   response.cookies.delete("session");
@@ -9,5 +13,5 @@ export async function GET() {
   response.cookies.delete("next-auth.session-token");
   response.cookies.delete("next-auth.csrf-token");
 
-  return response
+  return response;
 }

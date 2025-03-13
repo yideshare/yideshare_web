@@ -1,66 +1,43 @@
-// app/api/bookmark/route.ts
-
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
+
+import { bookmarkRide } from "@/lib/utils/ride";
+import { validateRequestPayload } from "@/lib/utils/validate";
+import { getAuthenticatedUser } from "@/lib/utils/user";
 
 export async function POST(req: Request) {
   try {
-    // Get and validate the user cookie
+    // get cookies
     const cookieStore = await cookies();
-    const userCookie = cookieStore.get("user");
-    if (!userCookie) {
-      return NextResponse.json({ error: "User not authenticated" }, { status: 401 });
+    // get authenticated user
+    const authResult = await getAuthenticatedUser(cookieStore);
+    if ("error" in authResult) {
+      return NextResponse.json(
+        { error: authResult.error },
+        { status: authResult.status }
+      );
     }
 
-    let parsedUser;
-    try {
-      parsedUser = JSON.parse(userCookie.value);
-    } catch (error) {
-      return NextResponse.json({ error: "Invalid cookie format" }, { status: 400 });
-    }
-    const { netID } = parsedUser;
-
-    // Validate the request payload
-    let rideId;
-    try {
-      const body = await req.json();
-      rideId = body.rideId;
-      if (!rideId) {
-        throw new Error("Missing rideId");
-      }
-    } catch (error) {
-      return NextResponse.json({ error: "Invalid request payload" }, { status: 400 });
+    // validate request payload
+    const payloadResult = await validateRequestPayload(req);
+    if ("error" in payloadResult) {
+      return NextResponse.json(
+        { error: payloadResult.error },
+        { status: payloadResult.status }
+      );
     }
 
-    // Check if the bookmark exists using a composite unique index
-    const existing = await prisma.bookmark.findUnique({
-      where: {
-        userId_rideId: {
-          userId: netID,
-          rideId: rideId,
-        },
-      },
-    });
+    // toggle the bookmark
+    const { netID } = authResult.user;
+    const { rideId } = payloadResult;
+    const result = await bookmarkRide(netID, rideId);
 
-    if (existing) {
-      // Remove the bookmark (toggle off)
-      await prisma.bookmark.delete({
-        where: { userId_rideId: { userId: netID, rideId: rideId } },
-      });
-      return NextResponse.json({ bookmarked: false });
-    } else {
-      // Create the bookmark (toggle on)
-      await prisma.bookmark.create({
-        data: {
-          userId: netID,
-          rideId: rideId,
-        },
-      });
-      return NextResponse.json({ bookmarked: true });
-    }
+    return NextResponse.json(result);
   } catch (error) {
-    console.error("Error toggling bookmark:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    console.error("DB BOOKMARK Error:", error);
+    return NextResponse.json(
+      { error: `Error bookmarking ride: ${error}` },
+      { status: 500 }
+    );
   }
 }
