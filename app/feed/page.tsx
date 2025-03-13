@@ -22,13 +22,13 @@ export default async function Home() {
     return <div>Please log in to view your rides.</div>
   }
 
-  const { netID } = JSON.parse(userCookie.value)
+  const { netId } = JSON.parse(userCookie.value)
 
   const bookmarks = await prisma.bookmark.findMany({
-    where: { userId: netID },
+    where: { netId: netId },
     select: { rideId: true }
   })
-  const bookmarkedRideIDs = bookmarks.map(b => b.rideId)
+  const bookmarkedRideIds = bookmarks.map(b => b.rideId)
   
   const fetchedRides = await prisma.ride.findMany({
     take: 6,
@@ -54,7 +54,7 @@ export default async function Home() {
         </header>
         <FeedClient 
           initialRides={fetchedRides}
-          bookmarkedRideIDs={bookmarkedRideIDs} 
+          bookmarkedRideIds={bookmarkedRideIds} 
         />
       </SidebarInset>
     </SidebarProvider>

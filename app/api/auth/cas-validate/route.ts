@@ -12,27 +12,26 @@ export async function GET(req: Request) {
     const ticket = searchParams.get("ticket");
 
     // validate CAS ticket
-    const netID = await validateCASTicket(ticket);
-    if (!netID) return NextResponse.redirect(BASE_URL);
+    const netId = await validateCASTicket(ticket);
+    if (!netId) return NextResponse.redirect(BASE_URL);
 
     // fetch Yalies data
-    const yaliesData = await fetchYaliesData(netID);
+    const yaliesData = await fetchYaliesData(netId);
     if (!yaliesData) {
-      console.error("Yalies Error: No data returned for NetID", netID);
-      return NextResponse.redirect(BASE_URL);
+      throw new Error(`Yalies returned no data for netId ${netId}`);
     }
 
     // extract Yalies data
     const { first_name: firstName, last_name: lastName, email } = yaliesData;
 
     // ensure user exists in the database
-    await findOrCreateUser(netID, firstName, lastName);
+    await findOrCreateUser(netId, firstName, lastName);
 
     // set response cookies
     const successResponse = NextResponse.redirect(`${BASE_URL}/feed`);
     successResponse.cookies.set(
       "user",
-      JSON.stringify({ firstName, lastName, email, netID }),
+      JSON.stringify({ firstName, lastName, email, netId }),
       { httpOnly: false, path: "/" }
     );
 

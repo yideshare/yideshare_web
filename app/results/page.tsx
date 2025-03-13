@@ -22,7 +22,6 @@ interface PageProps {
     }
 }
 
-
 export default async function Results( {searchParams} : PageProps )
 {
     const from = searchParams.from ? decodeURIComponent(searchParams.from) : ""
@@ -38,14 +37,14 @@ export default async function Results( {searchParams} : PageProps )
     return <div>Please log in to view your rides.</div>
     }
 
-    const { netID } = JSON.parse(userCookie.value)
+    const { netId } = JSON.parse(userCookie.value)
 
     const bookmarks = await prisma.bookmark.findMany({
-        where: { userId: netID },
+        where: { netId: netId },
         select: { rideId: true }
       })
     
-    const bookmarkedRideIDs = bookmarks.map(b => b.rideId)
+    const bookmarkedRideIds = bookmarks.map(b => b.rideId)
 
     const rides = await prisma.ride.findMany({
         where: {
@@ -74,7 +73,7 @@ export default async function Results( {searchParams} : PageProps )
           </header>
           <FeedClient 
             initialRides={rides}
-            bookmarkedRideIDs={bookmarkedRideIDs} 
+            bookmarkedRideIds={bookmarkedRideIds} 
           />
         </SidebarInset>
       </SidebarProvider>

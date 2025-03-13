@@ -16,14 +16,14 @@ export default async function DashboardPage() {
     return <div>Please log in to view your rides.</div>;
   }
 
-  // Parse the cookie to get the netID. Adjust the property name if needed.
-  const { netID } = JSON.parse(userCookie.value);
+  // Parse the cookie to get the netId. Adjust the property name if needed.
+  const { netId } = JSON.parse(userCookie.value);
 
-  // Use the netID from the cookie to filter rides owned by the user.
+  // Use the netId from the cookie to filter rides owned by the user.
   const ownedRides = await prisma.ride.findMany({
     take: 6,
     where: {
-      ownerId: netID,  // This should match the netId in your Prisma schema
+      ownerNetId: netId,  
       isClosed: false,
     },
   });

@@ -135,9 +135,8 @@ export default function ProfileRideCard(ride: Ride, occupants: User[], initialRe
               <ul className="space-y-2">
                 {requests.map((r) => (
                   <li
-                  // why use name as a key?
-                  // use random uuid instead
-                    key={randomUUID()}
+                    // why use a combination of sender, reciever, and ride Ids 
+                    key={`${r.receiverNetId}${r.senderNetId}${r.rideId}`}
                     className="flex items-center justify-between bg-muted/20 p-2 rounded"
                   >
                     <div>

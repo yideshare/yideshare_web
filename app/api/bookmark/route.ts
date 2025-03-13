@@ -3,40 +3,34 @@ import { cookies } from "next/headers";
 
 import { bookmarkRide } from "@/lib/utils/ride";
 import { validateRequestPayload } from "@/lib/utils/validate";
-import { getAuthenticatedUser } from "@/lib/utils/user";
+import { getAuthUserFromCookies } from "@/lib/utils/user";
 
 export async function POST(req: Request) {
   try {
-    // get cookies
-    const cookieStore = await cookies();
     // get authenticated user
-    const authResult = await getAuthenticatedUser(cookieStore);
-    if ("error" in authResult) {
-      return NextResponse.json(
-        { error: authResult.error },
-        { status: authResult.status }
-      );
-    }
+    const cookieStore = await cookies();
+    const authResult = await getAuthUserFromCookies(cookieStore);
+
+    if ("error" in authResult)
+      throw new Error(`${authResult.error}, status code ${authResult.status}`);
 
     // validate request payload
     const payloadResult = await validateRequestPayload(req);
-    if ("error" in payloadResult) {
-      return NextResponse.json(
-        { error: payloadResult.error },
-        { status: payloadResult.status }
+    if ("error" in payloadResult)
+      throw new Error(
+        `${payloadResult.error}, status code ${payloadResult.status}`
       );
-    }
 
     // toggle the bookmark
-    const { netID } = authResult.user;
+    const { netId } = authResult.user;
     const { rideId } = payloadResult;
-    const result = await bookmarkRide(netID, rideId);
+    const result = await bookmarkRide(netId, rideId);
 
     return NextResponse.json(result);
   } catch (error) {
-    console.error("DB BOOKMARK Error:", error);
+    console.error("Bookmark Error:", error);
     return NextResponse.json(
-      { error: `Error bookmarking ride: ${error}` },
+      { error: `Failed to bookmark ride: ${error}` },
       { status: 500 }
     );
   }
