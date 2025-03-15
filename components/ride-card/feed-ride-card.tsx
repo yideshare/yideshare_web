@@ -28,13 +28,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 
-// Adjust the props to include isBookmarked (passed from the parent page) 
-// and optionally occupants if needed.
-interface FeedRideCardProps {
-  ride: Ride
-  occupants?: User[]
-  isBookmarkedInitial: boolean
-}
+import { FeedRideCardProps } from "@/app/interface/main"
 
 export default function FeedRideCard({ ride, occupants = [], isBookmarkedInitial }: FeedRideCardProps) {
   const { toast } = useToast()
@@ -65,7 +59,7 @@ export default function FeedRideCard({ ride, occupants = [], isBookmarkedInitial
       const response = await fetch('/api/bookmark', {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ rideId: ride.id }),
+        body: JSON.stringify({ rideId: ride.rideId }),
       })
       const data = await response.json()
       
@@ -74,7 +68,7 @@ export default function FeedRideCard({ ride, occupants = [], isBookmarkedInitial
 
       toast({
         title: data.bookmarked ? "Ride Bookmarked" : "Bookmark Removed",
-        description: `Ride #${ride.id} was ${data.bookmarked ? "bookmarked" : "removed from bookmarks"}.`,
+        description: `Ride #${ride.rideId} was ${data.bookmarked ? "bookmarked" : "removed from bookmarks"}.`,
       })
     } catch (error) {
       console.error("Error toggling bookmark:", error)
@@ -88,7 +82,7 @@ export default function FeedRideCard({ ride, occupants = [], isBookmarkedInitial
   function handleAddToCalendar() {
     toast({
       title: "Added to Calendar",
-      description: `Ride #${ride.id} was added to your calendar!`,
+      description: `Ride #${ride.rideId} was added to your calendar!`,
     })
   }
   

@@ -10,6 +10,7 @@ datasource db {
 model User {
   netId      String  @id
   name       String
+  email      String
   avatar     Bytes?
   avatarType String?
 
@@ -43,7 +44,7 @@ model Ride {
 
   // many-to-one relationship with User
   ownerNetId String
-  owner   User   @relation(fields: [ownerNetId], references: [netId])
+  owner      User   @relation(fields: [ownerNetId], references: [netId])
 
   // many-to-many relationship with Users
   participants RideParticipant[]

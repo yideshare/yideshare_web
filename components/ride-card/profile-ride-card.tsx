@@ -47,41 +47,41 @@ export default function ProfileRideCard(ride: Ride, occupants: User[], initialRe
   function handleCloseListing() {
     toast({
       title: "Listing Closed",
-      description: `You closed ride #${ride.id}.`,
+      description: `You closed ride #${ride.rideId}.`,
     })
   }
 
   function handleRemove() {
     toast({
       title: "Ride Removed",
-      description: `You removed ride #${ride.id}.`,
+      description: `You removed ride #${ride.rideId}.`,
     })
   }
 
   // frontend function,
   // TODO: replace with a fetch later
-  function handleAcceptRequest(name: string) {
-    setRequests((prev) => prev.filter((r) => r.name !== name))
-    toast({
-      title: "Request Accepted",
-      description: `You accepted ${name}'s request.`,
-    })
-  }
+  // function handleAcceptRequest(name: string) {
+  //   setRequests((prev) => prev.filter((r) => r.name !== name))
+  //   toast({
+  //     title: "Request Accepted",
+  //     description: `You accepted ${name}'s request.`,
+  //   })
+  // }
 
   // frontend function,
   // TODO: replace with a fetch later
-  function handleRejectRequest(name: string) {
-    setRequests((prev) => prev.filter((r) => r.name !== name))
-    toast({
-      title: "Request Rejected",
-      description: `You rejected ${name}'s request.`,
-    })
-  }
+  // function handleRejectRequest(name: string) {
+  //   setRequests((prev) => prev.filter((r) => r.name !== name))
+  //   toast({
+  //     title: "Request Rejected",
+  //     description: `You rejected ${name}'s request.`,
+  //   })
+  // }
 
   function handleMessageAll() {
     toast({
       title: "Message Sent",
-      description: `You messaged all riders in ride #${ride.id}.`,
+      description: `You messaged all riders in ride #${ride.rideId}.`,
     })
   }
 
@@ -111,7 +111,7 @@ export default function ProfileRideCard(ride: Ride, occupants: User[], initialRe
         <DialogHeader>
           <DialogTitle>Manage Your Ride</DialogTitle>
           <DialogDescription>
-            Ride #{ride.id} • {cardTitle}
+            Ride #{ride.rideId} • {cardTitle}
           </DialogDescription>
         </DialogHeader>
 

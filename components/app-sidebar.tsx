@@ -13,7 +13,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 
-import { cn } from "@/lib/utils/general";
+import { cn } from "@/lib/utils/frontend";
 
 const navItems = [
   {
@@ -29,7 +29,7 @@ const navItems = [
   // },
   {
     title: "My Rides",
-    url: "/dashboard",
+    url: "/your-rides",
     icon: User,
   },
   {
@@ -37,7 +37,7 @@ const navItems = [
     url: "/bookmarks",
     icon: Bookmark,
   },
-  // TODO: same cors error with redirecting to CAS logout (href or something i forgot)
+  // TODO: same cors error with redirecting to CAS logout
   {
     title: "Logout",
     url: "/api/auth/logout",
@@ -66,13 +66,15 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
     async function fetchAndSetUserData() {
       try {
         const response = await fetch("/api/user-cookies");
-        if (!response.ok) {
-          throw new Error("Bad Cookies Response");
-        }
         const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Failed to fetch user data");
+        }
+
         setUser(data);
       } catch (error) {
-        console.error("Failed to fetch user data:", error);
+        console.error("Error fetching user data:", error);
       }
     }
 

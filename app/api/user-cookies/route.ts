@@ -1,11 +1,11 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-import { getAuthUserFromCookies } from "@/lib/utils/user";
+import { getUserFromCookies } from "@/lib/utils/user";
 
 export async function GET() {
   const cookieStore = await cookies();
-  const authResult = await getAuthUserFromCookies(cookieStore);
+  const authResult = getUserFromCookies(cookieStore);
 
   if ("error" in authResult) {
     return NextResponse.json(

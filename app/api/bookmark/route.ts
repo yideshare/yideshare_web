@@ -1,29 +1,28 @@
-import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
 import { bookmarkRide } from "@/lib/utils/ride";
-import { validateRequestPayload } from "@/lib/utils/validate";
-import { getAuthUserFromCookies } from "@/lib/utils/user";
+import { getUserNetIdFromCookies } from "@/lib/utils/user";
+import { extractRideIdFromPayload } from "@/lib/utils/validate";
 
 export async function POST(req: Request) {
   try {
-    // get authenticated user
+    // get netId and rideId
     const cookieStore = await cookies();
-    const authResult = await getAuthUserFromCookies(cookieStore);
+    const netId = getUserNetIdFromCookies(cookieStore);
+    const rideId = await extractRideIdFromPayload(req);
 
-    if ("error" in authResult)
-      throw new Error(`${authResult.error}, status code ${authResult.status}`);
+    // validate netId
+    if (netId === null) {
+      throw new Error("Cannot get user netId from cookies");
+    }
 
-    // validate request payload
-    const payloadResult = await validateRequestPayload(req);
-    if ("error" in payloadResult)
-      throw new Error(
-        `${payloadResult.error}, status code ${payloadResult.status}`
-      );
+    // validate request payload (rideId)
+    if (rideId === null) {
+      throw new Error("Request payload does not contain user netId");
+    }
 
     // toggle the bookmark
-    const { netId } = authResult.user;
-    const { rideId } = payloadResult;
     const result = await bookmarkRide(netId, rideId);
 
     return NextResponse.json(result);

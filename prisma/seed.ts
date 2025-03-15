@@ -13,6 +13,7 @@ async function main() {
       data: {
         netId: "test_netid",
         name: "Lena Qian",
+        email: "lq1234@yale.edu"
       },
     });
   }
@@ -35,8 +36,6 @@ async function main() {
       isClosed: false,
     },
   });
-
-  console.log("Seed data added.");
 }
 
 main()

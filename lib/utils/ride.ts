@@ -39,16 +39,25 @@ export async function bookmarkRide(netId: string, rideId: string) {
   }
 }
 
+export async function findManyRides(quantity: number) {
+  return prisma.ride.findMany({
+    take: quantity,
+    where: {
+      isClosed: false,
+    },
+  });
+}
+
 export async function findOwnedRide(netId: string) {
-  return await prisma.ride.findMany({
+  return prisma.ride.findMany({
     where: {
       ownerName: netId,
     },
     orderBy: {
-      startTime: "desc", // Sort rides by most recent
+      startTime: "desc",
     },
     select: {
-      id: true,
+      rideId: true,
       beginning: true,
       destination: true,
       startTime: true,
@@ -56,6 +65,30 @@ export async function findOwnedRide(netId: string) {
       totalSeats: true,
       currentTakenSeats: true,
       isClosed: true,
+    },
+  });
+}
+
+export async function findBookmarkedRides(netId: string) {
+  return prisma.bookmark.findMany({
+    where: { netId },
+    select: { ride: true },
+  });
+}
+
+export async function findFilteredRides(
+  from: string,
+  to: string,
+  startTime: Date,
+  endTime: Date
+) {
+  return prisma.ride.findMany({
+    where: {
+      startTime: { gte: startTime },
+      endTime: { lte: endTime },
+      beginning: from,
+      destination: to,
+      isClosed: false,
     },
   });
 }

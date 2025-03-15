@@ -1,81 +1,55 @@
-import { prisma } from "@/lib/prisma"
-import { cookies } from "next/headers"
-import { Separator } from "@/components/ui/separator"
-import { AppSidebar } from "@/components/app-sidebar"
-import { TopBar } from "@/components/top-bar"
-import { LogoutButton } from "@/components/logout-button"
-import FeedClient from "@/app/feed/feed-client"
+// app/results/page.tsx
 
-import {
-  SidebarProvider,
-  SidebarInset,
-  SidebarTrigger,
-} from "@/components/ui/sidebar"
+import FeedPage from "@/app/feed/feed-page";
 
-interface PageProps {
-    searchParams: {
-        from?: string;
-        to?: string;
-        date?: string;
-        startTime?: string;
-        endTime?: string;
-    }
-}
+import { cookies } from "next/headers";
 
-export default async function Results( {searchParams} : PageProps )
-{
-    const from = searchParams.from ? decodeURIComponent(searchParams.from) : ""
-    const to = searchParams.to ? decodeURIComponent(searchParams.to) : ""
-    const date = searchParams.date ? decodeURIComponent(searchParams.date) : ""
-    const startTime = searchParams.startTime ? decodeURIComponent(searchParams.startTime) : ""
-    const endTime = searchParams.endTime ? decodeURIComponent(searchParams.endTime) : ""
+import { createStartEndDateTimes } from "@/lib/utils/time";
+import { ResultsPageProps } from "@/app/interface/main";
+import { findBookmarkedRides, findFilteredRides } from "@/lib/utils/ride";
+import { extractSearchParams } from "@/lib/utils/search";
+import { getUserNetIdFromCookies } from "@/lib/utils/user";
 
-    const cookieStore = await cookies()
-    const userCookie = cookieStore.get("user")
+export default async function Results({ searchParams }: ResultsPageProps) {
+  // get user cookies
+  const cookieStore = await cookies();
+  const netId = getUserNetIdFromCookies(cookieStore);
 
-    if(!userCookie) {
-    return <div>Please log in to view your rides.</div>
-    }
+  // if no user cookies were found
+  if (netId === null) {
+    return <div>Please log in to view your rides.</div>;
+  }
 
-    const { netId } = JSON.parse(userCookie.value)
+  // extract search parameters into query fields
+  const {
+    from,
+    to,
+    date,
+    startTime: startTimeString,
+    endTime: endTimeString,
+  } = extractSearchParams(searchParams);
 
-    const bookmarks = await prisma.bookmark.findMany({
-        where: { netId: netId },
-        select: { rideId: true }
-      })
-    
-    const bookmarkedRideIds = bookmarks.map(b => b.rideId)
+  // create start and end time objects
+  const dateObject = new Date(date);
+  const { startTimeObject, endTimeObject } = createStartEndDateTimes(
+    dateObject,
+    startTimeString,
+    endTimeString
+  );
 
-    const rides = await prisma.ride.findMany({
-        where: {
-          beginning: from,
-          destination: to,
-          isClosed: false, // Ensure the ride is not closed
-        },
-    });
+  // fetch rides that match filter criteria
+  const filteredRides = await findFilteredRides(
+    from,
+    to,
+    startTimeObject,
+    endTimeObject
+  );
+  
+  // fetch bookmarked rides
+  const bookmarks = await findBookmarkedRides(netId);
+  const bookmarkedRideIds = bookmarks.map((b) => b.ride.rideId);
 
-    console.log(rides)
-
-    return (
-        <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset>
-          <header className="">
-            <div className="flex h-16 items-center gap-2 px-4">
-              <SidebarTrigger className="-ml-1" />
-              <Separator orientation="vertical" className="mr-2 h-4" />
-              <h1 className="font-bold text-xl">Yideshare</h1>
-              <div className="ml-auto">
-                <LogoutButton />
-              </div>
-            </div>
-            <TopBar />
-          </header>
-          <FeedClient 
-            initialRides={rides}
-            bookmarkedRideIds={bookmarkedRideIds} 
-          />
-        </SidebarInset>
-      </SidebarProvider>
-    );
+  return (
+    <FeedPage rides={filteredRides} bookmarkedRideIds={bookmarkedRideIds} />
+  );
 }

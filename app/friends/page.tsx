@@ -1,8 +1,10 @@
-// app/dashboard/friends-page.tsx
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
-import { Separator } from "@/components/ui/separator"
-import { TopBar } from "@/components/top-bar"
-import { AppSidebar } from "@/components/app-sidebar"
+// UNUSED
+// app/profile/friends/page.tsx
+
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
+import { TopBar } from "@/components/top-bar";
+import { AppSidebar } from "@/components/app-sidebar";
 
 export default function FriendsPage() {
   return (
@@ -20,5 +22,5 @@ export default function FriendsPage() {
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

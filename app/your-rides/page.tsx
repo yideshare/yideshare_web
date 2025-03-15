@@ -1,10 +1,14 @@
-import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
-import { AppSidebar } from "@/components/app-sidebar"
-import { Separator } from "@/components/ui/separator"
-import { Ride } from "@prisma/client"
-import ProfileRideCard from "@/components/ride-card/profile-ride-card"
-import { prisma } from "@/lib/prisma"
-import { cookies } from "next/headers"
+import {
+  SidebarProvider,
+  SidebarInset,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+import { Separator } from "@/components/ui/separator";
+import { Ride } from "@prisma/client";
+import ProfileRideCard from "@/components/ride-card/profile-ride-card";
+import { prisma } from "@/lib/prisma";
+import { cookies } from "next/headers";
 
 export default async function DashboardPage() {
   // Get the cookie store and retrieve the "user" cookie
@@ -23,12 +27,10 @@ export default async function DashboardPage() {
   const ownedRides = await prisma.ride.findMany({
     take: 6,
     where: {
-      ownerNetId: netId,  
+      ownerNetId: netId,
       isClosed: false,
     },
   });
-
-  console.log(ownedRides);
 
   return (
     <SidebarProvider>
@@ -44,11 +46,14 @@ export default async function DashboardPage() {
           <Separator />
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {ownedRides.map((ride) => (
-              <ProfileRideCard key={ride.id} {...ride} />
+              // <ProfileRideCard key={ride.id} {...ride} />
+              <div>
+                ride: {ride.beginning} to {ride.destination}
+              </div>
             ))}
           </div>
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

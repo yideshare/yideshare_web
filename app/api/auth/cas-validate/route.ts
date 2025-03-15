@@ -1,20 +1,22 @@
 import { NextResponse } from "next/server";
 
-import { validateCASTicket } from "@/lib/utils/validate";
-import { fetchYaliesData } from "@/lib/utils/yalies";
 import { findOrCreateUser } from "@/lib/utils/user";
+import { fetchYaliesData } from "@/lib/utils/yalies";
+import { extractNetIdFromCASTicket } from "@/lib/utils/validate";
 
 const BASE_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
 
 export async function GET(req: Request) {
   try {
+    // extract ticket from search params
     const { searchParams } = new URL(req.url);
     const ticket = searchParams.get("ticket");
 
     // validate CAS ticket
-    const netId = await validateCASTicket(ticket);
-    if (!netId) return NextResponse.redirect(BASE_URL);
-
+    const netId = await extractNetIdFromCASTicket(ticket);
+    if (!netId) {
+      throw new Error("Could not extract netId from CAS ticket");
+    }
     // fetch Yalies data
     const yaliesData = await fetchYaliesData(netId);
     if (!yaliesData) {
@@ -25,7 +27,7 @@ export async function GET(req: Request) {
     const { first_name: firstName, last_name: lastName, email } = yaliesData;
 
     // ensure user exists in the database
-    await findOrCreateUser(netId, firstName, lastName);
+    await findOrCreateUser(netId, firstName, lastName, email);
 
     // set response cookies
     const successResponse = NextResponse.redirect(`${BASE_URL}/feed`);

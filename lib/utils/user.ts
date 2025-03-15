@@ -3,7 +3,8 @@ import { prisma } from "@/lib/prisma";
 export async function findOrCreateUser(
   netId: string,
   firstName: string,
-  lastName: string
+  lastName: string,
+  email: string
 ) {
   // try to find user
   let user = await prisma.user.findUnique({ where: { netId } });
@@ -14,15 +15,14 @@ export async function findOrCreateUser(
     // otherwise
   } else {
     user = await prisma.user.create({
-      data: { netId, name: `${firstName} ${lastName}` },
+      data: { netId, name: `${firstName} ${lastName}`, email },
     });
     console.log("DB USER Alert: New user added to the database:", user);
   }
-
   return user;
 }
 
-export async function getAuthUserFromCookies(cookieStore: any) {
+export function getUserFromCookies(cookieStore: any) {
   // retrieve cookies
   const userCookie = cookieStore.get("user");
 
@@ -41,4 +41,12 @@ export async function getAuthUserFromCookies(cookieStore: any) {
   } catch {
     return { error: "Invalid cookie format", status: 400 };
   }
+}
+
+export function getUserNetIdFromCookies(cookieStore: any) {
+  // retrieve cookies
+  const userCookie = cookieStore.get("user");
+  // check that cookies exist
+  if (!userCookie) return null;
+  return JSON.parse(userCookie.value).netId;
 }
