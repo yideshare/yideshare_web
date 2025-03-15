@@ -1,29 +1,37 @@
+// app/bookmarks/page.tsx
+
 import React from "react";
-import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
-import { Separator } from "@/components/ui/separator";
-import FeedRideCard from "@/components/ride-card/feed-ride-card";
-import { prisma } from "@/lib/prisma";
+
 import { cookies } from "next/headers";
 
-export default async function BookmarkPage() {
-  const cookieStore = await cookies();
-  const userCookie = cookieStore.get("user");
+import {
+  SidebarProvider,
+  SidebarInset,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 
-  if (!userCookie) {
+import FeedRideCard from "@/components/ride-card/feed-ride-card";
+
+import { AppSidebar } from "@/components/app-sidebar";
+import { Separator } from "@/components/ui/separator";
+import { getUserNetIdFromCookies } from "@/lib/utils/user";
+import { findBookmarkedRides } from "@/lib/utils/ride";
+
+export default async function BookmarkPage() {
+  // get user cookies
+  const cookieStore = await cookies();
+  const netId = getUserNetIdFromCookies(cookieStore);
+
+  // if no user cookies were found
+  if (netId === null) {
     return <div>Please log in to view your rides.</div>;
   }
 
-  const { netId } = JSON.parse(userCookie.value);
+  // fetch bookmarked rides for the authenticated user
+  const bookmarks = await findBookmarkedRides(netId);
 
-  // Query bookmarks for the authenticated user and include the related ride
-  const bookmarks = await prisma.bookmark.findMany({
-    where: { netId: netId },
-    include: { ride: true },
-  });
-
-  // Extract the rides from bookmarks
-  const bookmarkedRides = bookmarks.map(b => b.ride);
+  // extract the rides from the prisma query
+  const bookmarkedRides = bookmarks.map((b) => b.ride);
 
   return (
     <SidebarProvider>
@@ -39,10 +47,11 @@ export default async function BookmarkPage() {
           <Separator />
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {bookmarkedRides.map((ride) => (
-              <FeedRideCard 
-                key={ride.id}
+              <FeedRideCard
+                key={ride.rideId}
                 ride={ride}
-                isBookmarkedInitial={true} />
+                isBookmarkedInitial={true}
+              />
             ))}
           </div>
         </div>

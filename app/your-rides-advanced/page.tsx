@@ -1,12 +1,19 @@
+// UNUSED
+
 "use client";
 
-import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
-import { Separator } from "@/components/ui/separator"
-import { AppSidebar } from "@/components/app-sidebar"
-import FeedClient from "@/app/feed/feed-client"
-import { TopBar } from "@/components/top-bar"
+import {
+  SidebarProvider,
+  SidebarInset,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
+import { AppSidebar } from "@/components/app-sidebar";
+import FeedClient from "@/app/feed/feed-client";
+import { TopBar } from "@/components/top-bar";
+import { prisma } from "@/lib/prisma";
 
-// SHADCN "Select" for the Sort By. 
+// SHADCN "Select" for the Sort By.
 // If you don't have these installed, see: https://ui.shadcn.com/docs/components/select
 import {
   Select,
@@ -14,25 +21,24 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
-import * as React from "react"
+import * as React from "react";
 
 export default async function Home() {
-  // Fetch the rides from the database, will probably change to backend API call  
+  // Fetch the rides from the database, will probably change to backend API call
   const fetchedRides = await prisma.ride.findMany({
     // where: { ownerName: }, # what is the owner name?
     // take: 5,
     orderBy: { startTime: "desc" },
-  })
-
+  });
 
   // If we want to store the user's selected sort:
   // (We'll do it in client state, just for demonstration.)
   // We can let the server ignore this for now:
   // ...
-  // But remember, this is a Server Component. 
-  // So for truly dynamic "sort by," you'd do a client component. 
+  // But remember, this is a Server Component.
+  // So for truly dynamic "sort by," you'd do a client component.
   // We'll do a quick approach:
   // Return the component with a client wrapper:
 
@@ -54,12 +60,12 @@ export default async function Home() {
         <SortByAndFeed initialRides={fetchedRides} />
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }
 
 // We'll make a small client component for the sort-by so we can handle onValueChange
 function SortByAndFeed({ initialRides }: { initialRides: any[] }) {
-  const [sortBy, setSortBy] = React.useState("recent")
+  const [sortBy, setSortBy] = React.useState("recent");
 
   return (
     <div className="px-4 mt-2">
@@ -82,7 +88,7 @@ function SortByAndFeed({ initialRides }: { initialRides: any[] }) {
       </div>
 
       {/* The main feed, passing in the rides + selected sort criteria */}
-      <FeedClient initialRides={initialRides} sortBy={sortBy} />
+      {/* <FeedClient initialRides={initialRides} sortBy={sortBy} /> */}
     </div>
-  )
+  );
 }

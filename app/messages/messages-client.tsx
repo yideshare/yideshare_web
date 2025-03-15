@@ -1,36 +1,40 @@
-// app/dashboard/messages-client.tsx
-"use client"
+//UNUSED
 
-import * as React from "react"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { useToast } from "@/hooks/use-toast"
+"use client";
+
+import * as React from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 const dummyConversations = [
   { id: "conv1", name: "Aria Wang", lastMsg: "Leaving soon!" },
   { id: "conv2", name: "Lena Qian", lastMsg: "Leaving soon!" },
-]
+];
 
 export default function MessagesClient() {
-  const [selectedConv, setSelectedConv] = React.useState<string | null>(null)
-  const [messages, setMessages] = React.useState<any[]>([])
-  const [messageText, setMessageText] = React.useState("")
-  const { toast } = useToast()
+  const [selectedConv, setSelectedConv] = React.useState<string | null>(null);
+  const [messages, setMessages] = React.useState<any[]>([]);
+  const [messageText, setMessageText] = React.useState("");
+  const { toast } = useToast();
 
   function handleSelectConversation(id: string) {
-    setSelectedConv(id)
+    setSelectedConv(id);
     setMessages([
       { sender: "Me", content: "Are you guys still at the airport?" },
       { sender: "Them", content: "Leaving soon!" },
-    ])
+    ]);
   }
 
   function handleSend() {
-    if (!messageText.trim()) return
-    setMessages((prev) => [...prev, { sender: "Me", content: messageText.trim() }])
-    toast({ title: "Message sent", description: messageText.trim() })
-    setMessageText("")
+    if (!messageText.trim()) return;
+    setMessages((prev) => [
+      ...prev,
+      { sender: "Me", content: messageText.trim() },
+    ]);
+    toast({ title: "Message sent", description: messageText.trim() });
+    setMessageText("");
   }
 
   return (
@@ -60,18 +64,21 @@ export default function MessagesClient() {
           <>
             <div className="h-12 border-b flex items-center px-4">
               <h2 className="text-sm font-medium">
-                Chat with {dummyConversations.find((c) => c.id === selectedConv)?.name}
+                Chat with{" "}
+                {dummyConversations.find((c) => c.id === selectedConv)?.name}
               </h2>
             </div>
 
             {/* If you want bigger spacing between messages, do “space-y-4” or “gap-4” */}
             <ScrollArea className="flex-1 p-4 space-y-4">
               {messages.map((m, i) => {
-                const isMe = m.sender === "Me"
+                const isMe = m.sender === "Me";
                 return (
                   <div
                     key={i}
-                    className={`max-w-[70%] ${isMe ? "ml-auto text-right" : ""}`}
+                    className={`max-w-[70%] ${
+                      isMe ? "ml-auto text-right" : ""
+                    }`}
                   >
                     <span
                       className={`inline-block rounded px-3 py-2 text-sm ${
@@ -83,7 +90,7 @@ export default function MessagesClient() {
                       {m.content}
                     </span>
                   </div>
-                )
+                );
               })}
             </ScrollArea>
 
@@ -94,8 +101,8 @@ export default function MessagesClient() {
                 onChange={(e) => setMessageText(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
-                    e.preventDefault()
-                    handleSend()
+                    e.preventDefault();
+                    handleSend();
                   }
                 }}
               />
@@ -109,5 +116,5 @@ export default function MessagesClient() {
         )}
       </div>
     </div>
-  )
+  );
 }

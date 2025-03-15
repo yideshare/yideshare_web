@@ -1,9 +1,7 @@
 const BASE_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
 const CAS_VALIDATE_URL = "https://secure.its.yale.edu/cas/serviceValidate";
 
-export async function validateCASTicket(
-  ticket: string | null
-): Promise<string | null> {
+export async function extractNetIdFromCASTicket(ticket: string | null) {
   // if no ticket found
   if (!ticket) {
     console.error("CAS Error: No ticket provided");
@@ -28,13 +26,7 @@ export async function validateCASTicket(
   return match ? match[1] : null;
 }
 
-export async function validateRequestPayload(req: Request) {
-  try {
-    const body = await req.json();
-    // check that request includes rideId field
-    if (!body.rideId) throw new Error("Missing rideId");
-    return { rideId: body.rideId };
-  } catch (error) {
-    return { error: `Request Error: ${error}`, status: 400 };
-  }
+export async function extractRideIdFromPayload(req: Request) {
+  const body = await req.json();
+  return body.rideId ? body.rideId : null;
 }

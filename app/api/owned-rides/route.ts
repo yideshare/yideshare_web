@@ -2,21 +2,20 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { findOwnedRide } from "@/lib/utils/ride";
-import { getAuthUserFromCookies } from "@/lib/utils/user";
+import { getUserNetIdFromCookies } from "@/lib/utils/user";
 
 export async function GET() {
   try {
+    // get netId
     const cookieStore = await cookies();
-    const authResult = await getAuthUserFromCookies(cookieStore);
+    const netId = getUserNetIdFromCookies(cookieStore);
 
-    if ("error" in authResult) {
-      return NextResponse.json(
-        { error: authResult.error },
-        { status: authResult.status }
-      );
+    // validate netId
+    if (netId === null) {
+      throw new Error("Cannot get user netId from cookies");
     }
 
-    const netId = authResult.user.netId;
+    // fetch rides
     const userRides = await findOwnedRide(netId);
 
     return NextResponse.json({ rides: userRides });

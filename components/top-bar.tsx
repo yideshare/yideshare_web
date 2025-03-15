@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { format } from "date-fns";
+import { createStartEndDateTimes } from "@/lib/utils/time";
 
 import {
   Dialog,
@@ -22,22 +23,24 @@ export function TopBar() {
   // Quick search fields
   const [from, setFrom] = React.useState("");
   const [to, setTo] = React.useState("");
-  const [date, setDate] = useState(new Date()); // Default to today's date
+  const [date, setDate] = useState(new Date()); // default to today's date
   const [startTime, setStartTime] = React.useState("");
   const [endTime, setEndTime] = React.useState("");
   const [showCalendar, setShowCalendar] = useState(false);
-  const [mounted, setMounted] = useState(false); // Ensure it renders only on the client
+  const [mounted, setMounted] = useState(false); // ensure it renders only on the client
+  const [open, setOpen] = React.useState(false);
   //TODO: print out where the error is
   const [errors, setErrors] = useState({
     //requires these fields
-    from: "",
-    to: "",
-    date: "",
-    startTime: "",
-    endTime: "",
-    organizerName: "",
-    phoneNumber: "",
+    fromError: "",
+    toError: "",
+    dateError: "",
+    startTimeError: "",
+    endTimeError: "",
+    organizerNameError: "",
+    phoneNumberError: "",
   });
+
   useEffect(() => {
     setMounted(true); // Mark component as mounted
     setDate(new Date()); // Ensure date is only set on the client
@@ -50,26 +53,33 @@ export function TopBar() {
   const [description, setDescription] = React.useState("");
 
   // Modal open state
-  const [open, setOpen] = React.useState(false);
-  const handleFindRide = async (e: React.FormEvent) => { //TODO:
+  const handleFindRide = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // // Ensure required fields are filled
-    // if (!from || !to || !date || !startTime || !endTime) {
-    //   setErrors({
-    //     from: !from ? "Leaving from is required" : "",
-    //     to: !to ? "Heading to is required" : "",
-    //     date: !date ? "Date is required" : "",
-    //     startTime: !startTime ? "Start time is required" : "",
-    //     endTime: !endTime ? "End time is required" : "",
-    //   });
-    //   return;
-    // }
+    // Ensure required fields are filled
+    if (!from || !to || !date || !startTime || !endTime) {
+      setErrors({
+        fromError: !from ? "Leaving from is required" : "",
+        toError: !to ? "Heading to is required" : "",
+        dateError: !date ? "Date is required" : "",
+        startTimeError: !startTime ? "Start time is required" : "",
+        endTimeError: !endTime ? "End time is required" : "",
+        phoneNumberError: "",
+        organizerNameError: "",
+      });
+      return;
+    }
 
-    const queryString = `from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${encodeURIComponent(date.toISOString())}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}`;
-  
+    const queryString = `from=${encodeURIComponent(
+      from
+    )}&to=${encodeURIComponent(to)}&date=${encodeURIComponent(
+      date.getDate()
+    )}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(
+      endTime
+    )}`;
+
     // Redirect to results page
-    window.location.href = `http://localhost:3000//results?${queryString}`
+    window.location.href = `http://localhost:3000//results?${queryString}`;
   };
 
   async function handleShareYide(e: React.FormEvent) {
@@ -80,51 +90,51 @@ export function TopBar() {
 
     // Validate the fields
     if (!from) {
-      newErrors.from = "Leaving from is required";
+      newErrors.fromError = "Leaving from is required";
       hasError = true;
     } else {
-      newErrors.from = "";
+      newErrors.fromError = "";
     }
 
     if (!to) {
-      newErrors.to = "Heading to is required";
+      newErrors.toError = "Heading to is required";
       hasError = true;
     } else {
-      newErrors.to = "";
+      newErrors.toError = "";
     }
 
     if (!date) {
-      newErrors.date = "Date is required";
+      newErrors.dateError = "Date is required";
       hasError = true;
     } else {
-      newErrors.date = "";
+      newErrors.dateError = "";
     }
 
     if (!startTime) {
-      newErrors.startTime = "Start time is required";
+      newErrors.startTimeError = "Start time is required";
       hasError = true;
     } else {
-      newErrors.startTime = "";
+      newErrors.startTimeError = "";
     }
 
     if (!endTime) {
-      newErrors.endTime = "End time is required";
+      newErrors.endTimeError = "End time is required";
       hasError = true;
     } else {
-      newErrors.endTime = "";
+      newErrors.endTimeError = "";
     }
 
     if (!organizerName) {
-      newErrors.organizerName = "Organizer name is required";
+      newErrors.organizerNameError = "Organizer name is required";
       hasError = true;
     } else {
-      newErrors.organizerName = "";
+      newErrors.organizerNameError = "";
     }
     if (!phoneNumber) {
-      newErrors.phoneNumber = "Phone number is required";
+      newErrors.phoneNumberError = "Phone number is required";
       hasError = true;
     } else {
-      newErrors.phoneNumber = "";
+      newErrors.phoneNumberError = "";
     }
 
     setErrors(newErrors);
@@ -135,21 +145,15 @@ export function TopBar() {
 
     const selectedDate = date ? new Date(date) : new Date(); // Use current date if undefined
 
-    // Split startTime and endTime strings into hours and minutes
-    const [startHours, startMinutes] = startTime.split(":").map(Number); // e.g., "10:00" -> [10, 0]
-    const [endHours, endMinutes] = endTime.split(":").map(Number);
-
-    // Create valid Date objects by combining the selected date with the start and end times
-    const startDate = new Date(selectedDate); // Use the selected date
-    const endDate = new Date(selectedDate);
-
-    // Set the correct hours and minutes for start and end times
-    startDate.setHours(startHours, startMinutes, 0, 0); // Set start time on the selected date
-    endDate.setHours(endHours, endMinutes, 0, 0);
+    const { startTimeObject, endTimeObject } = createStartEndDateTimes(
+      selectedDate,
+      startTime,
+      endTime
+    );
 
     // Convert to ISO string format for Prisma
-    const formattedStartTime = startDate.toISOString();
-    const formattedEndTime = endDate.toISOString();
+    const formattedStartTime = startTimeObject.toISOString();
+    const formattedEndTime = endTimeObject.toISOString();
 
     const rideData = {
       ownerName: organizerName,
@@ -162,24 +166,15 @@ export function TopBar() {
       totalSeats: additionalPassengers + 1,
     };
 
-    console.log("Posting new ride:", rideData);
-    try {
-      const response = await fetch("/api/post-ride", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(rideData),
-      });
+    const response = await fetch("/api/post-ride", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(rideData),
+    });
 
-      if (!response.ok) {
-        throw new Error("Failed to create ride");
-      }
-
-      const data = await response.json();
-      console.log("Ride created successfully:", data);
-
-      setOpen(false); // Close modal on success
-    } catch (error) {
-      console.error("Error creating ride:", error);
+    if (!response.ok) {
+      // TODO: add frontend error handling
+      return <div>Failed to post ride</div>;
     }
   }
 
@@ -193,7 +188,7 @@ export function TopBar() {
           value={from}
           onChange={(e) => setFrom(e.target.value)}
           className={`border p-2 rounded-md ${
-            errors.from ? "border-red-500" : ""
+            errors.fromError ? "border-red-500" : ""
           }`}
         />
       </div>
@@ -206,7 +201,7 @@ export function TopBar() {
           value={to}
           onChange={(e) => setTo(e.target.value)}
           className={`border p-2 rounded-md ${
-            errors.to ? "border-red-500" : ""
+            errors.toError ? "border-red-500" : ""
           }`}
         />
       </div>
@@ -260,20 +255,19 @@ export function TopBar() {
         </div>
       </div>
       <div className="ml-auto flex flex-col gap-4">
-      <Button
-        // type="button"
-        onClick={handleFindRide}
-        className="mt-5"
-      >
-        Find a Ride
-      </Button>
+        <Button
+          // type="button"
+          onClick={handleFindRide}
+          className="mt-5"
+        >
+          Find a Ride
+        </Button>
 
-      {/* </div> */}
+        {/* </div> */}
 
+        {/* “Share a Yide” button (aligned to the right) */}
+        {/* <div className="ml-auto"> */}
 
-      {/* “Share a Yide” button (aligned to the right) */}
-      {/* <div className="ml-auto"> */}
-        
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button className="mt-5">Share a Yide</Button>

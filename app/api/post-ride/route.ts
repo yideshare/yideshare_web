@@ -2,13 +2,20 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { createRide } from "@/lib/utils/ride";
-import { getAuthUserFromCookies } from "@/lib/utils/user";
+import { getUserNetIdFromCookies } from "@/lib/utils/user";
 
 export async function POST(request: Request) {
   try {
+    // get netId
     const cookieStore = await cookies();
-    const authResult = await getAuthUserFromCookies(cookieStore);
-    const netId = authResult.user.netId;
+    const netId = getUserNetIdFromCookies(cookieStore);
+
+    // validate netId
+    if (netId === null) {
+      throw new Error("Cannot get user netId from cookies");
+    }
+
+    // fetch ride data and create new ride
     const ride = await request.json();
     const newRide = await createRide(ride, netId);
 
