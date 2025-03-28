@@ -4,11 +4,12 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 First, run the development server with following commands in coding IDE or local terminal:
 
-(first-time)
+(first-time to install package dependencies)
 ```bash
 npm install
 ```
 
+Runs dev server on port 3000
 ```bash
 npm run dev
 ```
