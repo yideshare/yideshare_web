@@ -2,7 +2,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Onboarding (dev server + prisma bootup)
 
-First, run the development server:
+First, run the development server with following commands in coding IDE or local terminal:
 
 ```bash
 npm install
