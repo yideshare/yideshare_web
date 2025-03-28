@@ -42,6 +42,7 @@ const navItems = [
     title: "Logout",
     url: "/api/auth/logout",
     icon: PowerOffIcon,
+    isButton: true
   },
   // {
   //   title: "Messages",
@@ -87,6 +88,21 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         <nav className="flex-1 space-y-1 px-2 pt-2 mt-[0.3rem]">
           {navItems.map((item) => {
             const Icon = item.icon;
+            if (item.isButton) {
+              return (
+                <button
+                  key={item.title}
+                  onClick={() => (window.location.href = item.url)}
+                  className={cn(
+                    "flex items-center gap-2 rounded p-2 text-sm",
+                    "hover:bg-accent hover:text-accent-foreground w-full text-left"
+                  )}
+                >
+                  <Icon className="h-4 w-4 shrink-0" />
+                  <span className="truncate">{item.title}</span>
+                </button>
+              );
+            }
             return (
               <Link
                 key={item.title}
