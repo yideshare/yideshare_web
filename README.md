@@ -4,16 +4,21 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 First, run the development server with following commands in coding IDE or local terminal:
 
+(first-time)
 ```bash
 npm install
+```
 
+```bash
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Using primsa:
-create db, tables
+Open a second terminal window and input the following commands:
+
+create db, tables (first-time)
 ```bash
 npx prisma migrate dev --name init
 ```
