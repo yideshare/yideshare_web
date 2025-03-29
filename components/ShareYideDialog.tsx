@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import LabeledInput from "@/components/labeled-input";
+import { LabeledInput } from "@/components/labeled-input";
 
 interface ShareYideDialogProps {
   open: boolean;
@@ -46,12 +46,15 @@ const isFormValid = organizerName.trim() !== "" && phoneNumber.trim() !== "";
             placeholder="Peter Salovey"
             value={organizerName}
             onChange={(e) => setOrganizerName(e.target.value)}
+            required
           />
           <LabeledInput
             label="Phone Number"
             placeholder="555-555-5555"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
+            required
+            
           />
           <LabeledInput
             label="Number of additional passengers"
