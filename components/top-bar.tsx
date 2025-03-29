@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { createStartEndDateTimes } from "@/lib/utils/time";
 import DatePicker from "./date-picker";
-import LabeledInput from "./labeled-input";
+import { LabeledInput } from "@/components/labeled-input";
 import ShareYideDialog from "./ShareYideDialog";
 
 export function TopBar() {
@@ -87,19 +87,21 @@ export function TopBar() {
         placeholder="e.g. Yale"
         value={from}
         onChange={(e) => setFrom(e.target.value)}
+        required
       />
       <LabeledInput
         label="Heading to"
         placeholder="e.g. Hartford (BDL)"
         value={to}
         onChange={(e) => setTo(e.target.value)}
+        required
       />
       <DatePicker
         date={date}
         setDate={setDate}
-        showCalendar={showCalendar}
-        setShowCalendar={setShowCalendar}
         mounted={mounted}
+        required
+        label="Event Date"
       />
 
       <div className="grid grid-cols-2 gap-4">
@@ -108,12 +110,14 @@ export function TopBar() {
           type="time"
           value={startTime}
           onChange={(e) => setStartTime(e.target.value)}
+          required
         />
         <LabeledInput
           label="End time"
           type="time"
           value={endTime}
           onChange={(e) => setEndTime(e.target.value)}
+          required
         />
       </div>
       <div className="ml-auto flex flex-col gap-4">
