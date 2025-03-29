@@ -29,6 +29,7 @@ export default function ShareYideDialog({
   setDescription,
   handleShareYide,
 }: ShareYideDialogProps) {
+const isFormValid = organizerName.trim() !== "" && phoneNumber.trim() !== "";
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-w-2xl">
@@ -36,7 +37,6 @@ export default function ShareYideDialog({
           <DialogTitle>Share a Yide</DialogTitle>
           <DialogDescription>
             Fill out the additional details below to create a new ride listing.
-            If it doesn't submit, you didn't fill out all required fields.
           </DialogDescription>
         </DialogHeader>
 
@@ -72,7 +72,9 @@ export default function ShareYideDialog({
           </div>
 
           <DialogFooter>
-            <Button type="submit">Post Yide</Button>
+            <Button type="submit"
+            disabled={!isFormValid}
+            >Post Yide</Button>
           </DialogFooter>
         </form>
       </DialogContent>
