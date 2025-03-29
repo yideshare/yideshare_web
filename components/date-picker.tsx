@@ -1,112 +1,75 @@
-"use client";
-
-import * as React from "react";
+import { useState } from "react";
 import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react"; 
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
+import { DayPicker } from "react-day-picker";
+import { cn } from "@/lib/utils/frontend";
 
-/**
- * This component shows:
- *   1) A calendar for selecting a single date
- *   2) Two <input type="time" /> fields for selecting a start and end time
- *   3) A popover trigger button that displays "MM/dd/yyyy, hh:mm – hh:mm"
- */
-interface DatePickerWithTimeRangeProps {
-  /** Currently selected date (day). Undefined means no date selected. */
-  date?: Date;
-  /** Called when user picks a new date from the calendar. */
-  onDateChange?: (date: Date) => void;
-
-  /** Start time in HH:mm (24-hour) or HH:mm (AM/PM) format. */
-  startTime?: string;
-  /** Called when user picks a new start time. */
-  onStartTimeChange?: (time: string) => void;
-
-  /** End time in HH:mm (24-hour) or HH:mm (AM/PM) format. */
-  endTime?: string;
-  /** Called when user picks a new end time. */
-  onEndTimeChange?: (time: string) => void;
+interface DatePickerProps {
+  date: Date | null;
+  setDate: (date: Date) => void;
+  mounted: boolean;
+  label?: string;
+  required?: boolean;
+  showError?: boolean;
+  className?: string;
 }
 
-export function DatePickerWithTimeRange({
+export default function DatePicker({
   date,
-  onDateChange,
-  startTime,
-  onStartTimeChange,
-  endTime,
-  onEndTimeChange,
-}: DatePickerWithTimeRangeProps) {
-  const [open, setOpen] = React.useState(false);
-
-  function handleDateSelect(selected: Date | undefined) {
-    if (selected && onDateChange) {
-      onDateChange(selected);
-    }
-  }
-
-  // We'll display something like "08/31/2025" or "Pick date" if none
-  const displayDate = date ? format(date, "MM/dd/yyyy") : "Pick date";
-
-  // For the time portion, show something like "08:00 – 09:30"
-  let displayTime = "(any times)";
-  if (startTime && endTime) {
-    displayTime = `${startTime} - ${endTime}`;
-  } else if (startTime) {
-    displayTime = startTime;
-  } else if (endTime) {
-    displayTime = endTime;
-  }
+  setDate,
+  mounted,
+  label = "Date",
+  required = false,
+  showError = false,
+  className = "",
+}: DatePickerProps) {
+  const [showCalendar, setShowCalendar] = useState(false);
+  const isEmpty = date === null;
+  const shouldShowError = required && showError && isEmpty;
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          className="w-[250px] justify-start text-left font-normal"
-        >
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          {displayDate}, {displayTime}
-        </Button>
-      </PopoverTrigger>
-
-      <PopoverContent className="p-4 space-y-4 w-auto">
-        {/* 1) The calendar for selecting a day */}
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={handleDateSelect}
-          initialFocus
-        />
-
-        {/* 2) Start/End time inputs */}
-        <div className="flex items-center justify-between space-x-2">
-          <div className="flex flex-col">
-            <label className="mb-1 text-xs font-medium">Start time</label>
-            <input
-              type="time"
-              className="border rounded px-2 py-1 text-sm"
-              value={startTime || ""}
-              onChange={(e) => onStartTimeChange?.(e.target.value)}
-            />
-          </div>
-
-          <div className="flex flex-col">
-            <label className="mb-1 text-xs font-medium">End time</label>
-            <input
-              type="time"
-              className="border rounded px-2 py-1 text-sm"
-              value={endTime || ""}
-              onChange={(e) => onEndTimeChange?.(e.target.value)}
-            />
-          </div>
+    <div className={cn("flex flex-col gap-1 relative", className)}>
+      <label className="text-sm font-medium">
+        {label}
+        {required && <span className="text-red-500 ml-1">*</span>}
+      </label>
+      
+      {mounted ? (
+        <>
+          <button
+            type="button"
+            onClick={() => setShowCalendar(!showCalendar)}
+            className={cn(
+              "border rounded-md p-2 w-full text-sm bg-muted/50 text-foreground text-left",
+              shouldShowError ? "border-red-500" : "border-input"
+            )}
+          >
+            {date ? format(date, "yyyy-MM-dd") : "Select a date"}
+          </button>
+          
+          {shouldShowError && (
+            <p className="text-red-500 text-xs">This field is required</p>
+          )}
+        </>
+      ) : (
+        <div className="border rounded-md p-2 w-full text-sm bg-muted/50 text-foreground">
+          Loading...
         </div>
-      </PopoverContent>
-    </Popover>
+      )}
+
+      {showCalendar && mounted && (
+        <div className="absolute z-10 bg-white p-2 shadow-lg rounded-md top-full mt-1">
+          <DayPicker
+            mode="single"
+            selected={date}
+            onSelect={(selectedDate) => {
+              if (selectedDate) {
+                setDate(selectedDate);
+              }
+              setShowCalendar(false);
+            }}
+          />
+        </div>
+      )}
+    </div>
   );
 }
