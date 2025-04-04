@@ -4,7 +4,6 @@ import { TopBar } from "@/components/top-bar";
 import { Separator } from "@/components/ui/separator";
 import { AppSidebar } from "@/components/app-sidebar";
 import { FeedClientProps } from "@/app/interface/main";
-import { LogoutButton } from "@/components/logout-button";
 
 import {
   SidebarProvider,
@@ -25,9 +24,6 @@ export default function FeedPage({
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
             <h1 className="font-bold text-xl">Yideshare</h1>
-            <div className="ml-auto">
-              <LogoutButton />
-            </div>
           </div>
           <TopBar />
         </header>
