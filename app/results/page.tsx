@@ -10,7 +10,7 @@ import { findBookmarkedRides, findFilteredRides } from "@/lib/utils/ride";
 import { extractSearchParams } from "@/lib/utils/search";
 import { getUserNetIdFromCookies } from "@/lib/utils/user";
 
-export default async function Results({ searchParams }: ResultsPageProps) {
+export default async function Results(props: ResultsPageProps) {
   // get user cookies
   const cookieStore = await cookies();
   const netId = getUserNetIdFromCookies(cookieStore);
@@ -20,6 +20,8 @@ export default async function Results({ searchParams }: ResultsPageProps) {
     return <div>Please log in to view your rides.</div>;
   }
 
+  const awaitedSearchParams = await props.searchParams;
+
   // extract search parameters into query fields
   const {
     from,
@@ -27,7 +29,7 @@ export default async function Results({ searchParams }: ResultsPageProps) {
     date,
     startTime: startTimeString,
     endTime: endTimeString,
-  } = extractSearchParams(searchParams);
+  } = extractSearchParams(awaitedSearchParams);
 
   // create start and end time objects
   const dateObject = new Date(date);

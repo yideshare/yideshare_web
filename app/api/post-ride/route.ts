@@ -18,6 +18,8 @@ export async function POST(request: Request) {
     // fetch ride data and create new ride
     const ride = await request.json();
     const newRide = await createRide(ride, netId);
+    console.log("NEWRIDE")
+    console.log(newRide)
 
     return NextResponse.json(
       { message: "Ride created successfully", ride: newRide },
