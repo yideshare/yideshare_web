@@ -17,7 +17,7 @@ export default async function Feed() {
   }
 
   // fetch initial rides
-  const initialRides = await findManyRides(10);
+  const initialRides = await findManyRides(30);
 
   // fetch bookmarked rides
   const bookmarks = await findBookmarkedRides(netId);

@@ -85,10 +85,8 @@ export async function findFilteredRides(
   return prisma.ride.findMany({
     where: {
       startTime: { gte: startTime },
-      endTime: { lte: endTime },
       beginning: from,
       destination: to,
-      isClosed: false,
     },
   });
 }
