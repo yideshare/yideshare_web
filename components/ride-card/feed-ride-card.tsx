@@ -57,8 +57,8 @@ export default function FeedRideCard({
   const minutes_start = String(dateObj.getMinutes()).padStart(2, "0");
 
   const dateObjEnd = new Date(ride.endTime);
-  const hours_end = dateObj.getHours();
-  const minutes_end = String(dateObj.getMinutes()).padStart(2, "0");
+  const hours_end = dateObjEnd.getHours();
+  const minutes_end = String(dateObjEnd.getMinutes()).padStart(2, "0");
 
   // Handle toggling the bookmark state.
   async function handleBookmark() {
