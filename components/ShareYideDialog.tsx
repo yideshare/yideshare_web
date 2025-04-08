@@ -1,24 +1,64 @@
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { LabeledInput } from "@/components/labeled-input";
+// yideshare/components/ShareYideDialog.tsx
+"use client";
 
+import * as React from "react";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { TimeSelect } from "@/components/ui/time-select";
+
+/* -------------------------------------------------------------------------- */
+/*  props                                                                     */
+/* -------------------------------------------------------------------------- */
 interface ShareYideDialogProps {
   open: boolean;
-  setOpen: (open: boolean) => void;
+  setOpen: (v: boolean) => void;
+
+  /* data already present in the top bar – keep them in sync */
+  from: string;
+  setFrom: (v: string) => void;
+  to: string;
+  setTo: (v: string) => void;
+  startTime: string;
+  setStartTime: (v: string) => void;
+  endTime: string;
+  setEndTime: (v: string) => void;
+
+  /* dialog‑only fields */
   organizerName: string;
-  setOrganizerName: (value: string) => void;
+  setOrganizerName: (v: string) => void;
   phoneNumber: string;
-  setPhoneNumber: (value: string) => void;
+  setPhoneNumber: (v: string) => void;
   additionalPassengers: number;
-  setAdditionalPassengers: (value: number) => void;
+  setAdditionalPassengers: (v: number) => void;
   description: string;
-  setDescription: (value: string) => void;
-  handleShareYide: (e: React.FormEvent) => void;
+  setDescription: (v: string) => void;
+
+  handleShareYide: (e: React.FormEvent) => Promise<void>;
 }
 
 export default function ShareYideDialog({
   open,
   setOpen,
+
+  from,
+  setFrom,
+  to,
+  setTo,
+  startTime,
+  setStartTime,
+  endTime,
+  setEndTime,
+
   organizerName,
   setOrganizerName,
   phoneNumber,
@@ -27,58 +67,131 @@ export default function ShareYideDialog({
   setAdditionalPassengers,
   description,
   setDescription,
+
   handleShareYide,
 }: ShareYideDialogProps) {
-const isFormValid = organizerName.trim() !== "" && phoneNumber.trim() !== "";
+  const ready = from && to && startTime && endTime;
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="max-w-2xl">
+      <DialogTrigger asChild>
+        <span />
+      </DialogTrigger>
+
+      <DialogContent className="sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>Share a Yide</DialogTitle>
           <DialogDescription>
-            Fill out the additional details below to create a new ride listing.
+            Fill out the details below to create a new ride listing.
           </DialogDescription>
         </DialogHeader>
 
-        <form className="space-y-4" onSubmit={handleShareYide}>
-          <LabeledInput
-            label="Organizer name"
-            placeholder="Peter Salovey"
-            value={organizerName}
-            onChange={(e) => setOrganizerName(e.target.value)}
-            required
-          />
-          <LabeledInput
-            label="Phone Number"
-            placeholder="555-555-5555"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            required
-            
-          />
-          <LabeledInput
-            label="Number of additional passengers"
-            placeholder="e.g. 3"
-            type="number"
-            value={additionalPassengers}
-            onChange={(e) => setAdditionalPassengers(+e.target.value)}
-          />
-          <div>
-            <label className="block text-sm font-medium">Description (optional)</label>
-            <textarea
-              className="w-full border p-2 rounded text-sm"
-              rows={3}
-              placeholder="I have two suitcases, planning to order an UberXL..."
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+        <form
+          onSubmit={(e) => {
+            handleShareYide(e);
+            setOpen(false);
+          }}
+          className="space-y-4"
+        >
+          {/* organiser + phone */}
+          <div className="space-y-2">
+            <Label htmlFor="organizer">
+              Organizer name{" "}
+              <span className="text-muted-foreground">(optional)</span>
+            </Label>
+            <Input
+              id="organizer"
+              value={organizerName}
+              onChange={(e) => setOrganizerName(e.target.value)}
+              placeholder="John Doe"
             />
           </div>
 
-          <DialogFooter>
-            <Button type="submit"
-            disabled={!isFormValid}
-            >Post Yide</Button>
-          </DialogFooter>
+          <div className="space-y-2">
+            <Label htmlFor="phone">
+              Phone number{" "}
+              <span className="text-muted-foreground">(optional)</span>
+            </Label>
+            <Input
+              id="phone"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              placeholder="555‑555‑5555"
+            />
+          </div>
+
+          {/* route */}
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="from">Leaving from</Label>
+              <Input
+                id="from"
+                value={from}
+                onChange={(e) => setFrom(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="to">Heading to</Label>
+              <Input
+                id="to"
+                value={to}
+                onChange={(e) => setTo(e.target.value)}
+                required
+              />
+            </div>
+
+            <TimeSelect
+              label="Start time"
+              value={startTime}
+              onChange={setStartTime}
+              className="mt-2 sm:mt-0"
+            />
+
+            <TimeSelect
+              label="End time"
+              value={endTime}
+              onChange={setEndTime}
+              className="mt-2 sm:mt-0"
+            />
+          </div>
+
+          {/* seats */}
+          <div className="space-y-2">
+            <Label htmlFor="seats">Number of additional passengers</Label>
+            <Input
+              id="seats"
+              type="number"
+              min={0}
+              value={additionalPassengers}
+              onChange={(e) => setAdditionalPassengers(Number(e.target.value))}
+            />
+            <p className="text-xs text-muted-foreground">
+              This does <em>not</em> include you. (Total seats = you + additional.)
+            </p>
+          </div>
+
+          {/* description */}
+          <div className="space-y-2">
+            <Label htmlFor="desc">
+              Description{" "}
+              <span className="text-muted-foreground">(optional)</span>
+            </Label>
+            <Textarea
+              id="desc"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="I have two suitcases, planning to order an UberXL..."
+              rows={3}
+            />
+          </div>
+
+          <div className="flex justify-end pt-2">
+            <Button type="submit" disabled={!ready}>
+              Post Yide
+            </Button>
+          </div>
         </form>
       </DialogContent>
     </Dialog>

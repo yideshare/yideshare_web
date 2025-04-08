@@ -2,30 +2,29 @@
 
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { Bookmark } from "lucide-react";
+import { Bookmark, Calendar } from "lucide-react";
 import {
   Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
   CardContent,
+  CardHeader,
 } from "@/components/ui/card";
 import {
   Dialog,
+  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-  DialogTrigger,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import {
   Tooltip,
-  TooltipContent,
   TooltipProvider,
-  TooltipTrigger,
+  TooltipContent,
 } from "@/components/ui/tooltip";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 
 import { FeedRideCardProps } from "@/app/interface/main";
 
@@ -35,177 +34,188 @@ export default function FeedRideCard({
   isBookmarkedInitial,
 }: FeedRideCardProps) {
   const { toast } = useToast();
+  const [isBookmarked, setIsBookmarked] = React.useState(isBookmarkedInitial);
+  const [message, setMessage] = React.useState("Hi, is this ride still available...");
+  const [requestSeat, setRequestSeat] = React.useState(false);
 
+  /* ------------ helpers ------------ */
+  const postedAgo = "1d ago";          // TODO real calc
+  const ownerName = ride.ownerName ?? "Driver";
   const totalSeats = ride.totalSeats;
   const occupantCount = ride.currentTakenSeats;
-  const postedAgo = ""; // TODO: Compute how long ago it was posted
-  const ownerName = ride.ownerName || "Raymond Hou";
-  const occupantNames = occupants.map((o) => o.name).join(", ") || "Unknown";
 
-  // const [requestSeat, setRequestSeat] = React.useState(false)
-  // const [message, setMessage] = React.useState("")
+  const sDate = new Date(ride.startTime);
+  const eDate = new Date(ride.endTime);
+  const dateLabel = `${sDate.getDate()} ${sDate.toLocaleString("en", {
+    month: "short",
+  })}`;
+  const timeLabel = `${sDate.toLocaleTimeString("en", {
+    hour: "numeric",
+    minute: "2-digit",
+  })} - ${eDate.toLocaleTimeString("en", {
+    hour: "numeric",
+    minute: "2-digit",
+  })}`;
 
-  // Local state for the bookmark
-  const [isBookmarked, setIsBookmarked] = React.useState(isBookmarkedInitial);
-
-  // Format date/time from ride.startTime
-  const dateObj = new Date(ride.startTime);
-  const month = dateObj.getMonth() + 1;
-  const day = dateObj.getDate();
-  const year = dateObj.getFullYear();
-  const hours_start = dateObj.getHours();
-  const minutes_start = String(dateObj.getMinutes()).padStart(2, "0");
-
-  const dateObjEnd = new Date(ride.endTime);
-  const hours_end = dateObjEnd.getHours();
-  const minutes_end = String(dateObjEnd.getMinutes()).padStart(2, "0");
-
-  // Handle toggling the bookmark state.
+  /* ------------ bookmark ------------ */
   async function handleBookmark() {
     try {
-      const response = await fetch("/api/bookmark", {
+      const res = await fetch("/api/bookmark", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ rideId: ride.rideId }),
       });
-      const data = await response.json();
-
-      // Update local state with the new bookmark status.
+      const data = await res.json();
       setIsBookmarked(data.bookmarked);
-
       toast({
         title: data.bookmarked ? "Ride Bookmarked" : "Bookmark Removed",
-        description: `Ride #${ride.rideId} was ${
-          data.bookmarked ? "bookmarked" : "removed from bookmarks"
-        }.`,
       });
-    } catch (error) {
-      console.error("Error toggling bookmark:", error);
-      toast({
-        title: "Error",
-        description: "Could not update bookmark status.",
-      });
+    } catch {
+      toast({ title: "Error", description: "Could not update bookmark." });
     }
   }
 
-  // function handleAddToCalendar() {
-  //   toast({
-  //     title: "Added to Calendar",
-  //     description: `Ride #${ride.rideId} was added to your calendar!`,
-  //   })
-  // }
+  /* ------------ message handling ------------ */
+  const handleMessageChange = (e) => {
+    setMessage(e.target.value);
+  };
 
-  // function handleSend() {
-  //   toast({
-  //     title: "Message Sent",
-  //     description: `Message sent to ${ownerName}. (Request seat: ${requestSeat ? "Yes" : "No"})`,
-  //   })
-  //   setMessage("")
-  // }
-  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const timeZoneAbbreviation = new Date()
-  .toLocaleTimeString('en', { timeZoneName: 'short' })
-  .split(' ')[2];
+  const handleSendMessage = () => {
+    // Handle sending message logic here
+    toast({
+      title: "Message Sent",
+      description: requestSeat ? "Your seat request has been sent" : "Your message has been sent"
+    });
+  };
 
+  const handleAddToCalendar = () => {
+    // Handle calendar logic here
+    toast({
+      title: "Added to Calendar",
+      description: "This ride has been added to your calendar"
+    });
+  };
+
+  /* ------------ UI ------------ */
   return (
     <Dialog>
       <DialogTrigger asChild>
-        {/* Feed card UI */}
-        <Card className="w-full relative shadow-md cursor-pointer transition hover:shadow-lg">
-          <span className="absolute top-2 right-2 text-xs text-muted-foreground">
-            {postedAgo}
-          </span>
-          <CardHeader className="flex flex-col gap-1">
-            <CardTitle className="text-base">
-              {ride.beginning} → {ride.destination}
-            </CardTitle>
-            <CardDescription className="text-sm text-muted-foreground">
-              Posted by: {ownerName} • {occupantCount}/{totalSeats} seats filled
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              <strong>Date:</strong> {month}/{day}/{year}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              <strong>Start Time:</strong> {hours_start}:{minutes_start} {timeZoneAbbreviation}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              <strong>End Time:</strong> {hours_end}:{minutes_end} {timeZoneAbbreviation}
-            </p>
-          </CardContent>
+        <Card className="rounded-lgx border border-border bg-card px-8 py-6 shadow-card hover:shadow-cardHover cursor-pointer">
+          {/* TOP ROW : 4 columns */}
+          <div className="grid grid-cols-4 gap-4">
+            <div>
+              <p className="text-sm font-medium text-foreground/70 mb-1">
+                Leaving from
+              </p>
+              <p className="text-xl font-semibold">{ride.beginning}</p>
+            </div>
+
+            <div>
+              <p className="text-sm font-medium text-foreground/70 mb-1">
+                Going to
+              </p>
+              <p className="text-xl font-semibold">{ride.destination}</p>
+            </div>
+
+            <div>
+              <p className="text-sm font-medium text-foreground/70 mb-1">
+                Date
+              </p>
+              <p className="text-xl font-semibold">{dateLabel}</p>
+            </div>
+
+            <div>
+              <p className="text-sm font-medium text-foreground/70 mb-1">
+                Time
+              </p>
+              <p className="text-xl font-semibold">{timeLabel}</p>
+            </div>
+          </div>
+
+          {/* DIVIDER */}
+          <div className="h-px bg-border my-4" />
+
+          {/* BOTTOM ROW : avatar / driver / email   +   posted‑ago */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              {/* tiny avatar placeholder */}
+              <div className="h-14 w-14 flex items-center justify-center rounded-full bg-muted text-lg font-semibold text-foreground/80">
+                MS
+              </div>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-foreground">
+                <span>{ownerName}</span>
+                <span className="text-foreground/70">
+                  {ride.ownerEmail ?? "driver@yale.edu"}
+                </span>
+              </div>
+            </div>
+
+            <span className="text-sm text-foreground/70">{postedAgo}</span>
+          </div>
         </Card>
       </DialogTrigger>
 
+      {/* -------- Dialog -------- */}
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <span>Ride Details</span>
-            <Button variant="ghost" size="icon" onClick={handleBookmark}>
+          <DialogTitle className="flex items-center gap-2 text-2xl font-bold">
+            Ride Details
+            <Button variant="ghost" size="icon" onClick={handleBookmark} className="ml-2">
               <Bookmark
-                className="h-5 w-5"
-                style={{ fill: isBookmarked ? "#2563EB" : "none" }}
+                className="h-5 w-5 text-primary"
+                style={{ fill: isBookmarked ? "currentColor" : "none" }}
               />
             </Button>
           </DialogTitle>
-          <DialogDescription asChild>
-            <div className="text-muted-foreground text-sm mt-1">
-              <div className="flex items-center gap-2">
-                Posted by: <strong>{ownerName}</strong>
-                {/* <span>•</span> */}
-                <TooltipProvider>
-                  <Tooltip>
-                    {/* <TooltipTrigger asChild>
-                      <span className="underline decoration-dotted cursor-help">
-                        {occupantCount}/{totalSeats} seats filled
-                      </span>
-                    </TooltipTrigger> */}
-                    <TooltipContent>
-                      <p className="text-sm">{occupantNames}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
+          <div className="mt-4">
+            <div className="flex items-center text-lg text-gray-600">
+              <span>Posted by: {ride.ownerName || "Raymond Hou"}</span>
+              <span className="mx-2">•</span>
+              <span>{occupantCount}/{totalSeats} seats filled</span>
             </div>
-          </DialogDescription>
+          </div>
         </DialogHeader>
 
-        <div className="space-y-3 mt-2">
-          {/* <div className="text-sm text-muted-foreground italic">
-            “{ride.description ?? "I have two suitcases, might share an UberXL..."}”
-          </div> */}
+        <div className="mt-4 text-gray-600 italic">
+          "I have two suitcases, might share an UberXL..."
+        </div>
 
-          {/* <div className="flex items-center justify-between">
-            <label className="text-sm font-medium mr-2">Message the driver:</label>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="requestSeat"
-                checked={requestSeat}
-                onCheckedChange={(v) => setRequestSeat(Boolean(v))}
+        <div className="mt-6">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-lg font-medium">Message the driver:</h3>
+            <div className="flex items-center gap-2">
+              <Checkbox 
+                id="request-seat" 
+                checked={requestSeat} 
+                onCheckedChange={setRequestSeat}
               />
-              <label htmlFor="requestSeat" className="text-sm font-medium">
+              <label htmlFor="request-seat" className="text-base cursor-pointer">
                 Request a seat
               </label>
             </div>
           </div>
-
-          <textarea
-            className="w-full border p-2 rounded text-sm"
-            rows={3}
-            placeholder="Hi, is this ride still available..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          /> */}
-
-          {/* <div className="flex items-center justify-between">
-            <Button variant="outline" onClick={handleAddToCalendar}>
-              Add to Calendar
-            </Button>
-            <Button variant="secondary" onClick={handleSend}>
-              Send
-            </Button>
-          </div> */}
+          
+          <Textarea 
+            value={message} 
+            onChange={handleMessageChange} 
+            placeholder="Type your message here..." 
+            className="min-h-24"
+          />
         </div>
+
+        <DialogFooter className="flex justify-between mt-4 sm:justify-between">
+          <Button 
+            variant="outline" 
+            onClick={handleAddToCalendar}
+            className="gap-2"
+          >
+            <Calendar className="h-4 w-4" />
+            Add to Calendar
+          </Button>
+          <Button onClick={handleSendMessage}>
+            Send
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

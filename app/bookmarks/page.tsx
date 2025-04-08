@@ -45,7 +45,7 @@ export default async function BookmarkPage() {
 
         <div className="flex flex-1 flex-col gap-4 p-4">
           <Separator />
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-1 lg:grid-cols-2">
             {bookmarkedRides.map((ride) => (
               <FeedRideCard
                 key={ride.rideId}

@@ -1,5 +1,3 @@
-// app/feed/page.tsx
-
 import FeedPage from "@/app/feed/feed-page";
 
 import { cookies } from "next/headers";

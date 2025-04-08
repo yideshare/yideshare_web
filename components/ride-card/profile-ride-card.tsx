@@ -1,10 +1,11 @@
-"use client"
+// yideshare/components/ride-card/profile-ride-card.tsx
+"use client";
 
-import * as React from "react"
-import { Button } from "@/components/ui/button"
-import { useToast } from "@/hooks/use-toast"
-import { X, Check, MessageSquare } from "lucide-react"
-import { Ride, User, RideRequest } from "@prisma/client"
+import * as React from "react";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { X, Check, MessageSquare } from "lucide-react";
+import { Ride, User, RideRequest } from "@prisma/client";
 
 import {
   Card,
@@ -12,7 +13,7 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 
 import {
   Dialog,
@@ -21,69 +22,83 @@ import {
   DialogTitle,
   DialogDescription,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 
-export default function ProfileRideCard(ride: Ride, occupants: User[], initialRequests: RideRequest[]) {
-  const { toast } = useToast()
+/* -------------------------------------------------------------------------- */
+/*  props                                                                     */
+/* -------------------------------------------------------------------------- */
 
-  const cardTitle = `${ride.beginning} → ${ride.destination}`
-  const occupantNames = occupants ?? ["You"]
-  const totalSeats = ride.totalSeats
-  const occupantCount = ride.currentTakenSeats
-  const isClosed = ride.isClosed
+interface ProfileRideCardProps {
+  ride: Ride;
+  /** all confirmed occupants – optional until you wire the query */
+  occupants?: User[];
+  /** pending requests – optional until you wire the query */
+  initialRequests?: RideRequest[];
+}
 
-  // local state for requests
-  const [requests, setRequests] = React.useState(initialRequests ?? [])
+export default function ProfileRideCard({
+  ride,
+  occupants = [],
+  initialRequests = [],
+}: ProfileRideCardProps) {
+  const { toast } = useToast();
 
-  const dateObj = new Date(ride.startTime)
-  const month = dateObj.getMonth() + 1
-  const day = dateObj.getDate()
-  const year = dateObj.getFullYear()
-  const hours = dateObj.getHours()
-  const minutes = String(dateObj.getMinutes()).padStart(2, "0")
+  /* ---------------------------------------------------------------------- */
+  /*  derived                                                               */
+  /* ---------------------------------------------------------------------- */
 
-  const defaultRequestSenderName = "default sender"
+  const cardTitle = `${ride.beginning} → ${ride.destination}`;
+
+  const occupantNames =
+    occupants.length > 0
+      ? occupants.map((o) => o.name ?? o.netId ?? "Unknown")
+      : ["You"];
+
+  const totalSeats = ride.totalSeats;
+  const occupantCount = ride.currentTakenSeats;
+  const isClosed = ride.isClosed;
+
+  const dateObj = new Date(ride.startTime);
+  const month = dateObj.getMonth() + 1;
+  const day = dateObj.getDate();
+  const year = dateObj.getFullYear();
+  const hours = dateObj.getHours();
+  const minutes = String(dateObj.getMinutes()).padStart(2, "0");
+
+  /* ---------------------------------------------------------------------- */
+  /*  local state                                                           */
+  /* ---------------------------------------------------------------------- */
+
+  const [requests, setRequests] = React.useState(initialRequests);
+
+  /* ---------------------------------------------------------------------- */
+  /*  handlers                                                              */
+  /* ---------------------------------------------------------------------- */
 
   function handleCloseListing() {
     toast({
       title: "Listing Closed",
       description: `You closed ride #${ride.rideId}.`,
-    })
+    });
   }
 
   function handleRemove() {
     toast({
       title: "Ride Removed",
       description: `You removed ride #${ride.rideId}.`,
-    })
+    });
   }
-
-  // frontend function,
-  // TODO: replace with a fetch later
-  // function handleAcceptRequest(name: string) {
-  //   setRequests((prev) => prev.filter((r) => r.name !== name))
-  //   toast({
-  //     title: "Request Accepted",
-  //     description: `You accepted ${name}'s request.`,
-  //   })
-  // }
-
-  // frontend function,
-  // TODO: replace with a fetch later
-  // function handleRejectRequest(name: string) {
-  //   setRequests((prev) => prev.filter((r) => r.name !== name))
-  //   toast({
-  //     title: "Request Rejected",
-  //     description: `You rejected ${name}'s request.`,
-  //   })
-  // }
 
   function handleMessageAll() {
     toast({
       title: "Message Sent",
       description: `You messaged all riders in ride #${ride.rideId}.`,
-    })
+    });
   }
+
+  /* ---------------------------------------------------------------------- */
+  /*  UI                                                                    */
+  /* ---------------------------------------------------------------------- */
 
   return (
     <Dialog>
@@ -95,6 +110,7 @@ export default function ProfileRideCard(ride: Ride, occupants: User[], initialRe
               {isClosed ? "Listing closed" : "Active"}
             </CardDescription>
           </CardHeader>
+
           <CardContent>
             <p className="text-sm text-muted-foreground">
               <strong>Date:</strong> {month}/{day}/{year} at {hours}:{minutes}
@@ -124,9 +140,10 @@ export default function ProfileRideCard(ride: Ride, occupants: User[], initialRe
             <p>This listing is active. You can remove or close it below.</p>
           )}
 
-          {/* Show requests */}
+          {/* ---------------- requests ---------------- */}
           <div>
             <h3 className="text-sm font-semibold">Requests</h3>
+
             {requests.length === 0 ? (
               <p className="text-xs text-muted-foreground italic">
                 No pending requests
@@ -135,29 +152,22 @@ export default function ProfileRideCard(ride: Ride, occupants: User[], initialRe
               <ul className="space-y-2">
                 {requests.map((r) => (
                   <li
-                    // why use a combination of sender, reciever, and ride Ids 
-                    key={`${r.receiverNetId}${r.senderNetId}${r.rideId}`}
+                    key={`${r.receiverNetId}-${r.senderNetId}-${r.rideId}`}
                     className="flex items-center justify-between bg-muted/20 p-2 rounded"
                   >
                     <div>
-                      <p className="text-sm font-medium">{defaultRequestSenderName}</p>
+                      <p className="text-sm font-medium">
+                        {r.senderNetId ?? "Unknown sender"}
+                      </p>
                       <p className="text-xs italic text-muted-foreground">
                         {r.payload}
                       </p>
                     </div>
                     <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        // onClick={() => handleRejectRequest(r.name)}
-                      >
+                      <Button variant="outline" size="icon">
                         <X className="h-4 w-4" />
                       </Button>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        // onClick={() => handleAcceptRequest(r.name)}
-                      >
+                      <Button variant="outline" size="icon">
                         <Check className="h-4 w-4" />
                       </Button>
                     </div>
@@ -167,7 +177,7 @@ export default function ProfileRideCard(ride: Ride, occupants: User[], initialRe
             )}
           </div>
 
-          {/* Action buttons */}
+          {/* ---------------- actions ---------------- */}
           <div className="flex flex-wrap gap-2">
             {!isClosed && (
               <Button variant="destructive" onClick={handleCloseListing}>
@@ -185,5 +195,5 @@ export default function ProfileRideCard(ride: Ride, occupants: User[], initialRe
         </div>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

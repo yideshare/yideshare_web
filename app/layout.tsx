@@ -1,25 +1,22 @@
-import "./globals.css"
-import { Inter } from "next/font/google"
-import { Toaster } from "@/components/ui/toaster"
-
-const inter = Inter({ subsets: ["latin"] })
+// app/layout.tsx
+import "./globals.css";
+import { righteous } from "./fonts"; // ✅ import font object
 
 export const metadata = {
   title: "Yideshare",
-  description: "Ridesharing app",
-}
+  description: "Find and share rides",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        {children}
-        <Toaster />
-      </body>
+    // ✅ Apply righteous font to <html>
+    <html lang="en" className={`${righteous.variable}`}>
+      {/* ✅ apply to html */}
+      <body>{children}</body>
     </html>
-  )
+  );
 }

@@ -1,34 +1,28 @@
-import FeedClient from "@/app/feed/feed-client";
+// yideshare/app/feed/feed-page.tsx  (server component)
+import FeedPageClient from "@/app/feed/feed-page-client";
+import { cookies } from "next/headers";
+import { getUserNetIdFromCookies } from "@/lib/utils/user";
+import { findBookmarkedRides, findManyRides } from "@/lib/utils/ride";
 
-import { TopBar } from "@/components/top-bar";
-import { Separator } from "@/components/ui/separator";
-import { AppSidebar } from "@/components/app-sidebar";
-import { FeedClientProps } from "@/app/interface/main";
+export default async function FeedPage() {
+  /* ----------------  auth  ---------------- */
+  const cookieStore = cookies();
+  const netId = getUserNetIdFromCookies(cookieStore);
 
-import {
-  SidebarProvider,
-  SidebarInset,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+  if (netId === null) {
+    return <div>Please log in to view your rides.</div>;
+  }
 
-export default function FeedPage({
-  rides,
-  bookmarkedRideIds,
-}: FeedClientProps) {
+  /* ----------------  data  ---------------- */
+  const initialRides = await findManyRides(10);
+  const bookmarks = await findBookmarkedRides(netId);
+  const bookmarkedRideIds = bookmarks.map((b) => b.ride.rideId);
+
+  /* ----------------  UI  ---------------- */
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <header className="">
-          <div className="flex h-16 items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
-            <h1 className="font-bold text-xl">Yideshare</h1>
-          </div>
-          <TopBar />
-        </header>
-        <FeedClient rides={rides} bookmarkedRideIds={bookmarkedRideIds} />
-      </SidebarInset>
-    </SidebarProvider>
+    <FeedPageClient
+      initialRides={initialRides}
+      bookmarkedRideIds={bookmarkedRideIds}
+    />
   );
 }

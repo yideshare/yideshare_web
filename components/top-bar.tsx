@@ -1,56 +1,90 @@
+// yideshare/components/top-bar.tsx
 "use client";
 
 import * as React from "react";
-import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
-import { createStartEndDateTimes } from "@/lib/utils/time";
-import DatePicker from "./date-picker";
-import { LabeledInput } from "@/components/labeled-input";
-import ShareYideDialog from "./ShareYideDialog";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import debounce from "lodash.debounce";
 
-export function TopBar() {
-  // Quick search fields
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
+
+import { TimeSelect } from "@/components/ui/time-select";
+import { LocationCombobox } from "@/components/location-combobox";
+import ShareYideDialog from "./ShareYideDialog";
+import { createStartEndDateTimes } from "@/lib/utils/time";
+
+import { Ride } from "@prisma/client";
+
+/* -------------------------------------------------------------------------- */
+/*  props                                                                     */
+/* -------------------------------------------------------------------------- */
+
+interface TopBarProps {
+  /** callback used to push fresh results down to the feed list */
+  onResults: (rides: Ride[]) => void;
+}
+
+export function TopBar({ onResults }: TopBarProps) {
+  /* ----------------  form state  ---------------- */
   const [from, setFrom] = React.useState("");
   const [to, setTo] = React.useState("");
-  const [date, setDate] = useState(new Date()); // default to today's date
+  const [date, setDate] = React.useState<Date | null>(new Date());
   const [startTime, setStartTime] = React.useState("");
   const [endTime, setEndTime] = React.useState("");
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [mounted, setMounted] = useState(false); // ensure it renders only on the client
+
+  /* share‑a‑ride fields */
   const [open, setOpen] = React.useState(false);
-
-  const mainForm_unfilled = !from || !to || !date || !startTime || !endTime;
-
-  useEffect(() => {
-    setMounted(true); // Mark component as mounted
-    setDate(new Date()); // Ensure date is only set on the client
-  }, []);
-
-  // “Share a Yide” form fields
   const [organizerName, setOrganizerName] = React.useState("");
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [additionalPassengers, setAdditionalPassengers] = React.useState(0);
   const [description, setDescription] = React.useState("");
 
-  // Modal open state
-  const handleFindRide = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const queryString = `from=${encodeURIComponent(
-      from
-    )}&to=${encodeURIComponent(to)}&date=${encodeURIComponent(
-      date.getDate()
-    )}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(
-      endTime
-    )}`;
+  /* ----------------  helpers  ---------------- */
+  const fieldsFilled = from && to && date && startTime && endTime;
 
-    // Redirect to results page
-    window.location.href = `http://localhost:3000//results?${queryString}`;
-  };
+  /* ----------------  live search --------------- */
+  const runSearch = React.useMemo(
+    () =>
+      debounce(async () => {
+        if (!fieldsFilled) return;
 
+        const qs = new URLSearchParams({
+          from,
+          to,
+          date: date!.toISOString(),
+          startTime,
+          endTime,
+        }).toString();
+
+        try {
+          const res = await fetch(`/api/search-rides?${qs}`);
+          if (!res.ok) throw new Error("Network error");
+          const rides: Ride[] = await res.json();
+          onResults(rides);
+        } catch (err) {
+          console.error(err);
+          onResults([]); // empty fallback
+        }
+      }, 300),
+    [from, to, date, startTime, endTime, fieldsFilled, onResults]
+  );
+
+  React.useEffect(() => {
+    runSearch();
+    return runSearch.cancel;
+  }, [runSearch]);
+
+  /* ----------------  share‑a‑ride -------------- */
   async function handleShareYide(e: React.FormEvent) {
     e.preventDefault();
 
-    const selectedDate = date ? new Date(date) : new Date(); // Use current date if undefined
+    const selectedDate = date ?? new Date();
     const { startTimeObject, endTimeObject } = createStartEndDateTimes(
       selectedDate,
       startTime,
@@ -68,76 +102,101 @@ export function TopBar() {
       totalSeats: additionalPassengers + 1,
     };
 
-    const response = await fetch("/api/post-ride", {
+    await fetch("/api/post-ride", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(rideData),
     });
-
-    if (!response.ok) {
-      // TODO: add frontend error handling
-      return <div>Failed to post ride</div>;
-    }
   }
 
+  /* ----------------  UI  ---------------- */
   return (
-    <div className="flex flex-wrap items-center gap-4 p-4 mr-4 ml-4 bg-muted/50 rounded-md">
-      <LabeledInput
-        label="Leaving from"
-        placeholder="e.g. Yale"
-        value={from}
-        onChange={(e) => setFrom(e.target.value)}
-        required
-      />
-      <LabeledInput
-        label="Heading to"
-        placeholder="e.g. Hartford (BDL)"
-        value={to}
-        onChange={(e) => setTo(e.target.value)}
-        required
-      />
-      <DatePicker
-        date={date}
-        setDate={setDate}
-        mounted={mounted}
-        required
-        label="Event Date"
-      />
+    <div className="flex flex-wrap items-center gap-6 p-6 mx-4">
+      <div className="flex flex-wrap gap-4 w-full">
+        <div className="flex-1 min-w-[250px] max-w-[400px]">
+          <LocationCombobox
+            label="Leaving from"
+            placeholder="Select start…"
+            value={from}
+            onChange={setFrom}
+          />
+        </div>
+        <div className="flex-1 min-w-[250px] max-w-[400px]">
+          <LocationCombobox
+            label="Heading to"
+            placeholder="Select destination…"
+            value={to}
+            onChange={setTo}
+          />
+        </div>
+      </div>
 
+      {/* ---- Event Date (shadcn calendar) ---- */}
+      <div className="flex flex-col">
+        <label
+          htmlFor="event-date"
+          className="mb-1 text-sm font-medium leading-none"
+        >
+          Event Date
+        </label>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              id="event-date"
+              variant="outline"
+              className="w-[220px] justify-start text-left font-normal"
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {date ? format(date, "PPP") : <span>Pick a date</span>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <Calendar
+              mode="single"
+              selected={date ?? undefined}
+              onSelect={setDate}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
+      </div>
+
+      {/* ---- Start / End time ---- */}
       <div className="grid grid-cols-2 gap-4">
-        <LabeledInput
+        <TimeSelect
           label="Start time"
-          type="time"
           value={startTime}
-          onChange={(e) => setStartTime(e.target.value)}
-          required
+          onChange={setStartTime}
         />
-        <LabeledInput
+        <TimeSelect
           label="End time"
-          type="time"
           value={endTime}
-          onChange={(e) => setEndTime(e.target.value)}
-          required
+          onChange={setEndTime}
         />
       </div>
-      <div className="ml-auto flex flex-col gap-4">
+
+      {/* ---------- Share a Yide ---------- */}
+      <div className="ml-auto self-end">
         <Button
-          onClick={handleFindRide}
-          className="mt-5"
-          disabled={mainForm_unfilled}
-        >
-          Find a Ride
-        </Button>
-        <Button
-          className="mt-5"
+          className="bg-primary hover:bg-brand-600 text-primary-foreground"
           onClick={() => setOpen(true)}
-          disabled={mainForm_unfilled}
         >
           Share a Yide
         </Button>
+
         <ShareYideDialog
           open={open}
           setOpen={setOpen}
+          /* sync with top‑bar fields */
+          from={from}
+          setFrom={setFrom}
+          to={to}
+          setTo={setTo}
+          startTime={startTime}
+          setStartTime={setStartTime}
+          endTime={endTime}
+          setEndTime={setEndTime}
+          /* dialog‑specific */
           organizerName={organizerName}
           setOrganizerName={setOrganizerName}
           phoneNumber={phoneNumber}
