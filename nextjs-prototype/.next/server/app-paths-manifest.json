@@ -1,0 +1,9 @@
+{
+  "/page": "app/page.js",
+  "/api/auth/cas-login/route": "app/api/auth/cas-login/route.js",
+  "/api/auth/cas-validate/route": "app/api/auth/cas-validate/route.js",
+  "/feed/page": "app/feed/page.js",
+  "/messages/page": "app/messages/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/dashboard/page": "app/dashboard/page.js"
+}
