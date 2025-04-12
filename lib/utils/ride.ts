@@ -6,8 +6,8 @@ export async function createRide(ride: any, netId: string) {
       ownerNetId: netId,
       ownerName: ride.ownerName || "",
       ownerPhone: ride.ownerPhone || "",
-      beginning: ride.beginning,
-      destination: ride.destination,
+      beginning: ride.beginning.toLowerCase(),
+      destination: ride.destination.toLowerCase(),
       description: ride.description || "",
       startTime: new Date(ride.startTime),
       endTime: new Date(ride.endTime),
@@ -82,11 +82,41 @@ export async function findFilteredRides(
   startTime: Date,
   endTime: Date
 ) {
+  // Build the where clause dynamically based on non-empty criteria
+  const whereClause: any = {
+    AND: [
+      { isClosed: false }
+    ]
+  };
+
+  // Only add location filters if they're not empty
+  if (from) {
+    whereClause.AND.push({ 
+      beginning: { 
+        equals: from.toLowerCase()
+      } 
+    });
+  }
+  if (to) {
+    whereClause.AND.push({ 
+      destination: { 
+        equals: to.toLowerCase()
+      } 
+    });
+  }
+
+  // Only add time filters if they're valid dates
+  if (startTime && !isNaN(startTime.getTime())) {
+    whereClause.AND.push({ startTime: { gte: startTime } });
+  }
+  if (endTime && !isNaN(endTime.getTime())) {
+    whereClause.AND.push({ endTime: { lte: endTime } });
+  }
+
   return prisma.ride.findMany({
-    where: {
-      startTime: { gte: startTime },
-      beginning: from,
-      destination: to,
-    },
+    where: whereClause,
+    orderBy: {
+      startTime: 'asc'
+    }
   });
 }

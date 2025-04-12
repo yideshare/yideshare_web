@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { NavUser } from "@/components/nav-user";
 import { useEffect, useState } from "react";
-import { Calendar, User, Bookmark, PowerOffIcon } from "lucide-react";
+import { Calendar, User, Bookmark, PowerOffIcon, MessageSquare } from "lucide-react";
 
 import {
   Sidebar,
@@ -36,6 +36,11 @@ const navItems = [
     title: "My Bookmarks",
     url: "/bookmarks",
     icon: Bookmark,
+  },
+  {
+    title: "Feedback",
+    url: "https://docs.google.com/forms/u/1/d/1h6MQYNtshyOujGAfsj2R1mqOdoNTy8YoY0MUdGc1-yo/edit?usp=drive_web",
+    icon: MessageSquare,
   },
   // TODO: same cors error with redirecting to CAS logout
   {

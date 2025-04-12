@@ -1,23 +1,15 @@
 "use client";
 
-import * as React from "react";
 import { Separator } from "@/components/ui/separator";
-import FeedClient from "@/app/feed/feed-client";
-import { TopBar } from "@/components/top-bar";
+import ProfileRideCard from "@/components/ride-card/profile-ride-card";
 import { TopNavButtons } from "@/components/top-nav-buttons";
 import { Ride } from "@prisma/client";
 
-interface FeedPageClientProps {
-  initialRides: Ride[];
-  bookmarkedRideIds: string[];
+interface YourRidesClientProps {
+  ownedRides: Ride[];
 }
 
-export default function FeedPageClient({
-  initialRides,
-  bookmarkedRideIds,
-}: FeedPageClientProps) {
-  const [rides, setRides] = React.useState<Ride[]>(initialRides);
-
+export default function YourRidesClient({ ownedRides }: YourRidesClientProps) {
   return (
     <div className="bg-white min-h-screen">
       {/* header strip */}
@@ -30,15 +22,17 @@ export default function FeedPageClient({
           </div>
           <TopNavButtons />
         </div>
-
-        {/* live‑filtering search bar */}
-        <div className="px-8">
-          <TopBar onResults={setRides} />
-        </div>
       </header>
 
-      {/* feed list */}
-      <FeedClient rides={rides} bookmarkedRideIds={bookmarkedRideIds} />
+      <div className="flex flex-1 flex-col gap-4 p-4">
+        <Separator />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {ownedRides.map((ride) => (
+            <ProfileRideCard key={ride.rideId} ride={ride} />
+          ))}
+        </div>
+      </div>
     </div>
   );
-}
+} 
+ 

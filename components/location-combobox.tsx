@@ -49,7 +49,7 @@ export function LocationCombobox({
           <Button
             variant="outline"
             role="combobox"
-            className="justify-between w-full"
+            className="justify-start text-left text-lg font-bold bg-transparent text-black w-full border-none"
           >
             {selected ? selected.label : placeholder ?? 'Select…'}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />

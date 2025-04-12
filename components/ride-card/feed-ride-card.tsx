@@ -100,96 +100,111 @@ export default function FeedRideCard({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Card className="rounded-lgx border border-border bg-card px-8 py-6 shadow-card hover:shadow-cardHover cursor-pointer">
-          {/* TOP ROW : 4 columns */}
-          <div className="grid grid-cols-4 gap-4">
+        <Card className="rounded-2xl border border-border bg-white px-6 py-4 shadow-card hover:shadow-cardHover cursor-pointer">
+          <div className="grid grid-cols-4 gap-1">
             <div>
-              <p className="text-sm font-medium text-foreground/70 mb-1">
+              <p className="text-lg font-medium text-black mb-1">
                 Leaving from
               </p>
-              <p className="text-xl font-semibold">{ride.beginning}</p>
+              <p className="text-2xl font-semibold text-black">{ride.beginning}</p>
             </div>
 
             <div>
-              <p className="text-sm font-medium text-foreground/70 mb-1">
+              <p className="text-lg font-medium text-black mb-1">
                 Going to
               </p>
-              <p className="text-xl font-semibold">{ride.destination}</p>
+              <p className="text-2xl font-semibold text-black">{ride.destination}</p>
             </div>
 
             <div>
-              <p className="text-sm font-medium text-foreground/70 mb-1">
+              <p className="text-lg font-medium text-black mb-1">
                 Date
               </p>
-              <p className="text-xl font-semibold">{dateLabel}</p>
+              <p className="text-2xl font-semibold text-black">{dateLabel}</p>
             </div>
 
             <div>
-              <p className="text-sm font-medium text-foreground/70 mb-1">
-                Time
+              <p className="text-lg font-medium text-black mb-1">
+                Time (EST)
               </p>
-              <p className="text-xl font-semibold">{timeLabel}</p>
+              <p className="text-2xl font-semibold text-black">{timeLabel}</p>
             </div>
           </div>
 
-          {/* DIVIDER */}
           <div className="h-px bg-border my-4" />
 
-          {/* BOTTOM ROW : avatar / driver / email   +   posted‑ago */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              {/* tiny avatar placeholder */}
-              <div className="h-14 w-14 flex items-center justify-center rounded-full bg-muted text-lg font-semibold text-foreground/80">
-                MS
+              <div className="h-12 w-12 flex items-center justify-center rounded-full bg-muted text-2xl font-semibold text-black">
+                {ownerName[0]}
               </div>
-              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-foreground">
-                <span>{ownerName}</span>
-                <span className="text-foreground/70">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-black">
+                <span className="text-xl">{ownerName}</span>
+                <span className="text-xl text-black">
                   {ride.ownerEmail ?? "driver@yale.edu"}
                 </span>
               </div>
             </div>
 
-            <span className="text-sm text-foreground/70">{postedAgo}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-lg text-black">{postedAgo}</span>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleBookmark();
+                }}
+              >
+                <Bookmark
+                  className="h-5 w-5 text-primary"
+                  style={{ fill: isBookmarked ? "currentColor" : "none" }}
+                />
+              </Button>
+            </div>
           </div>
         </Card>
       </DialogTrigger>
 
       {/* -------- Dialog -------- */}
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-2xl font-bold">
+          <DialogTitle className="flex items-center gap-2 text-2xl font-bold text-black">
             Ride Details
-            <Button variant="ghost" size="icon" onClick={handleBookmark} className="ml-2">
-              <Bookmark
-                className="h-5 w-5 text-primary"
-                style={{ fill: isBookmarked ? "currentColor" : "none" }}
-              />
-            </Button>
           </DialogTitle>
           <div className="mt-4">
-            <div className="flex items-center text-lg text-gray-600">
+            <div className="flex items-center text-lg text-black">
               <span>Posted by: {ride.ownerName || "Raymond Hou"}</span>
               <span className="mx-2">•</span>
               <span>{occupantCount}/{totalSeats} seats filled</span>
             </div>
           </div>
+          <div className="flex gap-4 mt-4">
+            <div className="flex-1">
+              <label className="text-sm font-bold text-black">Date</label>
+              <p className="text-lg font-medium text-black">{dateLabel}</p>
+            </div>
+            <div className="flex-1">
+              <label className="text-sm font-bold text-black">Time</label>
+              <p className="text-lg font-medium text-black">{timeLabel}</p>
+            </div>
+          </div>
         </DialogHeader>
 
-        <div className="mt-4 text-gray-600 italic">
+        <div className="mt-4 text-black italic">
           "I have two suitcases, might share an UberXL..."
         </div>
 
         <div className="mt-6">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-lg font-medium">Message the driver:</h3>
+            <h3 className="text-lg font-medium text-black">Message the driver:</h3>
             <div className="flex items-center gap-2">
               <Checkbox 
                 id="request-seat" 
                 checked={requestSeat} 
                 onCheckedChange={setRequestSeat}
               />
-              <label htmlFor="request-seat" className="text-base cursor-pointer">
+              <label htmlFor="request-seat" className="text-base cursor-pointer text-black">
                 Request a seat
               </label>
             </div>
@@ -203,7 +218,7 @@ export default function FeedRideCard({
           />
         </div>
 
-        <DialogFooter className="flex justify-between mt-4 sm:justify-between">
+        <DialogFooter>
           <Button 
             variant="outline" 
             onClick={handleAddToCalendar}
