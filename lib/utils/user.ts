@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { cookies } from "next/headers";
 
 export async function findOrCreateUser(
   netId: string,
@@ -43,8 +44,9 @@ export function getUserFromCookies(cookieStore: any) {
   }
 }
 
-export function getUserNetIdFromCookies(cookieStore: any) {
+export async function getUserNetIdFromCookies() {
   // retrieve cookies
+  const cookieStore = await cookies()
   const userCookie = cookieStore.get("user");
   // check that cookies exist
   if (!userCookie) return null;

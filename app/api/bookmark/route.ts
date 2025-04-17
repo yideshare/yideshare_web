@@ -1,4 +1,3 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { bookmarkRide } from "@/lib/utils/ride";
@@ -8,8 +7,7 @@ import { extractRideIdFromPayload } from "@/lib/utils/validate";
 export async function POST(req: Request) {
   try {
     // get netId and rideId
-    const cookieStore = await cookies();
-    const netId = getUserNetIdFromCookies(cookieStore);
+    const netId = await getUserNetIdFromCookies();
     const rideId = await extractRideIdFromPayload(req);
 
     // validate netId

@@ -1,23 +1,23 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { LogIn, MapPin, Calendar, Users } from 'lucide-react';
-import { LocationCombobox } from '@/components/location-combobox';
-import { Button } from '@/components/ui/button';
-import { Calendar as ShadCalendar } from '@/components/ui/calendar';
+import Image from "next/image";
+import { LogIn, MapPin, Calendar, Users } from "lucide-react";
+import { LocationCombobox } from "@/components/location-combobox";
+import { Button } from "@/components/ui/button";
+import { Calendar as ShadCalendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-} from '@/components/ui/popover';
-import { format } from 'date-fns';
-import * as React from 'react';
+} from "@/components/ui/popover";
+import { format } from "date-fns";
+import * as React from "react";
 
 export default function Home() {
   const [date, setDate] = React.useState<Date | null>(new Date());
   // Add state for the from and to locations
-  const [fromLocation, setFromLocation] = React.useState<string>('');
-  const [toLocation, setToLocation] = React.useState<string>('');
+  const [fromLocation, setFromLocation] = React.useState<string>("");
+  const [toLocation, setToLocation] = React.useState<string>("");
 
   return (
     <main className="relative min-h-screen bg-white flex flex-col">
@@ -43,7 +43,7 @@ export default function Home() {
               Yideshare
             </h1>
             <button
-              onClick={() => (window.location.href = '/api/auth/cas-login')}
+              onClick={() => (window.location.href = "/api/auth/cas-login")}
               className="inline-flex items-center gap-2 rounded-full bg-white/90 px-5 py-2 text-sm font-semibold text-primary shadow hover:bg-white"
             >
               <LogIn size={18} />
@@ -56,11 +56,12 @@ export default function Home() {
             {/* Headline & Subtitle */}
             <div className="max-w-3xl mt-10 mx-auto text-center">
               <h2 className="text-4xl font-extrabold leading-tight text-white md:text-5xl lg:text-6xl">
-                Ride together.{' '}
+                Ride together.{" "}
                 <span className="text-white">Split the cost.</span>
               </h2>
               <p className="mt-4 text-base font-light text-white/90 md:text-lg">
-                Headed to the airport? A concert? Home for break? Yideshare helps Yale students coordinate cheap, reliable rides.
+                Headed to the airport? A concert? Home for break? Yideshare
+                helps Yale students coordinate cheap, reliable rides.
               </p>
             </div>
 
@@ -76,7 +77,6 @@ export default function Home() {
                     placeholder="Leaving from"
                     value={fromLocation}
                     onChange={(val) => {
-                      console.log('From:', val);
                       setFromLocation(val);
                     }}
                   />
@@ -87,7 +87,6 @@ export default function Home() {
                     placeholder="Going to"
                     value={toLocation}
                     onChange={(val) => {
-                      console.log('To:', val);
                       setToLocation(val);
                     }}
                   />
@@ -106,14 +105,14 @@ export default function Home() {
                         className="w-[180px] justify-start text-left font-normal bg-white"
                       >
                         <Calendar className="mr-2 h-4 w-4" />
-                        {date ? format(date, 'PPP') : <span>Pick a date</span>}
+                        {date ? format(date, "PPP") : <span>Pick a date</span>}
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
                       <ShadCalendar
                         mode="single"
                         selected={date ?? undefined}
-                        onSelect={setDate}
+                        onSelect={(day) => setDate(day ?? null)}
                         initialFocus
                       />
                     </PopoverContent>
@@ -139,27 +138,34 @@ export default function Home() {
           Why Yideshare?
         </h3>
         <p className="mx-auto mt-4 max-w-2xl text-base text-gray-600">
-          Match with other Yalies headed the same way and save money on Ubers, Lyfts, and carpools.
+          Match with other Yalies headed the same way and save money on Ubers,
+          Lyfts, and carpools.
         </p>
 
         <div className="mt-16 grid gap-12 sm:grid-cols-3">
           <div className="flex flex-col items-center gap-4">
             <Users size={48} className="text-primary" />
-            <h4 className="text-lg font-semibold text-foreground">Yale‑only network</h4>
+            <h4 className="text-lg font-semibold text-foreground">
+              Yale‑only network
+            </h4>
             <p className="text-sm text-gray-600">
               Log in with CAS to join a trusted community of classmates.
             </p>
           </div>
           <div className="flex flex-col items-center gap-4">
             <Calendar size={48} className="text-primary" />
-            <h4 className="text-lg font-semibold text-foreground">Instant matching</h4>
+            <h4 className="text-lg font-semibold text-foreground">
+              Instant matching
+            </h4>
             <p className="text-sm text-gray-600">
               Post a ride and instantly match with others on the same schedule.
             </p>
           </div>
           <div className="flex flex-col items-center gap-4">
             <MapPin size={48} className="text-primary" />
-            <h4 className="text-lg font-semibold text-foreground">Budget‑friendly & low‑impact</h4>
+            <h4 className="text-lg font-semibold text-foreground">
+              Budget‑friendly & low‑impact
+            </h4>
             <p className="text-sm text-gray-600">
               Split fares and reduce emissions—everyone wins.
             </p>

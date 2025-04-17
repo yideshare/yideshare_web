@@ -1,14 +1,12 @@
 // app/bookmarks/page.tsx
 
-import { cookies } from "next/headers";
 import { getUserNetIdFromCookies } from "@/lib/utils/user";
 import { findBookmarkedRides } from "@/lib/utils/ride";
 import BookmarksClient from "./bookmarks-client";
 
 export default async function BookmarkPage() {
   // get user cookies
-  const cookieStore = await cookies();
-  const netId = getUserNetIdFromCookies(cookieStore);
+  const netId = await getUserNetIdFromCookies();
 
   // if no user cookies were found
   if (netId === null) {

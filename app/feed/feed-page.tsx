@@ -1,13 +1,11 @@
 // yideshare/app/feed/feed-page.tsx  (server component)
 import FeedPageClient from "@/app/feed/feed-page-client";
-import { cookies } from "next/headers";
 import { getUserNetIdFromCookies } from "@/lib/utils/user";
 import { findBookmarkedRides, findManyRides } from "@/lib/utils/ride";
 
 export default async function FeedPage() {
   /* ----------------  auth  ---------------- */
-  const cookieStore = cookies();
-  const netId = getUserNetIdFromCookies(cookieStore);
+  const netId = await getUserNetIdFromCookies();
 
   if (netId === null) {
     return <div>Please log in to view your rides.</div>;

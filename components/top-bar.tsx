@@ -111,6 +111,8 @@ export function TopBar({ onResults }: TopBarProps) {
       endTime
     );
 
+    console.log(selectedDate, startTime, endTime)
+
     const rideData = {
       ownerName: organizerName,
       ownerPhone: phoneNumber,

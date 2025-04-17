@@ -7,8 +7,7 @@ import { getUserNetIdFromCookies } from "@/lib/utils/user";
 export async function POST(request: Request) {
   try {
     // get netId
-    const cookieStore = await cookies();
-    const netId = getUserNetIdFromCookies(cookieStore);
+    const netId = await getUserNetIdFromCookies();
 
     // validate netId
     if (netId === null) {
@@ -18,8 +17,6 @@ export async function POST(request: Request) {
     // fetch ride data and create new ride
     const ride = await request.json();
     const newRide = await createRide(ride, netId);
-    console.log("NEWRIDE")
-    console.log(newRide)
 
     return NextResponse.json(
       { message: "Ride created successfully", ride: newRide },

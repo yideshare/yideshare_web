@@ -1,4 +1,3 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { findOwnedRide } from "@/lib/utils/ride";
@@ -7,8 +6,7 @@ import { getUserNetIdFromCookies } from "@/lib/utils/user";
 export async function GET() {
   try {
     // get netId
-    const cookieStore = await cookies();
-    const netId = getUserNetIdFromCookies(cookieStore);
+    const netId = await getUserNetIdFromCookies();
 
     // validate netId
     if (netId === null) {

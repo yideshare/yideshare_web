@@ -3,10 +3,9 @@ export function createStartEndDateTimes(
   startTime: string,
   endTime: string
 ) {
-
   // split startTime and endTime strings into hours and minutes
-  const [startHours, startMinutes] = startTime.split(":").map(Number);
-  const [endHours, endMinutes] = endTime.split(":").map(Number);
+  const { hours: startHours, minutes: startMinutes } = americanStringToMilitaryNumbers(startTime)
+  const { hours: endHours, minutes: endMinutes } = americanStringToMilitaryNumbers(endTime)
 
   // create valid Date objects by combining the selected date with the start and end times
   const startDate = new Date(date);
@@ -19,5 +18,21 @@ export function createStartEndDateTimes(
   return {
     startTimeObject: startDate,
     endTimeObject: endDate,
+  };
+}
+
+function americanStringToMilitaryNumbers(timeString: string) {
+  const [timePart, period] = timeString.split(" ");
+  let [hours, minutes] = timePart.split(":").map(Number);
+
+  if (period === "PM" && hours !== 12) {
+    hours += 12;
+  } else if (period === "AM" && hours === 12) {
+    hours = 0;
+  }
+
+  return {
+    hours,
+    minutes,
   };
 }
