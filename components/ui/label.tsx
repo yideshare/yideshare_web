@@ -4,7 +4,7 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@/lib/utils";   // the `cn` helper we added earlier
+import { cn } from "@/lib/general"; // the `cn` helper we added earlier
 
 const Label = React.forwardRef<
   React.ElementRef<"label">,

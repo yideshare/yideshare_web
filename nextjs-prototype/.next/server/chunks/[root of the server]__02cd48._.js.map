@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 55, "column": 0}, "map": {"version":3,"sources":["file:///Users/midhu1/Projects/yideshare/nextjs-prototype/app/api/auth/cas-login/route.ts"],"sourcesContent":["import { NextResponse } from \"next/server\";\n\nexport async function GET() {\n  const baseUrl = process.env.NEXTAUTH_URL || \"http://localhost:3000\";\n  const casLoginUrl = `https://secure.its.yale.edu/cas/login?service=${encodeURIComponent(baseUrl + \"/api/auth/cas-validate\")}`;\n  \n  return NextResponse.redirect(casLoginUrl);\n}"],"names":[],"mappings":";;;AAAA;;AAEO,eAAe;IACpB,MAAM,UAAU,QAAQ,GAAG,CAAC,YAAY,IAAI;IAC5C,MAAM,cAAc,CAAC,8CAA8C,EAAE,mBAAmB,UAAU,2BAA2B;IAE7H,OAAO,gIAAA,CAAA,eAAY,CAAC,QAAQ,CAAC;AAC/B"}},
-    {"offset": {"line": 65, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
-}

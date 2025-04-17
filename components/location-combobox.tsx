@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { Check, ChevronsUpDown } from 'lucide-react';
+import * as React from "react";
+import { Check, ChevronsUpDown } from "lucide-react";
 
-import { cn } from '@/lib/utils'; // shadcn utility
-import { Button } from '@/components/ui/button';
+import { cn } from "@/lib/general"; // shadcn utility
+import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-} from '@/components/ui/popover';
+} from "@/components/ui/popover";
 import {
   Command,
   CommandInput,
   CommandEmpty,
   CommandList,
   CommandItem,
-} from '@/components/ui/command';
+} from "@/components/ui/command";
 
-import { LOCATIONS, LocationItem } from './location-data';
+import { LOCATIONS, LocationItem } from "./location-data";
 
 interface LocationComboboxProps {
   label: string;
@@ -51,7 +51,7 @@ export function LocationCombobox({
             role="combobox"
             className="justify-between w-full"
           >
-            {selected ? selected.label : placeholder ?? 'Select…'}
+            {selected ? selected.label : placeholder ?? "Select…"}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -68,8 +68,8 @@ export function LocationCombobox({
                 >
                   <Check
                     className={cn(
-                      'mr-2 h-4 w-4',
-                      value === loc.label ? 'opacity-100' : 'opacity-0'
+                      "mr-2 h-4 w-4",
+                      value === loc.label ? "opacity-100" : "opacity-0"
                     )}
                   />
                   {loc.label}
