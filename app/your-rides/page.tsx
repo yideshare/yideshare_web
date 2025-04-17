@@ -1,14 +1,9 @@
 // yideshare/app/your-rides/page.tsx
-import {
-  SidebarProvider,
-  SidebarInset,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
 import { Separator } from "@/components/ui/separator";
 import ProfileRideCard from "@/components/ride-card/profile-ride-card";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
+import { TopNavButtons } from "@/components/top-nav-buttons";
 
 export default async function DashboardPage() {
   /* -------------------------------------------------------------------- */
@@ -42,26 +37,27 @@ export default async function DashboardPage() {
   /* -------------------------------------------------------------------- */
 
   return (
-    <SidebarProvider>
-      <AppSidebar />
-
-      <SidebarInset>
-        <header className="flex h-16 items-center gap-2 px-4 border-b">
-          <SidebarTrigger className="-ml-1" />
-          <Separator orientation="vertical" className="mr-2 h-4" />
-          <h1 className="font-bold text-xl">My Rides</h1>
-        </header>
-
-        <div className="flex flex-1 flex-col gap-4 p-4">
-          <Separator />
-
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {ownedRides.map((ride) => (
-              <ProfileRideCard key={ride.rideId} ride={ride} />
-            ))}
+    <div className="bg-white min-h-screen">
+      {/* header strip */}
+      <header className="bg-background py-8">
+        <div className="flex h-16 items-center justify-between px-8 mb-8">
+          <div className="flex items-center gap-2">
+            <h1 className="text-3xl font-righteous text-[#397060] tracking-wide">
+              Yideshare
+            </h1>
           </div>
+          <TopNavButtons />
         </div>
-      </SidebarInset>
-    </SidebarProvider>
+      </header>
+
+      <div className="flex flex-1 flex-col gap-4 p-4">
+        <Separator />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {ownedRides.map((ride) => (
+            <ProfileRideCard key={ride.rideId} ride={ride} />
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }

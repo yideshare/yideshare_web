@@ -38,11 +38,11 @@ export default function FeedClient({
   }, [sortBy]);
 
   return (
-    <div className="relative flex flex-1 flex-col p-6">
-      <div className="absolute top-9 right-6 flex items-center text-sm text-muted-foreground gap-1">
+    <div className="relative flex flex-1 flex-col p-6 bg-white">
+      <div className="absolute top-9 right-6 flex items-center text-sm text-black gap-1">
         <span>Sort by:</span>
         <Select value={sortBy} onValueChange={setSortBy}>
-          <SelectTrigger className="h-8 w-[150px] rounded-lgx bg-secondary text-foreground">
+          <SelectTrigger className="h-8 w-[150px] rounded-lgx bg-white text-black">
             <SelectValue placeholder="Sort" />
           </SelectTrigger>
           <SelectContent>
@@ -67,7 +67,7 @@ export default function FeedClient({
               />
             ))
           ) : (
-            <p>No rides available.</p>
+            <p className="text-black">No rides available.</p>
           )}
         </div>
       </div>

@@ -20,6 +20,7 @@ import ShareYideDialog from "./ShareYideDialog";
 import { createStartEndDateTimes } from "@/lib/utils/time";
 
 import { Ride } from "@prisma/client";
+import { SelectValue } from "@/components/ui/select";
 
 /* -------------------------------------------------------------------------- */
 /*  props                                                                     */
@@ -51,34 +52,53 @@ export function TopBar({ onResults }: TopBarProps) {
   /* ----------------  live search --------------- */
   const runSearch = React.useMemo(
     () =>
-      debounce(async () => {
-        if (!fieldsFilled) return;
+      debounce(async (force = false) => {
+        // Always clear results first
+        onResults([]);
+
+        // If not all fields are filled and not forced, return early
+        if (!fieldsFilled && !force) {
+          return;
+        }
+
+        // If date is null, use current date
+        const searchDate = date ?? new Date();
 
         const qs = new URLSearchParams({
-          from,
-          to,
-          date: date!.toISOString(),
-          startTime,
-          endTime,
+          from: from || "",
+          to: to || "",
+          date: searchDate.toISOString(),
+          startTime: startTime || "",
+          endTime: endTime || "",
         }).toString();
 
         try {
           const res = await fetch(`/api/search-rides?${qs}`);
           if (!res.ok) throw new Error("Network error");
           const rides: Ride[] = await res.json();
-          onResults(rides);
+          // Only update results if we got valid rides back
+          if (Array.isArray(rides)) {
+            onResults(rides);
+          } else {
+            onResults([]);
+          }
         } catch (err) {
           console.error(err);
-          onResults([]); // empty fallback
+          onResults([]);
         }
       }, 300),
     [from, to, date, startTime, endTime, fieldsFilled, onResults]
   );
 
-  React.useEffect(() => {
-    runSearch();
-    return runSearch.cancel;
-  }, [runSearch]);
+  // Remove the automatic search on mount
+  // React.useEffect(() => {
+  //   runSearch();
+  //   return runSearch.cancel;
+  // }, [runSearch]);
+
+  const handleSearchClick = () => {
+    runSearch(true);
+  };
 
   /* ----------------  share‑a‑ride -------------- */
   async function handleShareYide(e: React.FormEvent) {
@@ -111,103 +131,119 @@ export function TopBar({ onResults }: TopBarProps) {
 
   /* ----------------  UI  ---------------- */
   return (
-    <div className="flex flex-wrap items-center gap-6 p-6 mx-4">
-      <div className="flex flex-wrap gap-4 w-full">
-        <div className="flex-1 min-w-[250px] max-w-[400px]">
-          <LocationCombobox
-            label="Leaving from"
-            placeholder="Select start…"
-            value={from}
-            onChange={setFrom}
-          />
-        </div>
-        <div className="flex-1 min-w-[250px] max-w-[400px]">
-          <LocationCombobox
-            label="Heading to"
-            placeholder="Select destination…"
-            value={to}
-            onChange={setTo}
-          />
-        </div>
+    <div className="flex flex-row flex-wrap items-center justify-between gap-4 w-full max-w-[1400px] mx-auto bg-white p-4 pr-2 rounded-2xl shadow-sm mb-8">
+      <div className="flex-none min-w-[200px]">
+        <label className="text-sm font-bold text-black">Leaving from</label>
+        <LocationCombobox
+          label=""
+          placeholder=""
+          value={from}
+          onChange={setFrom}
+        />
       </div>
-
-      {/* ---- Event Date (shadcn calendar) ---- */}
-      <div className="flex flex-col">
-        <label
-          htmlFor="event-date"
-          className="mb-1 text-sm font-medium leading-none"
-        >
-          Event Date
-        </label>
+      <div className="flex-none min-w-[200px]">
+        <label className="text-sm font-bold text-black">Going to</label>
+        <LocationCombobox
+          label=""
+          placeholder=""
+          value={to}
+          onChange={setTo}
+        />
+      </div>
+      <div className="flex-none min-w-[200px]">
+        <label className="text-sm font-bold text-black">Date</label>
         <Popover>
           <PopoverTrigger asChild>
             <Button
               id="event-date"
               variant="outline"
-              className="w-[220px] justify-start text-left font-normal"
+              className="justify-start text-left text-lg font-bold bg-transparent text-black w-full border-none"
             >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {date ? format(date, "PPP") : <span>Pick a date</span>}
+              <CalendarIcon className="mr-2 h-4 w-4 flex-shrink-0" />
+              {date ? format(date, "PPP") : <span className="text-gray-500">Pick a date</span>}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
             <Calendar
               mode="single"
               selected={date ?? undefined}
-              onSelect={setDate}
+              onSelect={(selectedDate) => {
+                if (selectedDate) {
+                  setDate(selectedDate);
+                }
+              }}
               initialFocus
             />
           </PopoverContent>
         </Popover>
       </div>
-
-      {/* ---- Start / End time ---- */}
-      <div className="grid grid-cols-2 gap-4">
-        <TimeSelect
-          label="Start time"
-          value={startTime}
-          onChange={setStartTime}
-        />
-        <TimeSelect
-          label="End time"
-          value={endTime}
-          onChange={setEndTime}
-        />
+      <div className="flex-none min-w-[200px]">
+        <label className="text-sm font-bold text-black">Time (EST)</label>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className="justify-start text-left text-lg font-bold bg-transparent text-black w-full border-none"
+            >
+              {startTime && endTime ? `${startTime} - ${endTime}` : <span className="text-gray-500">Select time</span>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-4" align="start">
+            <div className="flex gap-4">
+              <TimeSelect
+                label="Start time"
+                value={startTime}
+                onChange={setStartTime}
+                className="bg-transparent w-full"
+              />
+              <TimeSelect
+                label="End time"
+                value={endTime}
+                onChange={setEndTime}
+                className="bg-transparent w-full"
+              />
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
-
-      {/* ---------- Share a Yide ---------- */}
-      <div className="ml-auto self-end">
+      <div className="flex-none">
         <Button
-          className="bg-primary hover:bg-brand-600 text-primary-foreground"
+          className="bg-[#cde3dd] hover:bg-[#b8d4cc] text-black h-10 rounded-full w-[100px] mr-2"
+          onClick={handleSearchClick}
+        >
+          Search
+        </Button>
+        <Button
+          className="bg-[#397060] hover:bg-[#2d5848] text-white h-10 rounded-full w-[100px]"
           onClick={() => setOpen(true)}
         >
-          Share a Yide
+          Post Ride
         </Button>
-
-        <ShareYideDialog
-          open={open}
-          setOpen={setOpen}
-          /* sync with top‑bar fields */
-          from={from}
-          setFrom={setFrom}
-          to={to}
-          setTo={setTo}
-          startTime={startTime}
-          setStartTime={setStartTime}
-          endTime={endTime}
-          setEndTime={setEndTime}
-          /* dialog‑specific */
-          organizerName={organizerName}
-          setOrganizerName={setOrganizerName}
-          phoneNumber={phoneNumber}
-          setPhoneNumber={setPhoneNumber}
-          additionalPassengers={additionalPassengers}
-          setAdditionalPassengers={setAdditionalPassengers}
-          description={description}
-          setDescription={setDescription}
-          handleShareYide={handleShareYide}
-        />
       </div>
+
+      <ShareYideDialog
+        open={open}
+        setOpen={setOpen}
+        /* sync with top‑bar fields */
+        from={from}
+        setFrom={setFrom}
+        to={to}
+        setTo={setTo}
+        startTime={startTime}
+        setStartTime={setStartTime}
+        endTime={endTime}
+        setEndTime={setEndTime}
+        /* dialog‑specific */
+        organizerName={organizerName}
+        setOrganizerName={setOrganizerName}
+        phoneNumber={phoneNumber}
+        setPhoneNumber={setPhoneNumber}
+        additionalPassengers={additionalPassengers}
+        setAdditionalPassengers={setAdditionalPassengers}
+        description={description}
+        setDescription={setDescription}
+        handleShareYide={handleShareYide}
+      />
     </div>
   );
 }
