@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { findOwnedRide } from "@/lib/utils/ride";
-import { getUserNetIdFromCookies } from "@/lib/utils/user";
+import { findOwnedRide } from "@/lib/ride";
+import { getUserNetIdFromCookies } from "@/lib/user";
 
 export async function GET() {
   try {

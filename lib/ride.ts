@@ -84,26 +84,24 @@ export async function findFilteredRides(
 ) {
   // Build the where clause dynamically based on non-empty criteria
   const whereClause: any = {
-    AND: [
-      { isClosed: false }
-    ]
+    AND: [{ isClosed: false }],
   };
 
   // Only add location filters if they're not empty
   if (from) {
-    whereClause.AND.push({ 
+    whereClause.AND.push({
       beginning: {
         contains: from,
-        mode: "insensitive"
-      } 
+        mode: "insensitive",
+      },
     });
   }
   if (to) {
-    whereClause.AND.push({ 
-      destination: { 
+    whereClause.AND.push({
+      destination: {
         contains: to,
-        mode: "insensitive"
-      } 
+        mode: "insensitive",
+      },
     });
   }
 
@@ -118,7 +116,7 @@ export async function findFilteredRides(
   return prisma.ride.findMany({
     where: whereClause,
     orderBy: {
-      startTime: 'asc'
-    }
+      startTime: "asc",
+    },
   });
 }

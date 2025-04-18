@@ -46,7 +46,7 @@ export function getUserFromCookies(cookieStore: any) {
 
 export async function getUserNetIdFromCookies() {
   // retrieve cookies
-  const cookieStore = await cookies()
+  const cookieStore = await cookies();
   const userCookie = cookieStore.get("user");
   // check that cookies exist
   if (!userCookie) return null;

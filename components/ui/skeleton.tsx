@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils/frontend";
+import { cn } from "@/lib/frontend";
 
 function Skeleton({
   className,

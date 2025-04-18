@@ -1,7 +1,7 @@
 // app/bookmarks/page.tsx
 
-import { getUserNetIdFromCookies } from "@/lib/utils/user";
-import { findBookmarkedRides } from "@/lib/utils/ride";
+import { getUserNetIdFromCookies } from "@/lib/user";
+import { findBookmarkedRides } from "@/lib/ride";
 import BookmarksClient from "./bookmarks-client";
 
 export default async function BookmarkPage() {

@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
-import { bookmarkRide } from "@/lib/utils/ride";
-import { getUserNetIdFromCookies } from "@/lib/utils/user";
-import { extractRideIdFromPayload } from "@/lib/utils/validate";
+import { bookmarkRide } from "@/lib/ride";
+import { getUserNetIdFromCookies } from "@/lib/user";
+import { extractRideIdFromPayload } from "@/lib/validate";
 
 export async function POST(req: Request) {
   try {

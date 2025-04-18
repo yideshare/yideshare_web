@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
-import { findOrCreateUser } from "@/lib/utils/user";
-import { fetchYaliesData } from "@/lib/utils/yalies";
-import { extractNetIdFromCASTicket } from "@/lib/utils/validate";
+import { findOrCreateUser } from "@/lib/user";
+import { fetchYaliesData } from "@/lib/yalies";
+import { extractNetIdFromCASTicket } from "@/lib/validate";
 
 const BASE_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
 

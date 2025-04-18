@@ -3,7 +3,7 @@
 import FeedPage from "@/app/feed/feed-page";
 
 import { ResultsPageProps } from "@/app/interface/main";
-import { getUserNetIdFromCookies } from "@/lib/utils/user";
+import { getUserNetIdFromCookies } from "@/lib/user";
 
 export default async function Results(props: ResultsPageProps) {
   // get user cookies
@@ -14,7 +14,5 @@ export default async function Results(props: ResultsPageProps) {
     return <div>Please log in to view your rides.</div>;
   }
 
-  return (
-    <FeedPage />
-  );
+  return <FeedPage />;
 }

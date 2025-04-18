@@ -1,6 +1,6 @@
 import FeedPage from "@/app/feed/feed-page";
 
-import { getUserNetIdFromCookies } from "@/lib/utils/user";
+import { getUserNetIdFromCookies } from "@/lib/user";
 
 export default async function Feed() {
   // get user cookies
@@ -11,7 +11,5 @@ export default async function Feed() {
     return <div>Please log in to view your rides.</div>;
   }
 
-  return (
-    <FeedPage />
-  );
+  return <FeedPage />;
 }

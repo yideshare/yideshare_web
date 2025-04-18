@@ -1,9 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { Calendar, User, Bookmark, PowerOffIcon, MessageSquare } from "lucide-react";
+import {
+  Calendar,
+  User,
+  Bookmark,
+  PowerOffIcon,
+  MessageSquare,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils/frontend";
+import { cn } from "@/lib/frontend";
 
 const navItems = [
   {
@@ -30,7 +36,7 @@ const navItems = [
     title: "Logout",
     url: "/api/auth/logout",
     icon: PowerOffIcon,
-    isButton: true
+    isButton: true,
   },
 ];
 
@@ -69,4 +75,4 @@ export function TopNavButtons() {
       })}
     </div>
   );
-} 
+}

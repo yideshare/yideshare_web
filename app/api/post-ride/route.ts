@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-import { createRide } from "@/lib/utils/ride";
-import { getUserNetIdFromCookies } from "@/lib/utils/user";
+import { createRide } from "@/lib/ride";
+import { getUserNetIdFromCookies } from "@/lib/user";
 
 export async function POST(request: Request) {
   try {

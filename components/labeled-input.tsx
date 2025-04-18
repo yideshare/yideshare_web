@@ -1,5 +1,5 @@
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils/frontend";
+import { cn } from "@/lib/frontend";
 
 interface LabeledInputProps {
   label: string;
@@ -22,7 +22,8 @@ export function LabeledInput({
   showError = false,
   className = "",
 }: LabeledInputProps) {
-  const isEmpty = typeof value === "string" ? value.trim() === "" : value === undefined;
+  const isEmpty =
+    typeof value === "string" ? value.trim() === "" : value === undefined;
   const shouldShowError = required && showError && isEmpty;
 
   return (
