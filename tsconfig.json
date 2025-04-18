@@ -33,7 +33,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "components/ride-card/profile-ride-card"
+    "components",
+    "lib",
+    "utils"
   ],
   "exclude": [
     "node_modules"
