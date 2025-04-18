@@ -6,8 +6,8 @@ export async function createRide(ride: any, netId: string) {
       ownerNetId: netId,
       ownerName: ride.ownerName || "",
       ownerPhone: ride.ownerPhone || "",
-      beginning: ride.beginning.toLowerCase(),
-      destination: ride.destination.toLowerCase(),
+      beginning: ride.beginning,
+      destination: ride.destination,
       description: ride.description || "",
       startTime: new Date(ride.startTime),
       endTime: new Date(ride.endTime),
@@ -92,15 +92,17 @@ export async function findFilteredRides(
   // Only add location filters if they're not empty
   if (from) {
     whereClause.AND.push({ 
-      beginning: { 
-        equals: from.toLowerCase()
+      beginning: {
+        contains: from,
+        mode: "insensitive"
       } 
     });
   }
   if (to) {
     whereClause.AND.push({ 
       destination: { 
-        equals: to.toLowerCase()
+        contains: to,
+        mode: "insensitive"
       } 
     });
   }

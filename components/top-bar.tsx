@@ -20,7 +20,6 @@ import ShareYideDialog from "./ShareYideDialog";
 import { createStartEndDateTimes } from "@/lib/utils/time";
 
 import { Ride } from "@prisma/client";
-import { SelectValue } from "@/components/ui/select";
 
 /* -------------------------------------------------------------------------- */
 /*  props                                                                     */
@@ -110,8 +109,6 @@ export function TopBar({ onResults }: TopBarProps) {
       startTime,
       endTime
     );
-
-    console.log(selectedDate, startTime, endTime)
 
     const rideData = {
       ownerName: organizerName,
