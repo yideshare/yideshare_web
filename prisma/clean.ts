@@ -1,5 +1,7 @@
 import { prisma } from '@/lib/prisma'; 
 
+// add this to a vercel cron script when deployed
+
 async function closeExpiredRides() {
   const now = new Date();
 
