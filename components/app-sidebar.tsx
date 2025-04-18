@@ -23,7 +23,7 @@ import { cn } from "@/lib/frontend";
 
 const navItems = [
   {
-    title: "Upcoming Rides",
+    title: "Feed",
     // route to /feed or whatever you want
     url: "/feed",
     icon: Calendar,
