@@ -1,7 +1,7 @@
 import { Ride, User } from "@prisma/client";
 
-export interface FeedClientProps {
-  rides: Ride[];
+export interface FeedPageClientProps {
+  initialRides: Ride[];
   bookmarkedRideIds: string[];
 }
 
