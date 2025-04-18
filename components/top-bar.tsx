@@ -17,7 +17,7 @@ import {
 import { TimeSelect } from "@/components/ui/time-select";
 import { LocationCombobox } from "@/components/location-combobox";
 import ShareYideDialog from "./ShareYideDialog";
-import { createStartEndDateTimes } from "@/lib/utils/time";
+import { createStartEndDateTimes } from "@/lib/time";
 
 import { Ride } from "@prisma/client";
 
@@ -142,12 +142,7 @@ export function TopBar({ onResults }: TopBarProps) {
       </div>
       <div className="flex-none min-w-[200px]">
         <label className="text-sm font-bold text-black">Going to</label>
-        <LocationCombobox
-          label=""
-          placeholder=""
-          value={to}
-          onChange={setTo}
-        />
+        <LocationCombobox label="" placeholder="" value={to} onChange={setTo} />
       </div>
       <div className="flex-none min-w-[200px]">
         <label className="text-sm font-bold text-black">Date</label>
@@ -159,7 +154,11 @@ export function TopBar({ onResults }: TopBarProps) {
               className="justify-start text-left text-lg font-bold bg-transparent text-black w-full border-none"
             >
               <CalendarIcon className="mr-2 h-4 w-4 flex-shrink-0" />
-              {date ? format(date, "PPP") : <span className="text-gray-500">Pick a date</span>}
+              {date ? (
+                format(date, "PPP")
+              ) : (
+                <span className="text-gray-500">Pick a date</span>
+              )}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
@@ -184,7 +183,11 @@ export function TopBar({ onResults }: TopBarProps) {
               variant="outline"
               className="justify-start text-left text-lg font-bold bg-transparent text-black w-full border-none"
             >
-              {startTime && endTime ? `${startTime} - ${endTime}` : <span className="text-gray-500">Select time</span>}
+              {startTime && endTime ? (
+                `${startTime} - ${endTime}`
+              ) : (
+                <span className="text-gray-500">Select time</span>
+              )}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-4" align="start">

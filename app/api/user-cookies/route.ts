@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-import { getUserFromCookies } from "@/lib/utils/user";
+import { getUserFromCookies } from "@/lib/user";
 
 export async function GET() {
   const cookieStore = await cookies();

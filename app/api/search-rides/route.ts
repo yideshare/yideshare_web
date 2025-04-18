@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { findFilteredRides } from "@/lib/utils/ride";
+import { findFilteredRides } from "@/lib/ride";
 
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-    
+
     const from = searchParams.get("from") || "";
     const to = searchParams.get("to") || "";
     const date = searchParams.get("date") || new Date().toISOString();
@@ -13,11 +13,11 @@ export async function GET(request: NextRequest) {
 
     // Convert date string to Date object
     const dateObject = new Date(date);
-    
+
     // Create start and end time objects
     const startTimeObject = new Date(dateObject);
     const endTimeObject = new Date(dateObject);
-    
+
     if (startTime) {
       const [time, period] = startTime.split(" ");
       const [hours, minutes] = time.split(":").map(Number);
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
       }
       startTimeObject.setHours(adjustedHours, minutes);
     }
-    
+
     if (endTime) {
       const [time, period] = endTime.split(" ");
       const [hours, minutes] = time.split(":").map(Number);
@@ -58,4 +58,4 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
-} 
+}

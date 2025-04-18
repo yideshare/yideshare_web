@@ -1,7 +1,7 @@
 // yideshare/app/feed/feed-page.tsx  (server component)
 import FeedPageClient from "@/app/feed/feed-page-client";
-import { getUserNetIdFromCookies } from "@/lib/utils/user";
-import { findBookmarkedRides, findManyRides } from "@/lib/utils/ride";
+import { getUserNetIdFromCookies } from "@/lib/user";
+import { findBookmarkedRides, findManyRides } from "@/lib/ride";
 
 export default async function FeedPage() {
   /* ----------------  auth  ---------------- */

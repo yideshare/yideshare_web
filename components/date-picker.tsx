@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { format } from "date-fns";
 import { DayPicker } from "react-day-picker";
-import { cn } from "@/lib/utils/frontend";
+import { cn } from "@/lib/frontend";
 
 interface DatePickerProps {
   date: Date | null;
@@ -32,7 +32,7 @@ export default function DatePicker({
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
-      
+
       {mounted ? (
         <>
           <button
@@ -45,7 +45,7 @@ export default function DatePicker({
           >
             {date ? format(date, "yyyy-MM-dd") : "Select a date"}
           </button>
-          
+
           {shouldShowError && (
             <p className="text-red-500 text-xs">This field is required</p>
           )}
