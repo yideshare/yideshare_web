@@ -24,6 +24,10 @@ export default function FeedClient({
   const [sortBy, setSortBy] = React.useState("recent");
 
   React.useEffect(() => {
+    setRides(rides);
+  }, [rides]);
+
+  React.useEffect(() => {
     const sorted = [...localRides];
     if (sortBy === "recent") {
       sorted.sort((a, b) => +new Date(b.startTime) - +new Date(a.startTime));

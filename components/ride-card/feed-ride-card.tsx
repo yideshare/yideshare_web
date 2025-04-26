@@ -32,6 +32,7 @@ export default function FeedRideCard({
   ride,
   occupants = [],
   isBookmarkedInitial,
+  showDialog = true,
 }: FeedRideCardProps) {
   const { toast } = useToast();
   const [isBookmarked, setIsBookmarked] = React.useState(isBookmarkedInitial);
@@ -97,73 +98,81 @@ export default function FeedRideCard({
   };
 
   /* ------------ UI ------------ */
+  const cardContent = (
+    <Card className="rounded-2xl border border-border bg-white px-6 py-4 shadow-card hover:shadow-cardHover cursor-pointer">
+      <div className="grid grid-cols-4 gap-1">
+        <div>
+          <p className="text-lg font-medium text-black mb-1">
+            Leaving from
+          </p>
+          <p className="text-2xl font-semibold text-black">{ride.beginning}</p>
+        </div>
+
+        <div>
+          <p className="text-lg font-medium text-black mb-1">
+            Going to
+          </p>
+          <p className="text-2xl font-semibold text-black">{ride.destination}</p>
+        </div>
+
+        <div>
+          <p className="text-lg font-medium text-black mb-1">
+            Date
+          </p>
+          <p className="text-2xl font-semibold text-black">{dateLabel}</p>
+        </div>
+
+        <div>
+          <p className="text-lg font-medium text-black mb-1">
+            Time (EST)
+          </p>
+          <p className="text-2xl font-semibold text-black">{timeLabel}</p>
+        </div>
+      </div>
+
+      <div className="h-px bg-border my-4" />
+
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <div className="h-12 w-12 flex items-center justify-center rounded-full bg-muted text-2xl font-semibold text-black">
+            {ownerName[0]}
+          </div>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-black">
+            <span className="text-xl">{ownerName}</span>
+            <span className="text-xl text-black">
+              {ride.ownerEmail ?? "driver@yale.edu"}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span className="text-lg text-black">{postedAgo}</span>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={(e) => {
+              e.stopPropagation();
+              handleBookmark();
+            }}
+          >
+            <Bookmark
+              className="h-5 w-5 text-primary"
+              style={{ fill: isBookmarked ? "currentColor" : "none" }}
+            />
+          </Button>
+        </div>
+      </div>
+    </Card>
+  );
+
+  if (!showDialog) {
+    return cardContent;
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Card className="rounded-2xl border border-border bg-white px-6 py-4 shadow-card hover:shadow-cardHover cursor-pointer">
-          <div className="grid grid-cols-4 gap-1">
-            <div>
-              <p className="text-lg font-medium text-black mb-1">
-                Leaving from
-              </p>
-              <p className="text-2xl font-semibold text-black">{ride.beginning}</p>
-            </div>
-
-            <div>
-              <p className="text-lg font-medium text-black mb-1">
-                Going to
-              </p>
-              <p className="text-2xl font-semibold text-black">{ride.destination}</p>
-            </div>
-
-            <div>
-              <p className="text-lg font-medium text-black mb-1">
-                Date
-              </p>
-              <p className="text-2xl font-semibold text-black">{dateLabel}</p>
-            </div>
-
-            <div>
-              <p className="text-lg font-medium text-black mb-1">
-                Time (EST)
-              </p>
-              <p className="text-2xl font-semibold text-black">{timeLabel}</p>
-            </div>
-          </div>
-
-          <div className="h-px bg-border my-4" />
-
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="h-12 w-12 flex items-center justify-center rounded-full bg-muted text-2xl font-semibold text-black">
-                {ownerName[0]}
-              </div>
-              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-black">
-                <span className="text-xl">{ownerName}</span>
-                <span className="text-xl text-black">
-                  {ride.ownerEmail ?? "driver@yale.edu"}
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <span className="text-lg text-black">{postedAgo}</span>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleBookmark();
-                }}
-              >
-                <Bookmark
-                  className="h-5 w-5 text-primary"
-                  style={{ fill: isBookmarked ? "currentColor" : "none" }}
-                />
-              </Button>
-            </div>
-          </div>
-        </Card>
+        {cardContent}
       </DialogTrigger>
 
       {/* -------- Dialog -------- */}

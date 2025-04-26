@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/popover";
 import { format } from "date-fns";
 import * as React from "react";
+import Link from "next/link";
 
 export default function Home() {
   const [date, setDate] = React.useState<Date | null>(new Date());
@@ -39,9 +40,11 @@ export default function Home() {
         <div className="relative z-10 flex flex-col h-full">
           {/* ---- NAV ---- */}
           <nav className="flex items-center justify-between px-6 py-4 lg:px-12">
-            <h1 className="font-righteous tracking-wide text-white text-2xl md:text-3xl">
-              Yideshare
-            </h1>
+            <Link href="/feed">
+              <h1 className="font-righteous tracking-wide text-white text-2xl md:text-3xl hover:text-white/90 transition-colors">
+                Yideshare
+              </h1>
+            </Link>
             <button
               onClick={() => (window.location.href = "/api/auth/cas-login")}
               className="inline-flex items-center gap-2 rounded-full bg-white/90 px-5 py-2 text-sm font-semibold text-primary shadow hover:bg-white"
@@ -64,70 +67,6 @@ export default function Home() {
                 helps Yale students coordinate cheap, reliable rides.
               </p>
             </div>
-
-            {/* Search Form */}
-            <form
-              onSubmit={(e) => e.preventDefault()}
-              className="mt-8 w-full max-w-5xl mx-auto bg-white/90 backdrop-blur-md shadow-lg px-6 py-6 rounded-2xl"
-            >
-              <div className="flex flex-wrap items-end gap-4">
-                <div className="flex-1 min-w-[180px]">
-                  <LocationCombobox
-                    label="From"
-                    placeholder="Leaving from"
-                    value={fromLocation}
-                    onChange={(val) => {
-                      setFromLocation(val);
-                    }}
-                  />
-                </div>
-                <div className="flex-1 min-w-[180px]">
-                  <LocationCombobox
-                    label="To"
-                    placeholder="Going to"
-                    value={toLocation}
-                    onChange={(val) => {
-                      setToLocation(val);
-                    }}
-                  />
-                </div>
-
-                {/* Date Picker */}
-                <div className="flex flex-col">
-                  <label htmlFor="date" className="mb-1 text-sm font-medium">
-                    Date
-                  </label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        id="date"
-                        variant="outline"
-                        className="w-[180px] justify-start text-left font-normal bg-white"
-                      >
-                        <Calendar className="mr-2 h-4 w-4" />
-                        {date ? format(date, "PPP") : <span>Pick a date</span>}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <ShadCalendar
-                        mode="single"
-                        selected={date ?? undefined}
-                        onSelect={(day) => setDate(day ?? null)}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
-
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  className="rounded-full bg-[#386f5f] px-6 py-2 text-sm font-semibold text-white shadow hover:bg-[#2b574c]"
-                >
-                  Find a ride
-                </button>
-              </div>
-            </form>
           </div>
         </div>
       </section>
