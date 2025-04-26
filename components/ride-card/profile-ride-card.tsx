@@ -1,6 +1,5 @@
 // yideshare/components/ride-card/profile-ride-card.tsx
 "use client";
-
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -75,11 +74,37 @@ export default function ProfileRideCard({
   /*  handlers                                                              */
   /* ---------------------------------------------------------------------- */
 
-  function handleCloseListing() {
-    toast({
-      title: "Listing Closed",
-      description: `You closed ride #${ride.rideId}.`,
-    });
+  async function handleCloseListing() {
+    try {
+      
+      const response = await fetch(`/api/update-ride/${ride.rideId}`, {
+        
+        method: "PATCH",
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        toast({
+          title: "Ride Closed",
+          description: data.message || `Ride #${ride.rideId} has been closed.`,
+        });
+        // Optional: refresh page or update UI state to remove ride from list
+      } else {
+        toast({
+          title: "Error",
+          description: data.error || `Failed to close ride #${ride.rideId}.`,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error closing ride:", error);
+      toast({
+        title: "Network Error",
+        description: "Failed to close ride. Please try again.",
+        variant: "destructive",
+      });
+    }
   }
 
   function handleRemove() {
@@ -184,13 +209,13 @@ export default function ProfileRideCard({
                 Close Listing
               </Button>
             )}
-            <Button variant="outline" onClick={handleRemove}>
+            {/* <Button variant="outline" onClick={handleRemove}>
               Remove Ride
-            </Button>
-            <Button variant="outline" onClick={handleMessageAll}>
+            </Button> */}
+            {/* <Button variant="outline" onClick={handleMessageAll}>
               <MessageSquare className="mr-2 h-4 w-4" />
               Message Riders
-            </Button>
+            </Button> */}
           </div>
         </div>
       </DialogContent>
