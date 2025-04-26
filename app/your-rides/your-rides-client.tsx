@@ -27,12 +27,12 @@ export default function YourRidesClient({ ownedRides }: YourRidesClientProps) {
       <div className="flex flex-1 flex-col gap-4 p-4">
         <Separator />
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {ownedRides.map((ride) => (
-            <ProfileRideCard key={ride.rideId} ride={ride} />
-          ))}
+          {ownedRides
+            .map((ride) => (
+              <ProfileRideCard key={ride.rideId} ride={ride} />
+            ))}
         </div>
       </div>
     </div>
   );
-} 
- 
+}
