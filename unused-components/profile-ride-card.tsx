@@ -3,8 +3,8 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { X, Check, MessageSquare } from "lucide-react";
 import { Ride, User, RideRequest } from "@prisma/client";
+// import { X, Check, MessageSquare } from "lucide-react";
 
 import {
   Card,
@@ -69,7 +69,7 @@ export default function ProfileRideCard({
   /*  local state                                                           */
   /* ---------------------------------------------------------------------- */
 
-  const [requests, setRequests] = React.useState(initialRequests);
+  // const [requests, setRequests] = React.useState(initialRequests);
 
   /* ---------------------------------------------------------------------- */
   /*  handlers                                                              */
@@ -106,19 +106,19 @@ export default function ProfileRideCard({
     }
   }
 
-  function handleRemove() {
-    toast({
-      title: "Ride Removed",
-      description: `You removed ride #${ride.rideId}.`,
-    });
-  }
+  // function handleRemove() {
+  //   toast({
+  //     title: "Ride Removed",
+  //     description: `You removed ride #${ride.rideId}.`,
+  //   });
+  // }
 
-  function handleMessageAll() {
-    toast({
-      title: "Message Sent",
-      description: `You messaged all riders in ride #${ride.rideId}.`,
-    });
-  }
+  // function handleMessageAll() {
+  //   toast({
+  //     title: "Message Sent",
+  //     description: `You messaged all riders in ride #${ride.rideId}.`,
+  //   });
+  // }
 
   /* ---------------------------------------------------------------------- */
   /*  UI                                                                    */
@@ -168,7 +168,7 @@ export default function ProfileRideCard({
           <div>
             <h3 className="text-sm font-semibold">Requests</h3>
 
-            {requests.length === 0 ? (
+            {/* {requests.length === 0 ? (
               <p className="text-xs text-muted-foreground italic">
                 No pending requests
               </p>
@@ -198,7 +198,7 @@ export default function ProfileRideCard({
                   </li>
                 ))}
               </ul>
-            )}
+            )} */}
           </div>
 
           {/* ---------------- actions ---------------- */}

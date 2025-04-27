@@ -1,7 +1,6 @@
 // app/results/page.tsx
 
 import { createStartEndDateTimes } from "@/lib/time";
-import { ResultsPageProps } from "@/app/interface/main";
 import { findBookmarkedRides, findFilteredRides } from "@/lib/ride";
 import { extractSearchParams } from "@/lib/search";
 import { getUserNetIdFromCookies } from "@/lib/user";
@@ -36,14 +35,11 @@ export default async function Results({ searchParams }: { searchParams: Promise<
   } = extractSearchParams(resolvedSearchParams);
 
   // create start and end time objects
-  console.log("DATE:", date)
   const { startTimeObject, endTimeObject } = createStartEndDateTimes(
     date,
     startTimeString,
     endTimeString
   );
-
-  console.log("START", startTimeObject, "END", endTimeObject)
 
   // fetch rides that match filter criteria
   const filteredRides = await findFilteredRides(

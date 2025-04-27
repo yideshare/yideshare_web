@@ -16,7 +16,8 @@ export async function DELETE(
       );
     }
 
-    const rideId = await Promise.resolve(params.rideId);
+    // const rideId = await Promise.resolve(params.rideId);
+    const rideId = params.rideId;
 
     // Find the ride to ensure it exists and belongs to the user
     const ride = await prisma.ride.findUnique({
@@ -74,7 +75,8 @@ export async function PATCH(
       );
     }
 
-    const rideId = await Promise.resolve(params.rideId);
+    // const rideId = await Promise.resolve(params.rideId);
+    const rideId = params.rideId;
 
     // Find the ride to ensure it exists and belongs to the user
     const existingRide = await prisma.ride.findUnique({

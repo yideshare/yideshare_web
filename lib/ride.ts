@@ -1,8 +1,8 @@
 import { prisma } from "@/lib/prisma";
+import { Ride } from "@prisma/client"
 
-export async function createRide(ride: any, netId: string) {
+export async function createRide(ride: Ride, netId: string) {
   try {
-    console.log("Creating ride with data:", { ride, netId });
     const newRide = await prisma.ride.create({
       data: {
         ownerNetId: netId,

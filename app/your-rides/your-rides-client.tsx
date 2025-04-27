@@ -12,9 +12,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { format } from "date-fns";
-import { MessageSquare, Trash2, Edit2 } from "lucide-react";
-import FeedRideCard from "@/components/ride-card/feed-ride-card";
+// import { format } from "date-fns";
+import { Trash2 } from "lucide-react";
+import FeedRideCard from "@/components/feed-ride-card";
 import EditRideDialog from "@/components/EditRideDialog";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/button";
 interface YourRidesClientProps {
   ownedRides: Ride[];
 }
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || '';
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
 export default function YourRidesClient({ ownedRides }: YourRidesClientProps) {
   const { toast } = useToast();
@@ -36,17 +36,23 @@ export default function YourRidesClient({ ownedRides }: YourRidesClientProps) {
     const sortedRides = [...localRides];
     switch (sortBy) {
       case "recent":
-        sortedRides.sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime());
+        sortedRides.sort(
+          (a, b) =>
+            new Date(b.startTime).getTime() - new Date(a.startTime).getTime()
+        );
         break;
       case "oldest":
-        sortedRides.sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
+        sortedRides.sort(
+          (a, b) =>
+            new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
+        );
         break;
       case "alphabetical":
         sortedRides.sort((a, b) => a.beginning.localeCompare(b.beginning));
         break;
     }
     setLocalRides(sortedRides);
-  }, [sortBy]);
+  }, [sortBy, localRides]);
 
   const handleDeleteRide = async (rideId: string) => {
     try {
@@ -57,7 +63,7 @@ export default function YourRidesClient({ ownedRides }: YourRidesClientProps) {
         const error = await res.json();
         throw new Error(error.error || "Failed to delete ride");
       }
-      setLocalRides(localRides.filter(ride => ride.rideId !== rideId));
+      setLocalRides(localRides.filter((ride) => ride.rideId !== rideId));
       toast({
         title: "Ride Deleted",
         description: "Your ride has been successfully deleted.",
@@ -65,7 +71,10 @@ export default function YourRidesClient({ ownedRides }: YourRidesClientProps) {
     } catch (error) {
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to delete ride. Please try again.",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Failed to delete ride. Please try again.",
         variant: "destructive",
       });
     }
@@ -81,14 +90,17 @@ export default function YourRidesClient({ ownedRides }: YourRidesClientProps) {
       });
       if (!res.ok) throw new Error("Failed to update ride");
       const updatedRideData = await res.json();
-      setLocalRides(localRides.map(ride => 
-        ride.rideId === editingRide.rideId ? updatedRideData : ride
-      ));
+      setLocalRides(
+        localRides.map((ride) =>
+          ride.rideId === editingRide.rideId ? updatedRideData : ride
+        )
+      );
       toast({
         title: "Ride Updated",
         description: "Your ride has been successfully updated.",
       });
     } catch (error) {
+      console.log(error);
       toast({
         title: "Error",
         description: "Failed to update ride. Please try again.",
@@ -139,7 +151,7 @@ export default function YourRidesClient({ ownedRides }: YourRidesClientProps) {
           <div className="flex flex-col gap-6 max-w-[1200px] w-full">
             {localRides.map((ride) => (
               <div key={ride.rideId} className="w-full">
-                <div 
+                <div
                   className="relative"
                   onClick={() => {
                     setEditingRide(ride);

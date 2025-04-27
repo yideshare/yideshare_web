@@ -130,7 +130,7 @@ export function LocationCombobox({
                       value === inputValue ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  Create "{inputValue}"
+                  Create &quot;{inputValue}&quot;
                 </CommandItem>
               )}
             </CommandList>

@@ -1,4 +1,4 @@
-import { Ride, User } from "@prisma/client";
+import { Ride } from "@prisma/client";
 
 export interface FeedPageClientProps {
   initialRides: Ride[];

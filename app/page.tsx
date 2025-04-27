@@ -2,24 +2,19 @@
 
 import Image from "next/image";
 import { LogIn, MapPin, Calendar, Users } from "lucide-react";
-import { LocationCombobox } from "@/components/location-combobox";
-import { Button } from "@/components/ui/button";
-import { Calendar as ShadCalendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
-import { format } from "date-fns";
+// import { LocationCombobox } from "@/components/location-combobox";
+// import { Button } from "@/components/ui/button";
+// import { Calendar as ShadCalendar } from "@/components/ui/calendar";
+// import {
+//   Popover,
+//   PopoverTrigger,
+//   PopoverContent,
+// } from "@/components/ui/popover";
+// import { format } from "date-fns";
 import * as React from "react";
 import Link from "next/link";
 
 export default function Home() {
-  const [date, setDate] = React.useState<Date | null>(new Date());
-  // Add state for the from and to locations
-  const [fromLocation, setFromLocation] = React.useState<string>("");
-  const [toLocation, setToLocation] = React.useState<string>("");
-
   return (
     <main className="relative min-h-screen bg-white flex flex-col">
       {/* ================= HERO ================= */}

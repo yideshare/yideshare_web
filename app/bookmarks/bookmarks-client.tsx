@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { TopNavButtons } from "@/components/top-nav-buttons";
 import { Ride } from "@prisma/client";
 import Link from "next/link";
-import { MessageSquare } from "lucide-react";
+// import { MessageSquare } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -13,13 +13,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import FeedRideCard from "@/components/ride-card/feed-ride-card";
+import FeedRideCard from "@/components/feed-ride-card";
 
 interface BookmarksClientProps {
   bookmarkedRides: Ride[];
 }
 
-export default function BookmarksClient({ bookmarkedRides }: BookmarksClientProps) {
+export default function BookmarksClient({
+  bookmarkedRides,
+}: BookmarksClientProps) {
   const [sortBy, setSortBy] = React.useState<string>("recent");
   const [localRides, setLocalRides] = React.useState<Ride[]>(bookmarkedRides);
 
@@ -28,17 +30,23 @@ export default function BookmarksClient({ bookmarkedRides }: BookmarksClientProp
     const sortedRides = [...localRides];
     switch (sortBy) {
       case "recent":
-        sortedRides.sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime());
+        sortedRides.sort(
+          (a, b) =>
+            new Date(b.startTime).getTime() - new Date(a.startTime).getTime()
+        );
         break;
       case "oldest":
-        sortedRides.sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
+        sortedRides.sort(
+          (a, b) =>
+            new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
+        );
         break;
       case "alphabetical":
         sortedRides.sort((a, b) => a.beginning.localeCompare(b.beginning));
         break;
     }
     setLocalRides(sortedRides);
-  }, [sortBy]);
+  }, [sortBy, localRides]);
 
   return (
     <div className="bg-white min-h-screen">
@@ -82,10 +90,7 @@ export default function BookmarksClient({ bookmarkedRides }: BookmarksClientProp
           <div className="flex flex-col gap-6 max-w-[1200px] w-full">
             {localRides.map((ride) => (
               <div key={ride.rideId} className="w-full">
-                <FeedRideCard
-                  ride={ride}
-                  isBookmarkedInitial={true}
-                />
+                <FeedRideCard ride={ride} isBookmarkedInitial={true} />
               </div>
             ))}
           </div>
@@ -93,4 +98,4 @@ export default function BookmarksClient({ bookmarkedRides }: BookmarksClientProp
       </div>
     </div>
   );
-} 
+}

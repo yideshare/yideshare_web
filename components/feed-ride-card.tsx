@@ -3,12 +3,12 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Bookmark, Calendar } from "lucide-react";
+import { Bookmark } from "lucide-react";
 
 import {
   Card,
-  CardContent,
-  CardHeader,
+  // CardContent,
+  // CardHeader,
 } from "@/components/ui/card";
 
 import {
@@ -17,18 +17,18 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
-  DialogFooter,
+  // DialogDescription,
+  // DialogFooter,
 } from "@/components/ui/dialog";
 
-import {
-  Tooltip,
-  TooltipProvider,
-  TooltipContent,
-} from "@/components/ui/tooltip";
+// import {
+//   Tooltip,
+//   TooltipProvider,
+//   TooltipContent,
+// } from "@/components/ui/tooltip";
 
-import { Checkbox } from "@/components/ui/checkbox";
-import { Textarea } from "@/components/ui/textarea";
+// import { Checkbox } from "@/components/ui/checkbox";
+// import { Textarea } from "@/components/ui/textarea";
 
 import { FeedRideCardProps } from "@/app/interface/main";
 
@@ -40,8 +40,8 @@ export default function FeedRideCard({
 }: FeedRideCardProps) {
   const { toast } = useToast();
   const [isBookmarked, setIsBookmarked] = React.useState(isBookmarkedInitial);
-  const [message, setMessage] = React.useState("Hi, is this ride still available...");
-  const [requestSeat, setRequestSeat] = React.useState(false);
+  // const [message, setMessage] = React.useState("Hi, is this ride still available...");
+  // const [requestSeat, setRequestSeat] = React.useState(false);
 
   const formatPhoneNumber = (phone: string) => {
     // Remove all non-digit characters
