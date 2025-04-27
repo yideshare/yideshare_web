@@ -37,6 +37,7 @@ export function TopBar({ onResults }: TopBarProps) {
   const [date, setDate] = React.useState<Date | null>(new Date());
   const [startTime, setStartTime] = React.useState("");
   const [endTime, setEndTime] = React.useState("");
+  const [mounted, setMounted] = React.useState(false); 
 
   /* share‑a‑ride fields */
   const [open, setOpen] = React.useState(false);
@@ -45,49 +46,66 @@ export function TopBar({ onResults }: TopBarProps) {
   const [additionalPassengers, setAdditionalPassengers] = React.useState(0);
   const [description, setDescription] = React.useState("");
 
+  //TODO: print out where the error is
+  const [errors, setErrors] = React.useState({
+    //requires these fields
+    fromError: "",
+    toError: "",
+    dateError: "",
+    startTimeError: "",
+    endTimeError: "",
+    organizerNameError: "",
+    phoneNumberError: "",
+  });
+
+  React.useEffect(() => {
+    setMounted(true); 
+    setDate(new Date()); 
+  }, []);
+
   /* ----------------  helpers  ---------------- */
   const fieldsFilled = from && to && date && startTime && endTime;
 
   /* ----------------  live search --------------- */
-  const runSearch = React.useMemo(
-    () =>
-      debounce(async (force = false) => {
-        // Always clear results first
-        onResults([]);
+  // const runSearch = React.useMemo(
+  //   () =>
+  //     debounce(async (force = false) => {
+  //       // Always clear results first
+  //       onResults([]);
 
-        // If not all fields are filled and not forced, return early
-        if (!fieldsFilled && !force) {
-          return;
-        }
+  //       // If not all fields are filled and not forced, return early
+  //       if (!fieldsFilled && !force) {
+  //         return;
+  //       }
 
-        // If date is null, use current date
-        const searchDate = date ?? new Date();
+  //       // If date is null, use current date
+  //       const searchDate = date ?? new Date();
 
-        const qs = new URLSearchParams({
-          from: from || "",
-          to: to || "",
-          date: searchDate.toISOString(),
-          startTime: startTime || "",
-          endTime: endTime || "",
-        }).toString();
+  //       const qs = new URLSearchParams({
+  //         from: from || "",
+  //         to: to || "",
+  //         date: searchDate.toISOString(),
+  //         startTime: startTime || "",
+  //         endTime: endTime || "",
+  //       }).toString();
 
-        try {
-          const res = await fetch(`/api/search-rides?${qs}`);
-          if (!res.ok) throw new Error("Network error");
-          const rides: Ride[] = await res.json();
-          // Only update results if we got valid rides back
-          if (Array.isArray(rides)) {
-            onResults(rides);
-          } else {
-            onResults([]);
-          }
-        } catch (err) {
-          console.error(err);
-          onResults([]);
-        }
-      }, 300),
-    [from, to, date, startTime, endTime, fieldsFilled, onResults]
-  );
+  //       try {
+  //         const res = await fetch(`/api/search-rides?${qs}`);
+  //         if (!res.ok) throw new Error("Network error");
+  //         const rides: Ride[] = await res.json();
+  //         // Only update results if we got valid rides back
+  //         if (Array.isArray(rides)) {
+  //           onResults(rides);
+  //         } else {
+  //           onResults([]);
+  //         }
+  //       } catch (err) {
+  //         console.error(err);
+  //         onResults([]);
+  //       }
+  //     }, 300),
+  //   [from, to, date, startTime, endTime, fieldsFilled, onResults]
+  // );
 
   // Remove the automatic search on mount
   // React.useEffect(() => {
@@ -95,8 +113,33 @@ export function TopBar({ onResults }: TopBarProps) {
   //   return runSearch.cancel;
   // }, [runSearch]);
 
-  const handleSearchClick = () => {
-    runSearch(true);
+  const handleFindRide = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Ensure required fields are filled
+    if (!from || !to || !date || !startTime || !endTime) {
+      setErrors({
+        fromError: !from ? "Leaving from is required" : "",
+        toError: !to ? "Heading to is required" : "",
+        dateError: !date ? "Date is required" : "",
+        startTimeError: !startTime ? "Start time is required" : "",
+        endTimeError: !endTime ? "End time is required" : "",
+        phoneNumberError: "",
+        organizerNameError: "",
+      });
+      return;
+    }
+
+    const queryString = `from=${encodeURIComponent(
+      from
+    )}&to=${encodeURIComponent(to)}&date=${encodeURIComponent(
+      date.getDate()
+    )}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(
+      endTime
+    )}`;
+
+    // Redirect to results page
+    window.location.href = `http://localhost:3000//results?${queryString}`;
   };
 
   /* ----------------  share‑a‑ride -------------- */
@@ -229,7 +272,7 @@ export function TopBar({ onResults }: TopBarProps) {
       <div className="flex-none">
         <Button
           className="bg-[#cde3dd] hover:bg-[#b8d4cc] text-black h-10 rounded-full w-[100px] mr-2"
-          onClick={handleSearchClick}
+          onClick={handleFindRide}
         >
           Search
         </Button>
