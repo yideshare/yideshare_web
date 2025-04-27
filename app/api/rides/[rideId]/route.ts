@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getUserNetIdFromCookies } from "@/lib/utils/user";
+import { getUserNetIdFromCookies } from "@/lib/user";
 
 export async function DELETE(
   request: Request,
@@ -16,9 +16,11 @@ export async function DELETE(
       );
     }
 
+    const rideId = await Promise.resolve(params.rideId);
+
     // Find the ride to ensure it exists and belongs to the user
     const ride = await prisma.ride.findUnique({
-      where: { rideId: params.rideId },
+      where: { rideId },
     });
 
     if (!ride) {
@@ -35,9 +37,14 @@ export async function DELETE(
       );
     }
 
-    // Delete the ride
+    // First delete any related records (bookmarks)
+    await prisma.bookmark.deleteMany({
+      where: { rideId },
+    });
+
+    // Then delete the ride
     await prisma.ride.delete({
-      where: { rideId: params.rideId },
+      where: { rideId },
     });
 
     return NextResponse.json(

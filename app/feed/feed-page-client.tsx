@@ -52,7 +52,7 @@ export default function FeedPageClient({
             </h1>
             </Link>
             <Link
-              href="https://docs.google.com/forms/u/1/d/1h6MQYNtshyOujGAfsj2R1mqOdoNTy8YoY0MUdGc1-yo/edit?usp=drive_web"
+              href="https://forms.gle/DjypxU7tayRGVVMu5"
               className="rounded-full bg-[#397060] px-4 py-2 text-sm font-medium text-white hover:bg-[#2d5848] transition-colors"
             >
               Feedback

@@ -1,24 +1,31 @@
 import { prisma } from "@/lib/prisma";
 
 export async function createRide(ride: any, netId: string) {
-  return prisma.ride.create({
-    data: {
-      ownerNetId: netId,
-      ownerName: ride.ownerName || "",
-      ownerPhone: ride.ownerPhone || "",
-      beginning: ride.beginning,
-      beginningNorm: ride.beginningNorm,
-      destination: ride.destination,
-      destinationNorm: ride.destinationNorm,
-      description: ride.description || "",
-      startTime: new Date(ride.startTime),
-      endTime: new Date(ride.endTime),
-      totalSeats: ride.totalSeats || 4,
-      currentTakenSeats: 0,
-      isClosed: false,
-    },
-  });
+  try {
+    console.log("Creating ride with data:", { ride, netId });
+    const newRide = await prisma.ride.create({
+      data: {
+        ownerNetId: netId,
+        ownerName: ride.ownerName || "",
+        ownerPhone: ride.ownerPhone || "",
+        beginning: ride.beginning,
+        destination: ride.destination,
+        description: ride.description || "",
+        startTime: new Date(ride.startTime),
+        endTime: new Date(ride.endTime),
+        totalSeats: ride.totalSeats || 4,
+        currentTakenSeats: 0,
+        isClosed: false,
+      },
+    });
+    console.log("Ride created successfully:", newRide);
+    return newRide;
+  } catch (error) {
+    console.error("Error creating ride:", error);
+    throw error;
+  }
 }
+
 export async function closeRide(rideId: string) {
   try {
     const updatedRide = await prisma.ride.update({
@@ -31,6 +38,7 @@ export async function closeRide(rideId: string) {
     return null; 
   }
 }
+
 export async function bookmarkRide(netId: string, rideId: string) {
   // try to find bookmark
   const existing = await prisma.bookmark.findUnique({
