@@ -176,16 +176,6 @@ export function TopBar({ onResults, rides }: TopBarProps) {
       });
 
       if (!res.ok) throw new Error("Failed to post ride");
-
-      setFrom("");
-      setTo("");
-      setStartTime("");
-      setEndTime("");
-      setOrganizerName("");
-      setPhoneNumber("");
-      setAdditionalPassengers(0);
-      setDescription("");
-      setDate(new Date());
     } catch (error) {
       console.error(error);
     }
