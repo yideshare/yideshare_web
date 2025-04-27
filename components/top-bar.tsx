@@ -3,11 +3,16 @@
 
 import * as React from "react";
 import { format } from "date-fns";
-import { CalendarIcon, ArrowUpRight, ArrowDownRight, ChevronsUpDown } from "lucide-react";
+import {
+  CalendarIcon,
+  ArrowUpRight,
+  ArrowDownRight,
+  ChevronsUpDown,
+} from "lucide-react";
 
 // import debounce from "lodash.debounce";
 
-import { encodeDate } from "@/lib/time"
+import { encodeDate } from "@/lib/time";
 import { useToast } from "@/hooks/use-toast";
 
 import { Button } from "@/components/ui/button";
@@ -44,7 +49,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
   const [date, setDate] = React.useState<Date | null>(new Date());
   const [startTime, setStartTime] = React.useState("");
   const [endTime, setEndTime] = React.useState("");
-  const [mounted, setMounted] = React.useState(false); 
+  const [mounted, setMounted] = React.useState(false);
 
   /* share‑a‑ride fields */
   const [open, setOpen] = React.useState(false);
@@ -66,8 +71,8 @@ export function TopBar({ onResults, rides }: TopBarProps) {
   });
 
   React.useEffect(() => {
-    setMounted(true); 
-    setDate(new Date()); 
+    setMounted(true);
+    setDate(new Date());
   }, []);
 
   /* ----------------  helpers  ---------------- */
@@ -137,7 +142,13 @@ export function TopBar({ onResults, rides }: TopBarProps) {
       return;
     }
 
-    const queryString = `from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${encodeDate(date)}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}`;
+    const queryString = `from=${encodeURIComponent(
+      from
+    )}&to=${encodeURIComponent(to)}&date=${encodeDate(
+      date
+    )}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(
+      endTime
+    )}`;
 
     // Redirect to results page
     window.location.href = `http://localhost:3000//results?${queryString}`;
@@ -172,14 +183,13 @@ export function TopBar({ onResults, rides }: TopBarProps) {
         body: JSON.stringify(rideData),
       });
 
-
       if (!res.ok) {
         const error = await res.json();
         throw new Error(error.error || "Failed to post ride");
       }
 
       const newRide = await res.json();
-      
+
       // Update the feed with the new ride
       if (rides) {
         onResults([newRide.ride, ...rides]);
@@ -205,7 +215,10 @@ export function TopBar({ onResults, rides }: TopBarProps) {
       console.error(error);
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to post ride. Please try again.",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Failed to post ride. Please try again.",
         variant: "destructive",
       });
     }
@@ -216,23 +229,18 @@ export function TopBar({ onResults, rides }: TopBarProps) {
     <div className="flex flex-col sm:flex-row flex-wrap items-center justify-between gap-4 w-full max-w-[1400px] mx-auto bg-white p-4 sm:p-4 sm:pr-2 rounded-2xl shadow-sm mb-8">
       <div className="w-full sm:w-auto sm:flex-none sm:min-w-[180px]">
         <label className="text-sm font-bold text-black">Leaving from</label>
-          <LocationCombobox
+        <LocationCombobox
           label=""
           placeholder=""
-            value={from}
-            onChange={setFrom}
-          />
-        </div>
+          value={from}
+          onChange={setFrom}
+        />
+      </div>
       <div className="w-full sm:w-auto sm:flex-none sm:min-w-[180px]">
         <label className="text-sm font-bold text-black">Going to</label>
-          <LocationCombobox
-          label=""
-          placeholder=""
-            value={to}
-            onChange={setTo}
-          />
-        </div>
-      <div className="w-full sm:w-auto sm:flex-none sm:min-w-[180px]">
+        <LocationCombobox label="" placeholder="" value={to} onChange={setTo} />
+      </div>
+      <div className="w-full sm:w-auto sm:flex-none max-w-[250px] sm:min-w-[180px]">
         <label className="text-sm font-bold text-black">Date</label>
         <Popover>
           <PopoverTrigger asChild>
@@ -242,7 +250,11 @@ export function TopBar({ onResults, rides }: TopBarProps) {
               role="combobox"
               className="justify-start text-left text-lg font-bold bg-transparent text-black w-full border-[#cde3dd] focus:ring-[#cde3dd] h-10"
             >
-              {date ? format(date, "PPP") : <span className="text-gray-500">Select date</span>}
+              {date ? (
+                format(date, "PPP")
+              ) : (
+                <span className="text-gray-500">Select date</span>
+              )}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
@@ -253,8 +265,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
               onSelect={(selectedDate) => {
                 if (selectedDate) {
                   setDate(selectedDate);
-                  console.log("DATE SELECTED", selectedDate)
-                  
+                  console.log("DATE SELECTED", selectedDate);
                 }
               }}
               initialFocus
@@ -262,8 +273,10 @@ export function TopBar({ onResults, rides }: TopBarProps) {
           </PopoverContent>
         </Popover>
       </div>
-      <div className="w-full sm:w-auto sm:flex-none sm:min-w-[180px]">
-        <label className="text-sm font-bold text-black">Time (EST)</label>
+      <div className="w-full sm:w-auto sm:flex-none max-w-[250px] sm:min-w-[180px]">
+        <label className="text-sm font-bold text-black">
+          Departure Time Range (EST)
+        </label>
         <Popover>
           <PopoverTrigger asChild>
             <Button
@@ -271,24 +284,28 @@ export function TopBar({ onResults, rides }: TopBarProps) {
               role="combobox"
               className="justify-start text-left text-lg font-bold bg-transparent text-black w-full border-[#cde3dd] focus:ring-[#cde3dd] h-10"
             >
-              {startTime && endTime ? `${startTime} - ${endTime}` : <span className="text-gray-500">Select time</span>}
+              {startTime && endTime ? (
+                `${startTime} - ${endTime}`
+              ) : (
+                <span className="text-gray-500">Select time</span>
+              )}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-4" align="start">
             <div className="flex gap-4">
-        <TimeSelect
-          label="Start time"
-          value={startTime}
-          onChange={setStartTime}
+              <TimeSelect
+                label="Earliest departure"
+                value={startTime}
+                onChange={setStartTime}
                 className="bg-transparent w-full border-[#cde3dd] focus:ring-[#cde3dd]"
-        />
-        <TimeSelect
-          label="End time"
-          value={endTime}
-          onChange={setEndTime}
+              />
+              <TimeSelect
+                label="Latest departure"
+                value={endTime}
+                onChange={setEndTime}
                 className="bg-transparent w-full border-[#cde3dd] focus:ring-[#cde3dd]"
-        />
+              />
             </div>
           </PopoverContent>
         </Popover>
@@ -308,29 +325,29 @@ export function TopBar({ onResults, rides }: TopBarProps) {
         </Button>
       </div>
 
-        <ShareYideDialog
-          open={open}
-          setOpen={setOpen}
-          /* sync with top‑bar fields */
-          from={from}
-          setFrom={setFrom}
-          to={to}
-          setTo={setTo}
-          startTime={startTime}
-          setStartTime={setStartTime}
-          endTime={endTime}
-          setEndTime={setEndTime}
-          /* dialog‑specific */
-          organizerName={organizerName}
-          setOrganizerName={setOrganizerName}
-          phoneNumber={phoneNumber}
-          setPhoneNumber={setPhoneNumber}
-          additionalPassengers={additionalPassengers}
-          setAdditionalPassengers={setAdditionalPassengers}
-          description={description}
-          setDescription={setDescription}
-          handleShareYide={handleShareYide}
-        />
+      <ShareYideDialog
+        open={open}
+        setOpen={setOpen}
+        /* sync with top‑bar fields */
+        from={from}
+        setFrom={setFrom}
+        to={to}
+        setTo={setTo}
+        startTime={startTime}
+        setStartTime={setStartTime}
+        endTime={endTime}
+        setEndTime={setEndTime}
+        /* dialog‑specific */
+        organizerName={organizerName}
+        setOrganizerName={setOrganizerName}
+        phoneNumber={phoneNumber}
+        setPhoneNumber={setPhoneNumber}
+        additionalPassengers={additionalPassengers}
+        setAdditionalPassengers={setAdditionalPassengers}
+        description={description}
+        setDescription={setDescription}
+        handleShareYide={handleShareYide}
+      />
     </div>
   );
 }
