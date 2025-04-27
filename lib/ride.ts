@@ -116,13 +116,27 @@ export async function findFilteredRides(
     });
   }
 
-  // Only add time filters if they're valid dates
-  if (startTime && !isNaN(startTime.getTime())) {
-    whereClause.AND.push({ startTime: { gte: startTime } });
-  }
-  if (endTime && !isNaN(endTime.getTime())) {
-    whereClause.AND.push({ endTime: { lte: endTime } });
-  }
+  const hasStart = startTime && !isNaN(startTime.getTime());
+  const hasEnd   = endTime   && !isNaN(endTime.getTime());
+
+  if (hasStart && hasEnd) {
+    whereClause.push({
+      OR: [
+        {
+          AND: [
+            { startTime: { lte: startTime } },
+            { endTime:   { gte: startTime } },
+          ]
+        },
+        {
+          AND: [
+            { startTime: { lte: endTime } },
+            { endTime:   { gte: endTime } },
+          ]
+        }
+      ]
+    });
+  } 
 
   return prisma.ride.findMany({
     where: whereClause,
