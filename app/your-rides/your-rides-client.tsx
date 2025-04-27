@@ -27,36 +27,50 @@ const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 export default function YourRidesClient({ ownedRides }: YourRidesClientProps) {
   const { toast } = useToast();
   const [sortBy, setSortBy] = React.useState<string>("recent");
-  const [localRides, setLocalRides] = React.useState<Ride[]>(ownedRides);
+  const [localRides, setLocalRides] = React.useState<Ride[]>([]);
   const [editingRide, setEditingRide] = React.useState<Ride | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = React.useState(false);
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+    setLocalRides(ownedRides);
+  }, [ownedRides]);
 
   // Handle sorting
   React.useEffect(() => {
-    const sortedRides = [...localRides];
+    if (!isMounted) return;
+    
+    const sortedRides = [...ownedRides];
     switch (sortBy) {
       case "recent":
         sortedRides.sort(
-          (a, b) =>
-            new Date(b.startTime).getTime() - new Date(a.startTime).getTime()
+          (a, b) => {
+            const dateA = new Date(a.startTime).getTime();
+            const dateB = new Date(b.startTime).getTime();
+            return dateB - dateA;
+          }
         );
         break;
       case "oldest":
         sortedRides.sort(
-          (a, b) =>
-            new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
+          (a, b) => {
+            const dateA = new Date(a.startTime).getTime();
+            const dateB = new Date(b.startTime).getTime();
+            return dateA - dateB;
+          }
         );
         break;
       case "alphabetical":
-        sortedRides.sort((a, b) => a.beginning.localeCompare(b.beginning));
+        sortedRides.sort((a, b) => (a.beginning ?? "").localeCompare(b.beginning ?? ""));
         break;
     }
     setLocalRides(sortedRides);
-  }, [sortBy, localRides]);
+  }, [sortBy, ownedRides, isMounted]);
 
   const handleDeleteRide = async (rideId: string) => {
     try {
-      const res = await fetch(`${API_BASE}/api/rides/deleteRide?rideId=${rideId}`, {
+      const res = await fetch(`${API_BASE}/api/update-rides?rideId=${rideId}`, {
         method: "DELETE",
       });
   
@@ -122,6 +136,10 @@ export default function YourRidesClient({ ownedRides }: YourRidesClientProps) {
       });
     }
   }; 
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="bg-white min-h-screen">
