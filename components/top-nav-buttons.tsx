@@ -1,13 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {
-  Calendar,
-  User,
-  Bookmark,
-  PowerOffIcon,
-  MessageSquare,
-} from "lucide-react";
+import { Calendar, User, Bookmark, PowerOffIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/frontend";
 
@@ -26,11 +20,6 @@ const navItems = [
     title: "Saved Rides",
     url: "/bookmarks",
     icon: Bookmark,
-  },
-  {
-    title: "Feedback",
-    url: "https://docs.google.com/forms/u/1/d/1h6MQYNtshyOujGAfsj2R1mqOdoNTy8YoY0MUdGc1-yo/edit?usp=drive_web",
-    icon: MessageSquare,
   },
   {
     title: "Logout",
@@ -55,7 +44,7 @@ export function TopNavButtons() {
               className="flex items-center gap-2"
             >
               <Icon className="h-4 w-4" />
-              <span>{item.title}</span>
+              <span className="hidden sm:inline">{item.title}</span>
             </Button>
           );
         }
@@ -69,7 +58,7 @@ export function TopNavButtons() {
             )}
           >
             <Icon className="h-4 w-4" />
-            <span>{item.title}</span>
+            <span className="hidden sm:inline">{item.title}</span>
           </Link>
         );
       })}

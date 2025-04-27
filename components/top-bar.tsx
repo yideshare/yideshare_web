@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, ArrowUpRight, ArrowDownRight, ChevronsUpDown } from "lucide-react";
 import debounce from "lodash.debounce";
 
 import { Button } from "@/components/ui/button";
@@ -28,9 +28,11 @@ import { Ride } from "@prisma/client";
 interface TopBarProps {
   /** callback used to push fresh results down to the feed list */
   onResults: (rides: Ride[]) => void;
+  /** current rides in the feed */
+  rides?: Ride[];
 }
 
-export function TopBar({ onResults }: TopBarProps) {
+export function TopBar({ onResults, rides }: TopBarProps) {
   /* ----------------  form state  ---------------- */
   const [from, setFrom] = React.useState("");
   const [to, setTo] = React.useState("");
@@ -191,35 +193,37 @@ export function TopBar({ onResults }: TopBarProps) {
 
   /* ----------------  UI  ---------------- */
   return (
-    <div className="flex flex-row flex-wrap items-center justify-between gap-4 w-full max-w-[1400px] mx-auto bg-white p-4 pr-2 rounded-2xl shadow-sm mb-8">
-      <div className="flex-none min-w-[200px]">
+    <div className="flex flex-col sm:flex-row flex-wrap items-center justify-between gap-4 w-full max-w-[1400px] mx-auto bg-white p-4 sm:p-4 sm:pr-2 rounded-2xl shadow-sm mb-8">
+      <div className="w-full sm:w-auto sm:flex-none sm:min-w-[180px] sm:min-w-[200px]">
         <label className="text-sm font-bold text-black">Leaving from</label>
-        <LocationCombobox
+          <LocationCombobox
           label=""
           placeholder=""
-          value={from}
-          onChange={setFrom}
-        />
-      </div>
-      <div className="flex-none min-w-[200px]">
+            value={from}
+            onChange={setFrom}
+          />
+        </div>
+      <div className="w-full sm:w-auto sm:flex-none sm:min-w-[180px] sm:min-w-[200px]">
         <label className="text-sm font-bold text-black">Going to</label>
-        <LocationCombobox label="" placeholder="" value={to} onChange={setTo} />
-      </div>
-      <div className="flex-none min-w-[200px]">
+          <LocationCombobox
+          label=""
+          placeholder=""
+            value={to}
+            onChange={setTo}
+          />
+        </div>
+      <div className="w-full sm:w-auto sm:flex-none sm:min-w-[180px] sm:min-w-[200px]">
         <label className="text-sm font-bold text-black">Date</label>
         <Popover>
           <PopoverTrigger asChild>
             <Button
               id="event-date"
               variant="outline"
-              className="justify-start text-left text-lg font-bold bg-transparent text-black w-full border-none"
+              role="combobox"
+              className="justify-start text-left text-lg font-bold bg-transparent text-black w-full border-[#cde3dd] focus:ring-[#cde3dd] h-10"
             >
-              <CalendarIcon className="mr-2 h-4 w-4 flex-shrink-0" />
-              {date ? (
-                format(date, "PPP")
-              ) : (
-                <span className="text-gray-500">Pick a date</span>
-              )}
+              {date ? format(date, "PPP") : <span className="text-gray-500">Select date</span>}
+              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
@@ -236,43 +240,41 @@ export function TopBar({ onResults }: TopBarProps) {
           </PopoverContent>
         </Popover>
       </div>
-      <div className="flex-none min-w-[200px]">
+      <div className="w-full sm:w-auto sm:flex-none sm:min-w-[180px] sm:min-w-[200px]">
         <label className="text-sm font-bold text-black">Time (EST)</label>
         <Popover>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="justify-start text-left text-lg font-bold bg-transparent text-black w-full border-none"
+              role="combobox"
+              className="justify-start text-left text-lg font-bold bg-transparent text-black w-full border-[#cde3dd] focus:ring-[#cde3dd] h-10"
             >
-              {startTime && endTime ? (
-                `${startTime} - ${endTime}`
-              ) : (
-                <span className="text-gray-500">Select time</span>
-              )}
+              {startTime && endTime ? `${startTime} - ${endTime}` : <span className="text-gray-500">Select time</span>}
+              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-4" align="start">
             <div className="flex gap-4">
-              <TimeSelect
-                label="Start time"
-                value={startTime}
-                onChange={setStartTime}
-                className="bg-transparent w-full"
-              />
-              <TimeSelect
-                label="End time"
-                value={endTime}
-                onChange={setEndTime}
-                className="bg-transparent w-full"
-              />
+        <TimeSelect
+          label="Start time"
+          value={startTime}
+          onChange={setStartTime}
+                className="bg-transparent w-full border-[#cde3dd] focus:ring-[#cde3dd]"
+        />
+        <TimeSelect
+          label="End time"
+          value={endTime}
+          onChange={setEndTime}
+                className="bg-transparent w-full border-[#cde3dd] focus:ring-[#cde3dd]"
+        />
             </div>
           </PopoverContent>
         </Popover>
       </div>
-      <div className="flex-none">
+      <div className="w-full sm:w-auto sm:flex-none flex gap-2 justify-center sm:justify-start">
         <Button
-          className="bg-[#cde3dd] hover:bg-[#b8d4cc] text-black h-10 rounded-full w-[100px] mr-2"
-          onClick={handleFindRide}
+          className="bg-[#cde3dd] hover:bg-[#b8d4cc] text-[#397060] h-10 rounded-full w-[100px]"
+          onClick={handleSearchClick}
         >
           Search
         </Button>
@@ -284,29 +286,29 @@ export function TopBar({ onResults }: TopBarProps) {
         </Button>
       </div>
 
-      <ShareYideDialog
-        open={open}
-        setOpen={setOpen}
-        /* sync with top‑bar fields */
-        from={from}
-        setFrom={setFrom}
-        to={to}
-        setTo={setTo}
-        startTime={startTime}
-        setStartTime={setStartTime}
-        endTime={endTime}
-        setEndTime={setEndTime}
-        /* dialog‑specific */
-        organizerName={organizerName}
-        setOrganizerName={setOrganizerName}
-        phoneNumber={phoneNumber}
-        setPhoneNumber={setPhoneNumber}
-        additionalPassengers={additionalPassengers}
-        setAdditionalPassengers={setAdditionalPassengers}
-        description={description}
-        setDescription={setDescription}
-        handleShareYide={handleShareYide}
-      />
+        <ShareYideDialog
+          open={open}
+          setOpen={setOpen}
+          /* sync with top‑bar fields */
+          from={from}
+          setFrom={setFrom}
+          to={to}
+          setTo={setTo}
+          startTime={startTime}
+          setStartTime={setStartTime}
+          endTime={endTime}
+          setEndTime={setEndTime}
+          /* dialog‑specific */
+          organizerName={organizerName}
+          setOrganizerName={setOrganizerName}
+          phoneNumber={phoneNumber}
+          setPhoneNumber={setPhoneNumber}
+          additionalPassengers={additionalPassengers}
+          setAdditionalPassengers={setAdditionalPassengers}
+          description={description}
+          setDescription={setDescription}
+          handleShareYide={handleShareYide}
+        />
     </div>
   );
 }

@@ -32,11 +32,23 @@ export default function FeedRideCard({
   ride,
   occupants = [],
   isBookmarkedInitial,
+  showDialog = true,
 }: FeedRideCardProps) {
   const { toast } = useToast();
   const [isBookmarked, setIsBookmarked] = React.useState(isBookmarkedInitial);
   const [message, setMessage] = React.useState("Hi, is this ride still available...");
   const [requestSeat, setRequestSeat] = React.useState(false);
+
+  const formatPhoneNumber = (phone: string) => {
+    // Remove all non-digit characters
+    const cleaned = phone.replace(/\D/g, '');
+    // Format as (xxx)-xxx-xxxx
+    const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+    if (match) {
+      return `(${match[1]})-${match[2]}-${match[3]}`;
+    }
+    return phone; // Return original if doesn't match expected format
+  };
 
   /* ------------ helpers ------------ */
   const postedAgo = "1d ago";          // TODO real calc
@@ -97,37 +109,35 @@ export default function FeedRideCard({
   };
 
   /* ------------ UI ------------ */
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Card className="rounded-2xl border border-border bg-white px-6 py-4 shadow-card hover:shadow-cardHover cursor-pointer">
-          <div className="grid grid-cols-4 gap-1">
+  const cardContent = (
+    <Card className="rounded-2xl border border-border bg-white px-6 py-4 shadow-card hover:shadow-cardHover cursor-pointer">
+      <div className="grid grid-cols-4 gap-1">
             <div>
-              <p className="text-lg font-medium text-black mb-1">
+          <p className="text-lg font-medium text-black mb-1">
                 Leaving from
               </p>
-              <p className="text-2xl font-semibold text-black">{ride.beginning}</p>
+          <p className="text-2xl font-semibold text-black">{ride.beginning}</p>
             </div>
 
             <div>
-              <p className="text-lg font-medium text-black mb-1">
+          <p className="text-lg font-medium text-black mb-1">
                 Going to
               </p>
-              <p className="text-2xl font-semibold text-black">{ride.destination}</p>
+          <p className="text-2xl font-semibold text-black">{ride.destination}</p>
             </div>
 
             <div>
-              <p className="text-lg font-medium text-black mb-1">
+          <p className="text-lg font-medium text-black mb-1">
                 Date
               </p>
-              <p className="text-2xl font-semibold text-black">{dateLabel}</p>
+          <p className="text-2xl font-semibold text-black">{dateLabel}</p>
             </div>
 
             <div>
-              <p className="text-lg font-medium text-black mb-1">
-                Time (EST)
+          <p className="text-lg font-medium text-black mb-1">
+            Time (EST)
               </p>
-              <p className="text-2xl font-semibold text-black">{timeLabel}</p>
+          <p className="text-2xl font-semibold text-black">{timeLabel}</p>
             </div>
           </div>
 
@@ -135,35 +145,48 @@ export default function FeedRideCard({
 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="h-12 w-12 flex items-center justify-center rounded-full bg-muted text-2xl font-semibold text-black">
-                {ownerName[0]}
+          <div className="h-12 w-12 flex items-center justify-center rounded-full bg-muted text-2xl font-semibold text-black">
+            {ownerName[0]}
               </div>
-              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-black">
-                <span className="text-xl">{ownerName}</span>
-                <span className="text-xl text-black">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-black">
+            <span className="text-xl">{ownerName}</span>
+            <span className="text-xl text-black">
                   {ride.ownerEmail ?? "driver@yale.edu"}
                 </span>
+            <span className="text-xl text-black">
+              {ride.ownerPhone ? formatPhoneNumber(ride.ownerPhone) : "No phone provided"}
+            </span>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <span className="text-lg text-black">{postedAgo}</span>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleBookmark();
-                }}
-              >
-                <Bookmark
-                  className="h-5 w-5 text-primary"
-                  style={{ fill: isBookmarked ? "currentColor" : "none" }}
-                />
-              </Button>
-            </div>
+        <div className="flex items-center gap-2">
+          <span className="text-lg text-black">{postedAgo}</span>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={(e) => {
+              e.stopPropagation();
+              handleBookmark();
+            }}
+          >
+            <Bookmark
+              className="h-5 w-5 text-primary"
+              style={{ fill: isBookmarked ? "currentColor" : "none" }}
+            />
+          </Button>
+        </div>
           </div>
         </Card>
+  );
+
+  if (!showDialog) {
+    return cardContent;
+  }
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        {cardContent}
       </DialogTrigger>
 
       {/* -------- Dialog -------- */}
@@ -178,6 +201,11 @@ export default function FeedRideCard({
               <span className="mx-2">•</span>
               <span>{occupantCount}/{totalSeats} seats filled</span>
             </div>
+            {ride.ownerPhone && (
+              <div className="text-lg text-black mt-1">
+                Phone: {formatPhoneNumber(ride.ownerPhone)}
+              </div>
+            )}
           </div>
           <div className="flex gap-4 mt-4">
             <div className="flex-1">

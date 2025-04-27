@@ -78,7 +78,7 @@ export default function ShareYideDialog({
         <span />
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-xl">
+      <DialogContent className="sm:max-w-xl bg-white">
         <DialogHeader>
           <DialogTitle>Share a Yide</DialogTitle>
           <DialogDescription>
@@ -109,14 +109,14 @@ export default function ShareYideDialog({
 
           <div className="space-y-2">
             <Label htmlFor="phone">
-              Phone number{" "}
-              <span className="text-muted-foreground">(optional)</span>
+              Phone Number <span className="text-red-500">*</span>
             </Label>
             <Input
               id="phone"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
-              placeholder="555‑555‑5555"
+              placeholder="(123) 456-7890"
+              required
             />
           </div>
 
@@ -159,17 +159,18 @@ export default function ShareYideDialog({
 
           {/* seats */}
           <div className="space-y-2">
-            <Label htmlFor="seats">Number of additional passengers</Label>
+            <Label htmlFor="seats">
+              Number of Open Seats <span className="text-red-500">*</span>
+            </Label>
             <Input
               id="seats"
               type="number"
-              min={0}
+              min="1"
+              max="10"
               value={additionalPassengers}
-              onChange={(e) => setAdditionalPassengers(Number(e.target.value))}
+              onChange={(e) => setAdditionalPassengers(parseInt(e.target.value))}
+              required
             />
-            <p className="text-xs text-muted-foreground">
-              This does <em>not</em> include you. (Total seats = you + additional.)
-            </p>
           </div>
 
           {/* description */}

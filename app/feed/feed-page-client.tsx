@@ -41,25 +41,33 @@ export default function FeedPageClient({
 
   return (
     <div className="bg-white min-h-screen">
-      {/* header strip */}
+        {/* header strip */}
       <header className="bg-background py-8">
         <div className="flex h-16 items-center justify-between px-8 mb-8">
-          <div className="flex items-center gap-2">
-            <h1 className="text-3xl font-righteous text-[#397060] tracking-wide">
+          <div className="flex items-center gap-16">
+            <Link href="/feed">
+              <h1 className="text-3xl font-righteous text-[#397060] tracking-wide hover:text-[#2d5848] transition-colors">
               Yideshare
             </h1>
+            </Link>
+            <Link
+              href="https://docs.google.com/forms/u/1/d/1h6MQYNtshyOujGAfsj2R1mqOdoNTy8YoY0MUdGc1-yo/edit?usp=drive_web"
+              className="rounded-full bg-[#397060] px-4 py-2 text-sm font-medium text-white hover:bg-[#2d5848] transition-colors"
+            >
+              Feedback
+            </Link>
           </div>
           <TopNavButtons />
-        </div>
+          </div>
 
-        {/* live‑filtering search bar */}
+          {/* live‑filtering search bar */}
         <div className="px-8">
-          <TopBar onResults={setRides} />
+          <TopBar onResults={setRides} rides={rides} />
         </div>
-      </header>
+        </header>
 
-      {/* feed list */}
-      <div className="relative flex flex-1 flex-col p-6 bg-white">
+        {/* feed list */}
+        <div className="relative flex flex-1 flex-col p-6 bg-white">
         <div className="absolute top-9 right-6 flex items-center text-sm text-black gap-1">
         <span>Sort by:</span>
         <Select value={sortBy} onValueChange={setSortBy}>

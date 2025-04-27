@@ -9,6 +9,7 @@ export interface FeedRideCardProps {
   ride: Ride;
   occupants?: User[];
   isBookmarkedInitial: boolean;
+  showDialog?: boolean;
 }
 
 export interface ResultsPageProps {
