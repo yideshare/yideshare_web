@@ -21,6 +21,8 @@ import {
 
 import { cn } from "@/lib/frontend";
 
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || '';
+
 const navItems = [
   {
     title: "Feed",
@@ -77,7 +79,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   useEffect(() => {
     async function fetchAndSetUserData() {
       try {
-        const response = await fetch("/api/user-cookies");
+        const response = await fetch(`${API_BASE}/api/user-cookies`);
         const data = await response.json();
 
         if (!response.ok) {

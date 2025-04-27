@@ -28,6 +28,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { FeedRideCardProps } from "@/app/interface/main";
 
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || '';
 export default function FeedRideCard({
   ride,
   occupants = [],
@@ -72,7 +73,7 @@ export default function FeedRideCard({
   /* ------------ bookmark ------------ */
   async function handleBookmark() {
     try {
-      const res = await fetch("/api/bookmark", {
+      const res = await fetch(`${API_BASE}/api/bookmark`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ rideId: ride.rideId }),

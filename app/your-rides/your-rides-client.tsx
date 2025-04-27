@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 interface YourRidesClientProps {
   ownedRides: Ride[];
 }
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || '';
 
 export default function YourRidesClient({ ownedRides }: YourRidesClientProps) {
   const { toast } = useToast();
@@ -49,7 +50,7 @@ export default function YourRidesClient({ ownedRides }: YourRidesClientProps) {
 
   const handleDeleteRide = async (rideId: string) => {
     try {
-      const res = await fetch(`/api/rides/${rideId}`, {
+      const res = await fetch(`${API_BASE}/api/rides/${rideId}`, {
         method: "DELETE",
       });
       if (!res.ok) {
@@ -73,7 +74,7 @@ export default function YourRidesClient({ ownedRides }: YourRidesClientProps) {
   const handleEditRide = async (updatedRide: Partial<Ride>) => {
     if (!editingRide) return;
     try {
-      const res = await fetch(`/api/rides/${editingRide.rideId}`, {
+      const res = await fetch(`${API_BASE}/api/rides/${editingRide.rideId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedRide),

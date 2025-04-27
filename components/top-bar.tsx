@@ -24,6 +24,7 @@ import { createStartEndDateTimes } from "@/lib/time";
 import ShareYideDialog from "./ShareYideDialog";
 
 import { Ride } from "@prisma/client";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || '';
 
 /* -------------------------------------------------------------------------- */
 /*  props                                                                     */
@@ -166,7 +167,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
     };
 
     try {
-      const res = await fetch("/api/post-ride", {
+      const res = await fetch(`${API_BASE}/api/post-ride`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(rideData),

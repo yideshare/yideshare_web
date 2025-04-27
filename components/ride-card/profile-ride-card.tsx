@@ -23,6 +23,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 /* -------------------------------------------------------------------------- */
 /*  props                                                                     */
 /* -------------------------------------------------------------------------- */
@@ -76,9 +77,7 @@ export default function ProfileRideCard({
 
   async function handleCloseListing() {
     try {
-      
-      const response = await fetch(`/api/update-ride/${ride.rideId}`, {
-        
+      const response = await fetch(`${API_BASE}/api/update-ride/${ride.rideId}`, {
         method: "PATCH",
       });
   
