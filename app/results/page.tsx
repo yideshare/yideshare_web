@@ -36,12 +36,14 @@ export default async function Results({ searchParams }: { searchParams: Promise<
   } = extractSearchParams(resolvedSearchParams);
 
   // create start and end time objects
-  const dateObject = new Date(date);
+  console.log("DATE:", date)
   const { startTimeObject, endTimeObject } = createStartEndDateTimes(
-    dateObject,
+    date,
     startTimeString,
     endTimeString
   );
+
+  console.log("START", startTimeObject, "END", endTimeObject)
 
   // fetch rides that match filter criteria
   const filteredRides = await findFilteredRides(

@@ -1,9 +1,10 @@
 import { searchParamsType } from "@/app/interface/main";
+import { decodeDate } from "@/lib/time";
 
 export function extractSearchParams(searchParams: searchParamsType) {
   const from = decodeURIComponent(searchParams.from);
   const to = decodeURIComponent(searchParams.to);
-  const date = decodeURIComponent(searchParams.date);
+  const date = decodeDate(searchParams.date);
   const startTime = decodeURIComponent(searchParams.startTime);
   const endTime = decodeURIComponent(searchParams.endTime);
 

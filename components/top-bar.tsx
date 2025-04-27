@@ -4,7 +4,10 @@
 import * as React from "react";
 import { format } from "date-fns";
 import { CalendarIcon, ArrowUpRight, ArrowDownRight, ChevronsUpDown } from "lucide-react";
-import debounce from "lodash.debounce";
+
+// import debounce from "lodash.debounce";
+
+import { encodeDate } from "@/lib/time"
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -132,13 +135,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
       return;
     }
 
-    const queryString = `from=${encodeURIComponent(
-      from
-    )}&to=${encodeURIComponent(to)}&date=${encodeURIComponent(
-      date.getDate()
-    )}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(
-      endTime
-    )}`;
+    const queryString = `from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${encodeDate(date)}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}`;
 
     // Redirect to results page
     window.location.href = `http://localhost:3000//results?${queryString}`;
@@ -223,6 +220,8 @@ export function TopBar({ onResults, rides }: TopBarProps) {
               onSelect={(selectedDate) => {
                 if (selectedDate) {
                   setDate(selectedDate);
+                  console.log("DATE SELECTED", selectedDate)
+                  
                 }
               }}
               initialFocus
