@@ -1,32 +1,33 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { getUserNetIdFromCookies } from "@/lib/user";
+import { prisma } from "@/lib/prisma"; // Ensure this is your Prisma instance
+import { getUserNetIdFromCookies } from "@/lib/user"; // Utility to get the user from cookies
 
-interface Context {
-  params: {
-    rideId: string;
-  };
-}
-
-export async function DELETE(request: Request, { params }: Context) {
+export async function DELETE(request: Request) {
   try {
-    // Get the user's netId
+    // Extract rideId from the query string (e.g., /api/rides/deleteRide?rideId=123)
+    const url = new URL(request.url);
+    const rideId = url.searchParams.get("rideId");
+
+    if (!rideId) {
+      return NextResponse.json({ error: "rideId is required" }, { status: 400 });
+    }
+
+    // Get the user's netId from cookies
     const netId = await getUserNetIdFromCookies();
     if (!netId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const rideId = params.rideId;
-
-    // Find the ride to ensure it exists and belongs to the user
+    // Ensure the ride exists
     const ride = await prisma.ride.findUnique({
-      where: { rideId },
+      where: { rideId: rideId },
     });
 
     if (!ride) {
       return NextResponse.json({ error: "Ride not found" }, { status: 404 });
     }
 
+    // Check if the current user is the owner of the ride
     if (ride.ownerNetId !== netId) {
       return NextResponse.json(
         { error: "Unauthorized to delete this ride" },
@@ -34,14 +35,14 @@ export async function DELETE(request: Request, { params }: Context) {
       );
     }
 
-    // First delete any related records (bookmarks)
+    // Delete any related records (e.g., bookmarks) before deleting the ride
     await prisma.bookmark.deleteMany({
-      where: { rideId },
+      where: { rideId: ride.rideId },
     });
 
-    // Then delete the ride
+    // Delete the ride
     await prisma.ride.delete({
-      where: { rideId },
+      where: { rideId: ride.rideId },
     });
 
     return NextResponse.json(
@@ -57,25 +58,32 @@ export async function DELETE(request: Request, { params }: Context) {
   }
 }
 
-export async function PATCH(request: Request, { params }: Context) {
+export async function PATCH(request: Request) {
   try {
-    // Get the user's netId
+    // Extract rideId from the query string
+    const url = new URL(request.url);
+    const rideId = url.searchParams.get("rideId");
+
+    if (!rideId) {
+      return NextResponse.json({ error: "rideId is required" }, { status: 400 });
+    }
+
+    // Get the user's netId from cookies
     const netId = await getUserNetIdFromCookies();
     if (!netId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const rideId = params.rideId;
-
-    // Find the ride to ensure it exists and belongs to the user
+    // Ensure the ride exists
     const existingRide = await prisma.ride.findUnique({
-      where: { rideId },
+      where: { rideId: rideId },
     });
 
     if (!existingRide) {
       return NextResponse.json({ error: "Ride not found" }, { status: 404 });
     }
 
+    // Check if the current user is the owner of the ride
     if (existingRide.ownerNetId !== netId) {
       return NextResponse.json(
         { error: "Unauthorized to edit this ride" },
@@ -88,7 +96,7 @@ export async function PATCH(request: Request, { params }: Context) {
 
     // Update the ride
     const updatedRide = await prisma.ride.update({
-      where: { rideId },
+      where: { rideId: existingRide.rideId },
       data: {
         beginning: updatedRideData.beginning?.toLowerCase(),
         destination: updatedRideData.destination?.toLowerCase(),
