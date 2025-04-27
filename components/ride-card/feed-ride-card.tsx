@@ -4,11 +4,13 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Bookmark, Calendar } from "lucide-react";
+
 import {
   Card,
   CardContent,
   CardHeader,
 } from "@/components/ui/card";
+
 import {
   Dialog,
   DialogTrigger,
@@ -18,11 +20,13 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
+
 import {
   Tooltip,
   TooltipProvider,
   TooltipContent,
 } from "@/components/ui/tooltip";
+
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -31,7 +35,6 @@ import { FeedRideCardProps } from "@/app/interface/main";
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || '';
 export default function FeedRideCard({
   ride,
-  occupants = [],
   isBookmarkedInitial,
   showDialog = true,
 }: FeedRideCardProps) {
@@ -52,10 +55,10 @@ export default function FeedRideCard({
   };
 
   /* ------------ helpers ------------ */
-  const postedAgo = "1d ago";          // TODO real calc
+  // const postedAgo = "1d ago";          // TODO real calc
   const ownerName = ride.ownerName ?? "Driver";
   const totalSeats = ride.totalSeats;
-  const occupantCount = ride.currentTakenSeats;
+  // const occupantCount = ride.currentTakenSeats;
 
   const sDate = new Date(ride.startTime);
   const eDate = new Date(ride.endTime);
@@ -89,25 +92,25 @@ export default function FeedRideCard({
   }
 
   /* ------------ message handling ------------ */
-  const handleMessageChange = (e) => {
-    setMessage(e.target.value);
-  };
+  // const handleMessageChange = (e) => {
+  //   setMessage(e.target.value);
+  // };
 
-  const handleSendMessage = () => {
-    // Handle sending message logic here
-    toast({
-      title: "Message Sent",
-      description: requestSeat ? "Your seat request has been sent" : "Your message has been sent"
-    });
-  };
+  // const handleSendMessage = () => {
+  //   // Handle sending message logic here
+  //   toast({
+  //     title: "Message Sent",
+  //     description: requestSeat ? "Your seat request has been sent" : "Your message has been sent"
+  //   });
+  // };
 
-  const handleAddToCalendar = () => {
-    // Handle calendar logic here
-    toast({
-      title: "Added to Calendar",
-      description: "This ride has been added to your calendar"
-    });
-  };
+  // const handleAddToCalendar = () => {
+  //   // Handle calendar logic here
+  //   toast({
+  //     title: "Added to Calendar",
+  //     description: "This ride has been added to your calendar"
+  //   });
+  // };
 
   /* ------------ UI ------------ */
   const cardContent = (
@@ -151,9 +154,9 @@ export default function FeedRideCard({
               </div>
           <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-black">
             <span className="text-xl">{ownerName}</span>
-            <span className="text-xl text-black">
-                  {ride.ownerEmail ?? "driver@yale.edu"}
-                </span>
+            {/* <span className="text-xl text-black">
+              {ride.owner.email ?? "driver@yale.edu"}
+            </span> */}
             <span className="text-xl text-black">
               {ride.ownerPhone ? formatPhoneNumber(ride.ownerPhone) : "No phone provided"}
             </span>
@@ -161,7 +164,7 @@ export default function FeedRideCard({
             </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-lg text-black">{postedAgo}</span>
+          {/* <span className="text-lg text-black">{postedAgo}</span> */}
           <Button 
             variant="ghost" 
             size="icon" 
@@ -200,13 +203,16 @@ export default function FeedRideCard({
             <div className="flex items-center text-lg text-black">
               <span>Posted by: {ride.ownerName || "Raymond Hou"}</span>
               <span className="mx-2">•</span>
-              <span>{occupantCount}/{totalSeats} seats filled</span>
+              <span>{totalSeats} seats available</span>
             </div>
             {ride.ownerPhone && (
               <div className="text-lg text-black mt-1">
                 Phone: {formatPhoneNumber(ride.ownerPhone)}
-              </div>
+              </div> 
             )}
+            <div className="text-lg text-black mt-1">
+              Description: {ride.description ? ride.description : "No additional information provided"}
+            </div>
           </div>
           <div className="flex gap-4 mt-4">
             <div className="flex-1">
@@ -220,11 +226,7 @@ export default function FeedRideCard({
           </div>
         </DialogHeader>
 
-        <div className="mt-4 text-black italic">
-          "I have two suitcases, might share an UberXL..."
-        </div>
-
-        <div className="mt-6">
+        {/* <div className="mt-6">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-lg font-medium text-black">Message the driver:</h3>
             <div className="flex items-center gap-2">
@@ -245,9 +247,9 @@ export default function FeedRideCard({
             placeholder="Type your message here..." 
             className="min-h-24"
           />
-        </div>
+        </div> */}
 
-        <DialogFooter>
+        {/* <DialogFooter>
           <Button 
             variant="outline" 
             onClick={handleAddToCalendar}
@@ -259,7 +261,7 @@ export default function FeedRideCard({
           <Button onClick={handleSendMessage}>
             Send
           </Button>
-        </DialogFooter>
+        </DialogFooter> */}
       </DialogContent>
     </Dialog>
   );

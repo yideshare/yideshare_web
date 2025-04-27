@@ -21,7 +21,7 @@ export function createStartEndDateTimes(
   );
 
   return {
-    startTimeObject: startDateTime.toJSDate(), // native JS Date in correct UTC time
+    startTimeObject: startDateTime.toJSDate(), 
     endTimeObject: endDateTime.toJSDate(),
   };
 }

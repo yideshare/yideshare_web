@@ -7,7 +7,7 @@ export interface FeedPageClientProps {
 
 export interface FeedRideCardProps {
   ride: Ride;
-  occupants?: User[];
+  //occupants?: User[];
   isBookmarkedInitial: boolean;
   showDialog?: boolean;
 }
