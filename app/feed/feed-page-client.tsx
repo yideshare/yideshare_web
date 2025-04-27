@@ -21,14 +21,14 @@ export default function FeedPageClient({
 
   return (
     <div className="bg-white min-h-screen">
-      {/* header strip */}
+        {/* header strip */}
       <header className="bg-background py-8">
         <div className="flex h-16 items-center justify-between px-8 mb-8">
           <div className="flex items-center gap-16">
             <Link href="/feed">
               <h1 className="text-3xl font-righteous text-[#397060] tracking-wide hover:text-[#2d5848] transition-colors">
-                Yideshare
-              </h1>
+              Yideshare
+            </h1>
             </Link>
             <Link
               href="https://docs.google.com/forms/u/1/d/1h6MQYNtshyOujGAfsj2R1mqOdoNTy8YoY0MUdGc1-yo/edit?usp=drive_web"
@@ -38,16 +38,16 @@ export default function FeedPageClient({
             </Link>
           </div>
           <TopNavButtons />
-        </div>
+          </div>
 
-        {/* live‑filtering search bar */}
+          {/* live‑filtering search bar */}
         <div className="px-8">
           <TopBar onResults={setRides} rides={rides} />
         </div>
-      </header>
+        </header>
 
-      {/* feed list */}
-      <FeedClient rides={rides} bookmarkedRideIds={bookmarkedRideIds} />
+        {/* feed list */}
+        <FeedClient rides={rides} bookmarkedRideIds={bookmarkedRideIds} />
     </div>
   );
 }
