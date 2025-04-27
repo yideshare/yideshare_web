@@ -19,12 +19,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Using primsa:
 Open a second terminal window and input the following commands:
 
-create db, tables (first-time)
-```bash
-npx prisma migrate dev --name init
-```
-
-Sync with latest db changes
+Sync with latest db changes or create if no db:
 ```bash
 npx prisma db push
 ```

@@ -19,7 +19,18 @@ export async function createRide(ride: any, netId: string) {
     },
   });
 }
-
+export async function closeRide(rideId: string) {
+  try {
+    const updatedRide = await prisma.ride.update({
+      where: { rideId },
+      data: { isClosed: true },
+    });
+    return updatedRide;
+  } catch (error) {
+    console.error("Error closing ride:", error);
+    return null; 
+  }
+}
 export async function bookmarkRide(netId: string, rideId: string) {
   // try to find bookmark
   const existing = await prisma.bookmark.findUnique({
@@ -66,7 +77,7 @@ export async function findOwnedRide(netId: string) {
       endTime: true,
       totalSeats: true,
       currentTakenSeats: true,
-      isClosed: true,
+      isClosed: true, 
     },
   });
 }
