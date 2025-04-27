@@ -1,6 +1,4 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-
 import { createRide } from "@/lib/ride";
 import { getUserNetIdFromCookies } from "@/lib/user";
 
@@ -20,7 +18,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(
       { message: "Ride created successfully", ride: newRide },
-      { status: 201 }
+      { status: 200 }
     );
   } catch (error) {
     console.error("Ride Create Error:", error);

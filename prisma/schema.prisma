@@ -34,7 +34,9 @@ model Ride {
   ownerName         String
   ownerPhone        String
   beginning         String
-  destination       String   
+  beginningNorm     String
+  destination       String
+  destinationNorm   String
   description       String
   startTime         DateTime
   endTime           DateTime

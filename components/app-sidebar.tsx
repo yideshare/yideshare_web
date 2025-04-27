@@ -34,12 +34,12 @@ const navItems = [
   //   icon: Users,
   // },
   {
-    title: "My Rides",
+    title: "My Posts",
     url: "/your-rides",
     icon: User,
   },
   {
-    title: "My Bookmarks",
+    title: "Saved Rides",
     url: "/bookmarks",
     icon: Bookmark,
   },

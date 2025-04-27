@@ -16,8 +16,8 @@ import {
 
 import { TimeSelect } from "@/components/ui/time-select";
 import { LocationCombobox } from "@/components/location-combobox";
-import ShareYideDialog from "./ShareYideDialog";
 import { createStartEndDateTimes } from "@/lib/time";
+import ShareYideDialog from "./ShareYideDialog";
 
 import { Ride } from "@prisma/client";
 
@@ -114,18 +114,36 @@ export function TopBar({ onResults }: TopBarProps) {
       ownerName: organizerName,
       ownerPhone: phoneNumber,
       beginning: from,
+      beginningNorm: from.toLowerCase(),
       destination: to,
+      destinationNorm: to.toLowerCase(),
       description,
       startTime: startTimeObject,
       endTime: endTimeObject,
       totalSeats: additionalPassengers + 1,
     };
 
-    await fetch("/api/post-ride", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(rideData),
-    });
+    try {
+      const res = await fetch("/api/post-ride", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(rideData),
+      });
+
+      if (!res.ok) throw new Error("Failed to post ride");
+
+      setFrom("");
+      setTo("");
+      setStartTime("");
+      setEndTime("");
+      setOrganizerName("");
+      setPhoneNumber("");
+      setAdditionalPassengers(0);
+      setDescription("");
+      setDate(new Date());
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   /* ----------------  UI  ---------------- */
