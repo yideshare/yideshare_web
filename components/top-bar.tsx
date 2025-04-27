@@ -5,6 +5,7 @@ import * as React from "react";
 import { format } from "date-fns";
 import { CalendarIcon, ArrowUpRight, ArrowDownRight, ChevronsUpDown } from "lucide-react";
 import debounce from "lodash.debounce";
+import { useToast } from "@/hooks/use-toast";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -33,6 +34,7 @@ interface TopBarProps {
 }
 
 export function TopBar({ onResults, rides }: TopBarProps) {
+  const { toast } = useToast();
   /* ----------------  form state  ---------------- */
   const [from, setFrom] = React.useState("");
   const [to, setTo] = React.useState("");
@@ -159,9 +161,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
       ownerName: organizerName,
       ownerPhone: phoneNumber,
       beginning: from,
-      beginningNorm: from.toLowerCase(),
       destination: to,
-      destinationNorm: to.toLowerCase(),
       description,
       startTime: startTimeObject,
       endTime: endTimeObject,
@@ -175,8 +175,19 @@ export function TopBar({ onResults, rides }: TopBarProps) {
         body: JSON.stringify(rideData),
       });
 
-      if (!res.ok) throw new Error("Failed to post ride");
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error || "Failed to post ride");
+      }
 
+      const newRide = await res.json();
+      
+      // Update the feed with the new ride
+      if (rides) {
+        onResults([newRide.ride, ...rides]);
+      }
+
+      // Reset form fields
       setFrom("");
       setTo("");
       setStartTime("");
@@ -186,8 +197,19 @@ export function TopBar({ onResults, rides }: TopBarProps) {
       setAdditionalPassengers(0);
       setDescription("");
       setDate(new Date());
+
+      // Show success toast
+      toast({
+        title: "Ride Posted",
+        description: "Your ride has been successfully posted.",
+      });
     } catch (error) {
       console.error(error);
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to post ride. Please try again.",
+        variant: "destructive",
+      });
     }
   }
 
