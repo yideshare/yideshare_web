@@ -8,6 +8,7 @@ import { ChevronsUpDown } from "lucide-react";
 // import debounce from "lodash.debounce";
 
 import { encodeDate } from "@/lib/time";
+import { encodeDate } from "@/lib/time";
 import { useToast } from "@/hooks/use-toast";
 
 import { Button } from "@/components/ui/button";
@@ -235,7 +236,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
         <label className="text-sm font-bold text-black">Going to</label>
         <LocationCombobox label="" placeholder="" value={to} onChange={setTo} />
       </div>
-      <div className="w-full sm:w-auto sm:flex-none sm:min-w-[180px]">
+      <div className="w-full sm:w-auto sm:flex-none max-w-[250px] sm:min-w-[180px]">
         <label className="text-sm font-bold text-black">Date</label>
         <Popover>
           <PopoverTrigger asChild>
@@ -267,8 +268,10 @@ export function TopBar({ onResults, rides }: TopBarProps) {
           </PopoverContent>
         </Popover>
       </div>
-      <div className="w-full sm:w-auto sm:flex-none sm:min-w-[180px]">
-        <label className="text-sm font-bold text-black">Time (EST)</label>
+      <div className="w-full sm:w-auto sm:flex-none max-w-[250px] sm:min-w-[180px]">
+        <label className="text-sm font-bold text-black">
+          Departure Time Range (EST)
+        </label>
         <Popover>
           <PopoverTrigger asChild>
             <Button
@@ -287,13 +290,13 @@ export function TopBar({ onResults, rides }: TopBarProps) {
           <PopoverContent className="w-auto p-4" align="start">
             <div className="flex gap-4">
               <TimeSelect
-                label="Start time"
+                label="Earliest departure"
                 value={startTime}
                 onChange={setStartTime}
                 className="bg-transparent w-full border-[#cde3dd] focus:ring-[#cde3dd]"
               />
               <TimeSelect
-                label="End time"
+                label="Latest departure"
                 value={endTime}
                 onChange={setEndTime}
                 className="bg-transparent w-full border-[#cde3dd] focus:ring-[#cde3dd]"
