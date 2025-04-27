@@ -25,3 +25,12 @@ export function createStartEndDateTimes(
     endTimeObject: endDateTime.toJSDate(),
   };
 }
+
+export function encodeDate(date: Date): string {
+  return date.toISOString();
+}
+
+export function decodeDate(dateString: string): Date {
+  const parsed = new Date(dateString);
+  return parsed;
+}
