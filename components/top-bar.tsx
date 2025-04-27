@@ -175,6 +175,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
         body: JSON.stringify(rideData),
       });
 
+
       if (!res.ok) {
         const error = await res.json();
         throw new Error(error.error || "Failed to post ride");
