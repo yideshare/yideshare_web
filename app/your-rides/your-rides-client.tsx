@@ -56,7 +56,7 @@ export default function YourRidesClient({ ownedRides }: YourRidesClientProps) {
 
   const handleDeleteRide = async (rideId: string) => {
     try {
-      const res = await fetch(`${API_BASE}/api/rides/${rideId}`, {
+      const res = await fetch(`${API_BASE}/api/update-rides/${rideId}`, {
         method: "DELETE",
       });
       if (!res.ok) {
@@ -83,7 +83,7 @@ export default function YourRidesClient({ ownedRides }: YourRidesClientProps) {
   const handleEditRide = async (updatedRide: Partial<Ride>) => {
     if (!editingRide) return;
     try {
-      const res = await fetch(`${API_BASE}/api/rides/${editingRide.rideId}`, {
+      const res = await fetch(`${API_BASE}/api/update-rides/${editingRide.rideId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedRide),

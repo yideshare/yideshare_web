@@ -39,9 +39,9 @@ interface ProfileRideCardProps {
 export default function ProfileRideCard({
   ride,
   occupants = [],
-  initialRequests = [],
+  // initialRequests = [],
 }: ProfileRideCardProps) {
-  const { toast } = useToast();
+  // const { toast } = useToast();
 
   /* ---------------------------------------------------------------------- */
   /*  derived                                                               */
@@ -75,36 +75,36 @@ export default function ProfileRideCard({
   /*  handlers                                                              */
   /* ---------------------------------------------------------------------- */
 
-  async function handleCloseListing() {
-    try {
-      const response = await fetch(`${API_BASE}/api/update-ride/${ride.rideId}`, {
-        method: "PATCH",
-      });
+  // async function handleCloseListing() {
+  //   try {
+  //     const response = await fetch(`${API_BASE}/api/update-ride/${ride.rideId}`, {
+  //       method: "PATCH",
+  //     });
   
-      const data = await response.json();
+  //     const data = await response.json();
   
-      if (response.ok) {
-        toast({
-          title: "Ride Closed",
-          description: data.message || `Ride #${ride.rideId} has been closed.`,
-        });
-        // Optional: refresh page or update UI state to remove ride from list
-      } else {
-        toast({
-          title: "Error",
-          description: data.error || `Failed to close ride #${ride.rideId}.`,
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      console.error("Error closing ride:", error);
-      toast({
-        title: "Network Error",
-        description: "Failed to close ride. Please try again.",
-        variant: "destructive",
-      });
-    }
-  }
+  //     if (response.ok) {
+  //       toast({
+  //         title: "Ride Closed",
+  //         description: data.message || `Ride #${ride.rideId} has been closed.`,
+  //       });
+  //       // Optional: refresh page or update UI state to remove ride from list
+  //     } else {
+  //       toast({
+  //         title: "Error",
+  //         description: data.error || `Failed to close ride #${ride.rideId}.`,
+  //         variant: "destructive",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error closing ride:", error);
+  //     toast({
+  //       title: "Network Error",
+  //       description: "Failed to close ride. Please try again.",
+  //       variant: "destructive",
+  //     });
+  //   }
+  // }
 
   // function handleRemove() {
   //   toast({
@@ -203,11 +203,11 @@ export default function ProfileRideCard({
 
           {/* ---------------- actions ---------------- */}
           <div className="flex flex-wrap gap-2">
-            {!isClosed && (
+            {/* {!isClosed && (
               <Button variant="destructive" onClick={handleCloseListing}>
                 Close Listing
               </Button>
-            )}
+            )} */}
             {/* <Button variant="outline" onClick={handleRemove}>
               Remove Ride
             </Button> */}

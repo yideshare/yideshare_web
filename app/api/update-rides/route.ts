@@ -2,21 +2,20 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getUserNetIdFromCookies } from "@/lib/user";
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: { rideId: string } }
-) {
+interface Context {
+  params: {
+    rideId: string;
+  };
+}
+
+export async function DELETE(request: Request, { params }: Context) {
   try {
     // Get the user's netId
     const netId = await getUserNetIdFromCookies();
     if (!netId) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // const rideId = await Promise.resolve(params.rideId);
     const rideId = params.rideId;
 
     // Find the ride to ensure it exists and belongs to the user
@@ -25,10 +24,7 @@ export async function DELETE(
     });
 
     if (!ride) {
-      return NextResponse.json(
-        { error: "Ride not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Ride not found" }, { status: 404 });
     }
 
     if (ride.ownerNetId !== netId) {
@@ -61,21 +57,14 @@ export async function DELETE(
   }
 }
 
-export async function PATCH(
-  request: Request,
-  { params }: { params: { rideId: string } }
-) {
+export async function PATCH(request: Request, { params }: Context) {
   try {
     // Get the user's netId
     const netId = await getUserNetIdFromCookies();
     if (!netId) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // const rideId = await Promise.resolve(params.rideId);
     const rideId = params.rideId;
 
     // Find the ride to ensure it exists and belongs to the user
@@ -84,10 +73,7 @@ export async function PATCH(
     });
 
     if (!existingRide) {
-      return NextResponse.json(
-        { error: "Ride not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Ride not found" }, { status: 404 });
     }
 
     if (existingRide.ownerNetId !== netId) {
@@ -107,8 +93,12 @@ export async function PATCH(
         beginning: updatedRideData.beginning?.toLowerCase(),
         destination: updatedRideData.destination?.toLowerCase(),
         description: updatedRideData.description,
-        startTime: updatedRideData.startTime ? new Date(updatedRideData.startTime) : undefined,
-        endTime: updatedRideData.endTime ? new Date(updatedRideData.endTime) : undefined,
+        startTime: updatedRideData.startTime
+          ? new Date(updatedRideData.startTime)
+          : undefined,
+        endTime: updatedRideData.endTime
+          ? new Date(updatedRideData.endTime)
+          : undefined,
         totalSeats: updatedRideData.totalSeats,
         ownerName: updatedRideData.ownerName,
         ownerPhone: updatedRideData.ownerPhone,
@@ -123,4 +113,4 @@ export async function PATCH(
       { status: 500 }
     );
   }
-} 
+}
