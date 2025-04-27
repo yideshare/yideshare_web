@@ -139,7 +139,7 @@ export default function FeedRideCard({
 
             <div>
           <p className="text-lg font-medium text-black mb-1">
-            Time (EST)
+            Departure Time Range (EST)
               </p>
           <p className="text-2xl font-semibold text-black">{timeLabel}</p>
             </div>
@@ -220,7 +220,7 @@ export default function FeedRideCard({
               <p className="text-lg font-medium text-black">{dateLabel}</p>
             </div>
             <div className="flex-1">
-              <label className="text-sm font-bold text-black">Time</label>
+              <label className="text-sm font-bold text-black">Departure Time Range (EST)</label>
               <p className="text-lg font-medium text-black">{timeLabel}</p>
             </div>
           </div>

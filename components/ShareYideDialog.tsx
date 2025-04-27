@@ -143,14 +143,14 @@ export default function ShareYideDialog({
             </div>
 
             <TimeSelect
-              label="Start time"
+              label="Earliest departure"
               value={startTime}
               onChange={setStartTime}
               className="mt-2 sm:mt-0"
             />
 
             <TimeSelect
-              label="End time"
+              label="Latest departure"
               value={endTime}
               onChange={setEndTime}
               className="mt-2 sm:mt-0"
@@ -177,9 +177,10 @@ export default function ShareYideDialog({
           <div className="space-y-2">
             <Label htmlFor="desc">
               Description{" "}
-              <span className="text-muted-foreground">(optional)</span>
+              <span>(optional)</span>
             </Label>
             <Textarea
+              className="bg-white"
               id="desc"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
