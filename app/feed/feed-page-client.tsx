@@ -1,5 +1,6 @@
 "use client";
 
+import Link from 'next/link'
 import * as React from "react";
 import { Separator } from "@/components/ui/separator";
 import { TopBar } from "@/components/top-bar";

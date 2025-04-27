@@ -194,7 +194,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
   /* ----------------  UI  ---------------- */
   return (
     <div className="flex flex-col sm:flex-row flex-wrap items-center justify-between gap-4 w-full max-w-[1400px] mx-auto bg-white p-4 sm:p-4 sm:pr-2 rounded-2xl shadow-sm mb-8">
-      <div className="w-full sm:w-auto sm:flex-none sm:min-w-[180px] sm:min-w-[200px]">
+      <div className="w-full sm:w-auto sm:flex-none sm:min-w-[180px]">
         <label className="text-sm font-bold text-black">Leaving from</label>
           <LocationCombobox
           label=""
@@ -203,7 +203,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
             onChange={setFrom}
           />
         </div>
-      <div className="w-full sm:w-auto sm:flex-none sm:min-w-[180px] sm:min-w-[200px]">
+      <div className="w-full sm:w-auto sm:flex-none sm:min-w-[180px]">
         <label className="text-sm font-bold text-black">Going to</label>
           <LocationCombobox
           label=""
@@ -212,7 +212,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
             onChange={setTo}
           />
         </div>
-      <div className="w-full sm:w-auto sm:flex-none sm:min-w-[180px] sm:min-w-[200px]">
+      <div className="w-full sm:w-auto sm:flex-none sm:min-w-[180px]">
         <label className="text-sm font-bold text-black">Date</label>
         <Popover>
           <PopoverTrigger asChild>
@@ -240,7 +240,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
           </PopoverContent>
         </Popover>
       </div>
-      <div className="w-full sm:w-auto sm:flex-none sm:min-w-[180px] sm:min-w-[200px]">
+      <div className="w-full sm:w-auto sm:flex-none sm:min-w-[180px]">
         <label className="text-sm font-bold text-black">Time (EST)</label>
         <Popover>
           <PopoverTrigger asChild>
@@ -274,7 +274,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
       <div className="w-full sm:w-auto sm:flex-none flex gap-2 justify-center sm:justify-start">
         <Button
           className="bg-[#cde3dd] hover:bg-[#b8d4cc] text-[#397060] h-10 rounded-full w-[100px]"
-          onClick={handleSearchClick}
+          onClick={handleFindRide}
         >
           Search
         </Button>
