@@ -46,7 +46,7 @@ export default function BookmarksClient({
         break;
     }
     setLocalRides(sortedRides);
-  }, [sortBy, localRides]);
+  }, [sortBy]);
 
   return (
     <div className="bg-white min-h-screen">

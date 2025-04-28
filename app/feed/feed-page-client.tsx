@@ -38,7 +38,7 @@ export default function FeedPageClient({
       );
     }
     setRides(sorted);
-  }, [sortBy, localRides]);
+  }, [sortBy]);
 
   return (
     <div className="bg-white min-h-screen">

@@ -52,7 +52,7 @@ export default function YourRidesClient({ ownedRides }: YourRidesClientProps) {
         break;
     }
     setLocalRides(sortedRides);
-  }, [sortBy, localRides]);
+  }, [sortBy]);
 
   const handleDeleteRide = async (rideId: string) => {
     try {
