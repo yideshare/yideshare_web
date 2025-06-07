@@ -21,10 +21,11 @@ import { Button } from "@/components/ui/button";
 
 interface YourRidesClientProps {
   ownedRides: Ride[];
+  bookmarkedRideIds: string[];
 }
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
-export default function YourRidesClient({ ownedRides }: YourRidesClientProps) {
+export default function YourRidesClient({ ownedRides, bookmarkedRideIds }: YourRidesClientProps) {
   const { toast } = useToast();
   const [sortBy, setSortBy] = React.useState<string>("recent");
   const [localRides, setLocalRides] = React.useState<Ride[]>([]);
@@ -199,29 +200,28 @@ export default function YourRidesClient({ ownedRides }: YourRidesClientProps) {
                         handleDeleteRide(ride.rideId);
                       }}
                     >
-                      <Trash2 className="h-4 w-4" />
+                      <Trash2 className="h-5 w-5 text-red-500" />
                     </Button>
                   </div>
                   <FeedRideCard
                     ride={ride}
-                    isBookmarkedInitial={false}
+                    isBookmarkedInitial={bookmarkedRideIds.includes(ride.rideId)}
                     showDialog={false}
                   />
                 </div>
+                {editingRide && editingRide.rideId === ride.rideId && (
+                  <EditRideDialog
+                    open={isEditDialogOpen}
+                    setOpen={setIsEditDialogOpen}
+                    ride={editingRide}
+                    onSave={handleEditRide}
+                  />
+                )}
               </div>
             ))}
           </div>
         </div>
       </div>
-
-      {editingRide && (
-        <EditRideDialog
-          open={isEditDialogOpen}
-          setOpen={setIsEditDialogOpen}
-          ride={editingRide}
-          onSave={handleEditRide}
-        />
-      )}
     </div>
   );
 }
