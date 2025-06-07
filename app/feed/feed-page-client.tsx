@@ -27,7 +27,7 @@ export default function FeedPageClient({
   const [sortBy, setSortBy] = React.useState("recent");
 
   React.useEffect(() => {
-    const sorted = [...localRides];
+    const sorted = [...initialRides];
     if (sortBy === "recent") {
       sorted.sort((a, b) => +new Date(b.startTime) - +new Date(a.startTime));
     } else if (sortBy === "oldest") {
@@ -38,7 +38,7 @@ export default function FeedPageClient({
       );
     }
     setRides(sorted);
-  }, [sortBy]);
+  }, [sortBy, initialRides]);
 
   return (
     <div className="bg-white min-h-screen">
@@ -105,3 +105,4 @@ export default function FeedPageClient({
     </div>
   );
 }
+

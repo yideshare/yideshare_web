@@ -23,30 +23,48 @@ export default function BookmarksClient({
   bookmarkedRides,
 }: BookmarksClientProps) {
   const [sortBy, setSortBy] = React.useState<string>("recent");
-  const [localRides, setLocalRides] = React.useState<Ride[]>(bookmarkedRides);
+  const [localRides, setLocalRides] = React.useState<Ride[]>([]);
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+    setLocalRides(bookmarkedRides);
+  }, [bookmarkedRides]);
 
   // Handle sorting
   React.useEffect(() => {
-    const sortedRides = [...localRides];
+    if (!isMounted) return;
+    
+    const sortedRides = [...bookmarkedRides];
     switch (sortBy) {
       case "recent":
         sortedRides.sort(
-          (a, b) =>
-            new Date(b.startTime).getTime() - new Date(a.startTime).getTime()
+          (a, b) => {
+            const dateA = new Date(a.startTime).getTime();
+            const dateB = new Date(b.startTime).getTime();
+            return dateB - dateA;
+          }
         );
         break;
       case "oldest":
         sortedRides.sort(
-          (a, b) =>
-            new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
+          (a, b) => {
+            const dateA = new Date(a.startTime).getTime();
+            const dateB = new Date(b.startTime).getTime();
+            return dateA - dateB;
+          }
         );
         break;
       case "alphabetical":
-        sortedRides.sort((a, b) => a.beginning.localeCompare(b.beginning));
+        sortedRides.sort((a, b) => (a.beginning ?? "").localeCompare(b.beginning ?? ""));
         break;
     }
     setLocalRides(sortedRides);
-  }, [sortBy]);
+  }, [sortBy, bookmarkedRides, isMounted]);
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="bg-white min-h-screen">
@@ -99,3 +117,4 @@ export default function BookmarksClient({
     </div>
   );
 }
+
