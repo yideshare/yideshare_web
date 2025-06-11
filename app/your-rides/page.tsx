@@ -2,6 +2,7 @@
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import YourRidesClient from "./your-rides-client";
+import { findBookmarkedRides } from "@/lib/ride";
 
 export default async function DashboardPage() {
   /* -------------------------------------------------------------------- */
@@ -30,5 +31,9 @@ export default async function DashboardPage() {
     orderBy: { startTime: "desc" },
   });
 
-  return <YourRidesClient ownedRides={ownedRides} />;
+  // Fetch bookmarks and extract ride IDs
+  const bookmarks = await findBookmarkedRides(netId);
+  const bookmarkedRideIds = bookmarks.map((b) => b.ride.rideId);
+
+  return <YourRidesClient ownedRides={ownedRides} bookmarkedRideIds={bookmarkedRideIds} />;
 }

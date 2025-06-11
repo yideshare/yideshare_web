@@ -111,15 +111,15 @@ export async function findFilteredRides(
   // Only add location filters if they're not empty
   if (from) {
     whereClause.AND.push({
-      beginningNorm: {
-        contains: from.toLowerCase(),
+      beginning: {
+        contains: from,
       },
     });
   }
   if (to) {
     whereClause.AND.push({
-      destinationNorm: {
-        contains: to.toLowerCase(),
+      destination: {
+        contains: to,
       },
     });
   }
@@ -128,7 +128,7 @@ export async function findFilteredRides(
   const hasEnd   = endTime   && !isNaN(endTime.getTime());
 
   if (hasStart && hasEnd) {
-    whereClause.push({
+    whereClause.AND.push({
       OR: [
         {
           AND: [

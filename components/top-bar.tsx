@@ -53,6 +53,9 @@ export function TopBar({ onResults, rides }: TopBarProps) {
   const [additionalPassengers, setAdditionalPassengers] = React.useState(0);
   const [description, setDescription] = React.useState("");
 
+  // New state to track if a search is active
+  const [hasSearched, setHasSearched] = React.useState(false);
+
   //TODO: print out where the error is
   const [errors, setErrors] = React.useState({
     //requires these fields
@@ -137,16 +140,30 @@ export function TopBar({ onResults, rides }: TopBarProps) {
       return;
     }
 
-    const queryString = `from=${encodeURIComponent(
-      from
-    )}&to=${encodeURIComponent(to)}&date=${encodeDate(
-      date
-    )}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(
-      endTime
-    )}`;
+    const qs = new URLSearchParams({
+      from,
+      to,
+      date: encodeDate(date),
+      startTime,
+      endTime,
+    }).toString();
 
-    // Redirect to results page
-    window.location.href = `http://localhost:3000//results?${queryString}`;
+    try {
+      const res = await fetch(`/api/search-rides?${qs}`);
+      if (!res.ok) throw new Error("Network error");
+      const ridesResult: Ride[] = await res.json();
+      onResults(ridesResult);
+      setHasSearched(true);
+    } catch (err) {
+      console.error(err);
+      onResults([]);
+      setHasSearched(true);
+    }
+  };
+
+  const handleClearSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    window.location.reload();
   };
 
   /* ----------------  share‑a‑ride -------------- */
@@ -307,9 +324,9 @@ export function TopBar({ onResults, rides }: TopBarProps) {
       <div className="w-full sm:w-auto sm:flex-none flex gap-2 justify-center sm:justify-start">
         <Button
           className="bg-[#cde3dd] hover:bg-[#b8d4cc] text-[#397060] h-10 rounded-full w-[100px]"
-          onClick={handleFindRide}
+          onClick={hasSearched ? handleClearSearch : handleFindRide}
         >
-          Search
+          {hasSearched ? "Clear Search" : "Search"}
         </Button>
         <Button
           className="bg-[#397060] hover:bg-[#2d5848] text-white h-10 rounded-full w-[100px]"
