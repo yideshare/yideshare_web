@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Separator } from "@/components/ui/separator";
 import { TopNavButtons } from "@/components/top-nav-buttons";
+import { Pencil } from "lucide-react";
 import Link from "next/link";
 import { Ride } from "@prisma/client";
 import {
@@ -25,7 +26,10 @@ interface YourRidesClientProps {
 }
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
-export default function YourRidesClient({ ownedRides, bookmarkedRideIds }: YourRidesClientProps) {
+export default function YourRidesClient({
+  ownedRides,
+  bookmarkedRideIds,
+}: YourRidesClientProps) {
   const { toast } = useToast();
   const [sortBy, setSortBy] = React.useState<string>("recent");
   const [localRides, setLocalRides] = React.useState<Ride[]>([]);
@@ -41,29 +45,27 @@ export default function YourRidesClient({ ownedRides, bookmarkedRideIds }: YourR
   // Handle sorting
   React.useEffect(() => {
     if (!isMounted) return;
-    
+
     const sortedRides = [...ownedRides];
     switch (sortBy) {
       case "recent":
-        sortedRides.sort(
-          (a, b) => {
-            const dateA = new Date(a.startTime).getTime();
-            const dateB = new Date(b.startTime).getTime();
-            return dateB - dateA;
-          }
-        );
+        sortedRides.sort((a, b) => {
+          const dateA = new Date(a.startTime).getTime();
+          const dateB = new Date(b.startTime).getTime();
+          return dateB - dateA;
+        });
         break;
       case "oldest":
-        sortedRides.sort(
-          (a, b) => {
-            const dateA = new Date(a.startTime).getTime();
-            const dateB = new Date(b.startTime).getTime();
-            return dateA - dateB;
-          }
-        );
+        sortedRides.sort((a, b) => {
+          const dateA = new Date(a.startTime).getTime();
+          const dateB = new Date(b.startTime).getTime();
+          return dateA - dateB;
+        });
         break;
       case "alphabetical":
-        sortedRides.sort((a, b) => (a.beginning ?? "").localeCompare(b.beginning ?? ""));
+        sortedRides.sort((a, b) =>
+          (a.beginning ?? "").localeCompare(b.beginning ?? "")
+        );
         break;
     }
     setLocalRides(sortedRides);
@@ -74,15 +76,15 @@ export default function YourRidesClient({ ownedRides, bookmarkedRideIds }: YourR
       const res = await fetch(`${API_BASE}/api/update-rides?rideId=${rideId}`, {
         method: "DELETE",
       });
-  
+
       if (!res.ok) {
         const error = await res.json();
         throw new Error(error.error || "Failed to delete ride");
       }
-  
+
       // Remove the deleted ride from the state
       setLocalRides(localRides.filter((ride) => ride.rideId !== rideId));
-  
+
       // Show success toast
       toast({
         title: "Ride Deleted",
@@ -99,29 +101,32 @@ export default function YourRidesClient({ ownedRides, bookmarkedRideIds }: YourR
         variant: "destructive",
       });
     }
-  };  
+  };
 
   const handleEditRide = async (updatedRide: Partial<Ride>) => {
     if (!editingRide) return;
-  
+
     try {
-      const res = await fetch(`${API_BASE}/api/rides/updateRide?rideId=${editingRide.rideId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedRide),
-      });
-  
+      const res = await fetch(
+        `${API_BASE}/api/update-rides?rideId=${editingRide.rideId}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedRide),
+        }
+      );
+
       if (!res.ok) throw new Error("Failed to update ride");
-  
+
       const updatedRideData = await res.json();
-  
+
       // Update the state with the new ride details
       setLocalRides(
         localRides.map((ride) =>
           ride.rideId === editingRide.rideId ? updatedRideData : ride
         )
       );
-  
+
       // Show success toast
       toast({
         title: "Ride Updated",
@@ -136,7 +141,7 @@ export default function YourRidesClient({ ownedRides, bookmarkedRideIds }: YourR
         variant: "destructive",
       });
     }
-  }; 
+  };
 
   if (!isMounted) {
     return null;
@@ -184,14 +189,8 @@ export default function YourRidesClient({ ownedRides, bookmarkedRideIds }: YourR
           <div className="flex flex-col gap-6 max-w-[1200px] w-full">
             {localRides.map((ride) => (
               <div key={ride.rideId} className="w-full">
-                <div
-                  className="relative"
-                  onClick={() => {
-                    setEditingRide(ride);
-                    setIsEditDialogOpen(true);
-                  }}
-                >
-                  <div className="absolute top-2 right-2">
+                <div className="relative">
+                  <div className="absolute top-2 right-2 flex gap-2">
                     <Button
                       variant="ghost"
                       size="icon"
@@ -203,10 +202,27 @@ export default function YourRidesClient({ ownedRides, bookmarkedRideIds }: YourR
                       <Trash2 className="h-5 w-5 text-red-500" />
                     </Button>
                   </div>
+                  <div className="absolute bottom-2 right-2 flex gap-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setEditingRide(ride);
+                        setIsEditDialogOpen(true);
+                      }}
+                    >
+                      <Pencil className="h-5 w-5 text-blue-500" />
+                    </Button>
+                    
+                  </div>
                   <FeedRideCard
                     ride={ride}
-                    isBookmarkedInitial={bookmarkedRideIds.includes(ride.rideId)}
+                    isBookmarkedInitial={bookmarkedRideIds.includes(
+                      ride.rideId
+                    )}
                     showDialog={false}
+                    hideBookmark={true}
                   />
                 </div>
                 {editingRide && editingRide.rideId === ride.rideId && (

@@ -32,12 +32,13 @@ import {
 
 import { FeedRideCardProps } from "@/app/interface/main";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || '';
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 export default function FeedRideCard({
   ride,
   isBookmarkedInitial,
   showDialog = true,
-}: FeedRideCardProps) {
+  hideBookmark = false, // add default
+}: FeedRideCardProps & { hideBookmark?: boolean }) {
   const { toast } = useToast();
   const [isBookmarked, setIsBookmarked] = React.useState(isBookmarkedInitial);
   // const [message, setMessage] = React.useState("Hi, is this ride still available...");
@@ -45,7 +46,7 @@ export default function FeedRideCard({
 
   const formatPhoneNumber = (phone: string) => {
     // Remove all non-digit characters
-    const cleaned = phone.replace(/\D/g, '');
+    const cleaned = phone.replace(/\D/g, "");
     // Format as (xxx)-xxx-xxxx
     const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
     if (match) {
@@ -116,71 +117,71 @@ export default function FeedRideCard({
   const cardContent = (
     <Card className="rounded-2xl border border-border bg-white px-6 py-4 shadow-card hover:shadow-cardHover cursor-pointer">
       <div className="grid grid-cols-4 gap-1">
-            <div>
-          <p className="text-lg font-medium text-black mb-1">
-                Leaving from
-              </p>
+        <div>
+          <p className="text-lg font-medium text-black mb-1">Leaving from</p>
           <p className="text-2xl font-semibold text-black">{ride.beginning}</p>
-            </div>
+        </div>
 
-            <div>
-          <p className="text-lg font-medium text-black mb-1">
-                Going to
-              </p>
-          <p className="text-2xl font-semibold text-black">{ride.destination}</p>
-            </div>
+        <div>
+          <p className="text-lg font-medium text-black mb-1">Going to</p>
+          <p className="text-2xl font-semibold text-black">
+            {ride.destination}
+          </p>
+        </div>
 
-            <div>
-          <p className="text-lg font-medium text-black mb-1">
-                Date
-              </p>
+        <div>
+          <p className="text-lg font-medium text-black mb-1">Date</p>
           <p className="text-2xl font-semibold text-black">{dateLabel}</p>
-            </div>
+        </div>
 
-            <div>
+        <div>
           <p className="text-lg font-medium text-black mb-1">
             Departure Time Range (EST)
-              </p>
+          </p>
           <p className="text-2xl font-semibold text-black">{timeLabel}</p>
-            </div>
-          </div>
+        </div>
+      </div>
 
-          <div className="h-px bg-border my-4" />
+      <div className="h-px bg-border my-4" />
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
           <div className="h-12 w-12 flex items-center justify-center rounded-full bg-muted text-2xl font-semibold text-black">
             {ownerName[0]}
-              </div>
+          </div>
           <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-black">
             <span className="text-xl">{ownerName}</span>
             {/* <span className="text-xl text-black">
               {ride.owner.email ?? "driver@yale.edu"}
             </span> */}
             <span className="text-xl text-black">
-              {ride.ownerPhone ? formatPhoneNumber(ride.ownerPhone) : "No phone provided"}
+              {ride.ownerPhone
+                ? formatPhoneNumber(ride.ownerPhone)
+                : "No phone provided"}
             </span>
-              </div>
-            </div>
+          </div>
+        </div>
 
         <div className="flex items-center gap-2">
           {/* <span className="text-lg text-black">{postedAgo}</span> */}
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={(e) => {
-              e.stopPropagation();
-              handleBookmark();
-            }}
-          >
-            <Bookmark
-              className="h-5 w-5 text-primary"
-              style={{ fill: isBookmarked ? "currentColor" : "none" }}
-            />
-          </Button>
+          {!hideBookmark && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleBookmark();
+              }}
+            >
+              <Bookmark
+                className="h-5 w-5 text-primary"
+                style={{ fill: isBookmarked ? "currentColor" : "none" }}
+              />
+            </Button>
+          )}
         </div>
-          </div>
-        </Card>
+      </div>
+    </Card>
   );
 
   if (!showDialog) {
@@ -189,9 +190,7 @@ export default function FeedRideCard({
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        {cardContent}
-      </DialogTrigger>
+      <DialogTrigger asChild>{cardContent}</DialogTrigger>
 
       {/* -------- Dialog -------- */}
       <DialogContent>
@@ -208,10 +207,13 @@ export default function FeedRideCard({
             {ride.ownerPhone && (
               <div className="text-lg text-black mt-1">
                 Phone: {formatPhoneNumber(ride.ownerPhone)}
-              </div> 
+              </div>
             )}
             <div className="text-lg text-black mt-1">
-              Description: {ride.description ? ride.description : "No additional information provided"}
+              Description:{" "}
+              {ride.description
+                ? ride.description
+                : "No additional information provided"}
             </div>
           </div>
           <div className="flex gap-4 mt-4">
@@ -220,7 +222,9 @@ export default function FeedRideCard({
               <p className="text-lg font-medium text-black">{dateLabel}</p>
             </div>
             <div className="flex-1">
-              <label className="text-sm font-bold text-black">Departure Time Range (EST)</label>
+              <label className="text-sm font-bold text-black">
+                Departure Time Range (EST)
+              </label>
               <p className="text-lg font-medium text-black">{timeLabel}</p>
             </div>
           </div>
