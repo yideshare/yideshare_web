@@ -10,6 +10,9 @@ export interface FeedRideCardProps {
   //occupants?: User[];
   isBookmarkedInitial: boolean;
   showDialog?: boolean;
+  showEditIcon?: boolean;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
 export interface ResultsPageProps {

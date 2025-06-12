@@ -184,29 +184,17 @@ export default function YourRidesClient({ ownedRides, bookmarkedRideIds }: YourR
           <div className="flex flex-col gap-6 max-w-[1200px] w-full">
             {localRides.map((ride) => (
               <div key={ride.rideId} className="w-full">
-                <div
-                  className="relative"
-                  onClick={() => {
-                    setEditingRide(ride);
-                    setIsEditDialogOpen(true);
-                  }}
-                >
-                  <div className="absolute top-2 right-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteRide(ride.rideId);
-                      }}
-                    >
-                      <Trash2 className="h-5 w-5 text-red-500" />
-                    </Button>
-                  </div>
+                <div className="relative">
                   <FeedRideCard
                     ride={ride}
                     isBookmarkedInitial={bookmarkedRideIds.includes(ride.rideId)}
                     showDialog={false}
+                    showEditIcon={true}
+                    onEdit={() => {
+                      setEditingRide(ride);
+                      setIsEditDialogOpen(true);
+                    }}
+                    onDelete={() => handleDeleteRide(ride.rideId)}
                   />
                 </div>
                 {editingRide && editingRide.rideId === ride.rideId && (

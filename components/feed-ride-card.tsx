@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Bookmark } from "lucide-react";
+import { Bookmark, Pen, Trash2 } from "lucide-react";
 
 import {
   Card,
@@ -37,6 +37,9 @@ export default function FeedRideCard({
   ride,
   isBookmarkedInitial,
   showDialog = true,
+  showEditIcon,
+  onEdit,
+  onDelete,
 }: FeedRideCardProps) {
   const { toast } = useToast();
   const [isBookmarked, setIsBookmarked] = React.useState(isBookmarkedInitial);
@@ -165,19 +168,44 @@ export default function FeedRideCard({
 
         <div className="flex items-center gap-2">
           {/* <span className="text-lg text-black">{postedAgo}</span> */}
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={(e) => {
-              e.stopPropagation();
-              handleBookmark();
-            }}
-          >
-            <Bookmark
-              className="h-5 w-5 text-primary"
-              style={{ fill: isBookmarked ? "currentColor" : "none" }}
-            />
-          </Button>
+          {showEditIcon ? (
+            <>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit && onEdit();
+                }}
+              >
+                <Pen className="h-5 w-5 text-primary" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete && onDelete();
+                }}
+              >
+                <Trash2 className="h-5 w-5 text-red-500" />
+              </Button>
+            </>
+          ) : (
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={(e) => {
+                e.stopPropagation();
+                handleBookmark();
+              }}
+            >
+              <Bookmark
+                className="h-5 w-5 text-primary"
+                style={{ fill: isBookmarked ? "currentColor" : "none" }}
+              />
+            </Button>
+          )}
         </div>
           </div>
         </Card>
