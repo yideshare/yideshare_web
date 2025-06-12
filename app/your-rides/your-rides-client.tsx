@@ -105,7 +105,7 @@ export default function YourRidesClient({ ownedRides, bookmarkedRideIds }: YourR
     if (!editingRide) return;
   
     try {
-      const res = await fetch(`${API_BASE}/api/rides/updateRide?rideId=${editingRide.rideId}`, {
+      const res = await fetch(`${API_BASE}/api/update-rides?rideId=${editingRide.rideId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedRide),
