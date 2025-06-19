@@ -32,7 +32,7 @@ for (let h = 0; h < 24; h++) {
 /*  component                                                         */
 /* ------------------------------------------------------------------ */
 interface TimeSelectProps {
-  label: string;
+  label: React.ReactNode; // change from string to React.ReactNode
   value: string;
   onChange: (v: string) => void;
   className?: string;

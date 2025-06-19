@@ -15,6 +15,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { TimeSelect } from "@/components/ui/time-select";
+import { CustomPhoneInput } from "@/components/ui/phone-input";
+import { isPossiblePhoneNumber } from "react-phone-number-input";
 
 /* -------------------------------------------------------------------------- */
 /*  props                                                                     */
@@ -38,6 +40,7 @@ interface ShareYideDialogProps {
   setOrganizerName: (v: string) => void;
   phoneNumber: string;
   setPhoneNumber: (v: string) => void;
+  // phoneNumberError?: string;
   additionalPassengers: number;
   setAdditionalPassengers: (v: number) => void;
   description: string;
@@ -49,7 +52,6 @@ interface ShareYideDialogProps {
 export default function ShareYideDialog({
   open,
   setOpen,
-
   from,
   setFrom,
   to,
@@ -58,19 +60,22 @@ export default function ShareYideDialog({
   setStartTime,
   endTime,
   setEndTime,
-
   organizerName,
   setOrganizerName,
   phoneNumber,
   setPhoneNumber,
+  // phoneNumberError,
   additionalPassengers,
   setAdditionalPassengers,
   description,
   setDescription,
-
   handleShareYide,
 }: ShareYideDialogProps) {
-  const ready = from && to && startTime && endTime;
+  const [phoneError, setPhoneError] = React.useState<string | undefined>(
+    undefined
+  );
+
+  const ready = from && to && startTime && endTime && !phoneError; //in future, can add more checks
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -108,22 +113,21 @@ export default function ShareYideDialog({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="phone">
-              Phone Number <span className="text-red-500">*</span>
-            </Label>
-            <Input
-              id="phone"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              placeholder="(123) 456-7890"
+            <CustomPhoneInput
+              label="Phone Number"
               required
+              value={phoneNumber}
+              onChange={setPhoneNumber}
+              onErrorChange={setPhoneError}
             />
           </div>
 
           {/* route */}
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="from">Leaving from</Label>
+              <Label htmlFor="from">
+                Leaving from <span className="text-red-500">*</span>{" "}
+              </Label>
               <Input
                 id="from"
                 value={from}
@@ -133,7 +137,9 @@ export default function ShareYideDialog({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="to">Heading to</Label>
+              <Label htmlFor="to">
+                Heading to <span className="text-red-500">*</span>{" "}
+              </Label>
               <Input
                 id="to"
                 value={to}
@@ -143,14 +149,23 @@ export default function ShareYideDialog({
             </div>
 
             <TimeSelect
-              label="Earliest departure"
+              label={
+                <>
+                  Earliest departure <span className="text-red-500">*</span>
+                </>
+              }
               value={startTime}
               onChange={setStartTime}
               className="mt-2 sm:mt-0"
             />
 
             <TimeSelect
-              label="Latest departure"
+              // label="Latest departure"
+              label={
+                <>
+                  Latest departure <span className="text-red-500">*</span>
+                </>
+              }
               value={endTime}
               onChange={setEndTime}
               className="mt-2 sm:mt-0"
@@ -168,7 +183,9 @@ export default function ShareYideDialog({
               min="1"
               max="10"
               value={additionalPassengers}
-              onChange={(e) => setAdditionalPassengers(parseInt(e.target.value))}
+              onChange={(e) =>
+                setAdditionalPassengers(parseInt(e.target.value))
+              }
               required
             />
           </div>
@@ -176,8 +193,7 @@ export default function ShareYideDialog({
           {/* description */}
           <div className="space-y-2">
             <Label htmlFor="desc">
-              Description{" "}
-              <span>(optional)</span>
+              Description <span>(optional)</span>
             </Label>
             <Textarea
               className="bg-white"

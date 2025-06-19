@@ -56,7 +56,6 @@ export function TopBar({ onResults, rides }: TopBarProps) {
   // New state to track if a search is active
   const [hasSearched, setHasSearched] = React.useState(false);
 
-  //TODO: print out where the error is
   const [errors, setErrors] = React.useState({
     //requires these fields
     fromError: "",
@@ -170,6 +169,20 @@ export function TopBar({ onResults, rides }: TopBarProps) {
   async function handleShareYide(e: React.FormEvent) {
     e.preventDefault();
 
+    // Phone number validation
+    // if (!isValidPhoneNumber(phoneNumber)) {
+    //   setErrors((prev) => ({
+    //     ...prev,
+    //     phoneNumberError: "Please enter a valid 10-digit phone number.",
+    //   }));
+    //   return;
+    // } else {
+    //   setErrors((prev) => ({
+    //     ...prev,
+    //     phoneNumberError: "",
+    //   }));
+    // }
+
     const selectedDate = date ?? new Date();
     const { startTimeObject, endTimeObject } = createStartEndDateTimes(
       selectedDate,
@@ -235,6 +248,11 @@ export function TopBar({ onResults, rides }: TopBarProps) {
       });
     }
   }
+
+  // const isValidPhoneNumber = (phone: string) => {
+  //   // Only digits, length 10 (US)
+  //   return /^\d{10}$/.test(phone.replace(/\D/g, ""));
+  // };
 
   /* ----------------  UI  ---------------- */
   return (
