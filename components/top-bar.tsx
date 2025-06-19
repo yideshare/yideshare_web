@@ -50,7 +50,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
   const [open, setOpen] = React.useState(false);
   const [organizerName, setOrganizerName] = React.useState("");
   const [phoneNumber, setPhoneNumber] = React.useState("");
-  const [additionalPassengers, setAdditionalPassengers] = React.useState(0);
+  const [additionalPassengers, setAdditionalPassengers] = React.useState(3);
   const [description, setDescription] = React.useState("");
 
   // New state to track if a search is active

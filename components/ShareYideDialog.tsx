@@ -16,7 +16,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { TimeSelect } from "@/components/ui/time-select";
 import { CustomPhoneInput } from "@/components/ui/phone-input";
-import { isPossiblePhoneNumber } from "react-phone-number-input";
 
 /* -------------------------------------------------------------------------- */
 /*  props                                                                     */
@@ -64,7 +63,6 @@ export default function ShareYideDialog({
   setOrganizerName,
   phoneNumber,
   setPhoneNumber,
-  // phoneNumberError,
   additionalPassengers,
   setAdditionalPassengers,
   description,
@@ -76,7 +74,6 @@ export default function ShareYideDialog({
   );
 
   const ready = from && to && startTime && endTime && !phoneError; //in future, can add more checks
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -182,11 +179,13 @@ export default function ShareYideDialog({
               type="number"
               min="1"
               max="10"
+              placeholder="2"
               value={additionalPassengers}
               onChange={(e) =>
                 setAdditionalPassengers(parseInt(e.target.value))
               }
               required
+              
             />
           </div>
 
