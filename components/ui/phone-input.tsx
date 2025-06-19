@@ -46,7 +46,7 @@ export function CustomPhoneInput({
       </Label>
       <PhoneInput
         value={value}
-        onChange={onChange}
+        onChange={(val) => onChange(val ?? "")}
         defaultCountry="US"
         international
         countryCallingCodeEditable={false}
