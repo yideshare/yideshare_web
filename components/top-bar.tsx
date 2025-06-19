@@ -71,56 +71,6 @@ export function TopBar({ onResults, rides }: TopBarProps) {
     setDate(new Date());
   }, []);
 
-  /* ----------------  helpers  ---------------- */
-  // const fieldsFilled = from && to && date && startTime && endTime;
-
-  /* ----------------  live search --------------- */
-  // const runSearch = React.useMemo(
-  //   () =>
-  //     debounce(async (force = false) => {
-  //       // Always clear results first
-  //       onResults([]);
-
-  //       // If not all fields are filled and not forced, return early
-  //       if (!fieldsFilled && !force) {
-  //         return;
-  //       }
-
-  //       // If date is null, use current date
-  //       const searchDate = date ?? new Date();
-
-  //       const qs = new URLSearchParams({
-  //         from: from || "",
-  //         to: to || "",
-  //         date: searchDate.toISOString(),
-  //         startTime: startTime || "",
-  //         endTime: endTime || "",
-  //       }).toString();
-
-  //       try {
-  //         const res = await fetch(`/api/search-rides?${qs}`);
-  //         if (!res.ok) throw new Error("Network error");
-  //         const rides: Ride[] = await res.json();
-  //         // Only update results if we got valid rides back
-  //         if (Array.isArray(rides)) {
-  //           onResults(rides);
-  //         } else {
-  //           onResults([]);
-  //         }
-  //       } catch (err) {
-  //         console.error(err);
-  //         onResults([]);
-  //       }
-  //     }, 300),
-  //   [from, to, date, startTime, endTime, fieldsFilled, onResults]
-  // );
-
-  // Remove the automatic search on mount
-  // React.useEffect(() => {
-  //   runSearch();
-  //   return runSearch.cancel;
-  // }, [runSearch]);
-
   const handleFindRide = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -169,19 +119,6 @@ export function TopBar({ onResults, rides }: TopBarProps) {
   async function handleShareYide(e: React.FormEvent) {
     e.preventDefault();
 
-    // Phone number validation
-    // if (!isValidPhoneNumber(phoneNumber)) {
-    //   setErrors((prev) => ({
-    //     ...prev,
-    //     phoneNumberError: "Please enter a valid 10-digit phone number.",
-    //   }));
-    //   return;
-    // } else {
-    //   setErrors((prev) => ({
-    //     ...prev,
-    //     phoneNumberError: "",
-    //   }));
-    // }
 
     const selectedDate = date ?? new Date();
     const { startTimeObject, endTimeObject } = createStartEndDateTimes(
@@ -248,11 +185,6 @@ export function TopBar({ onResults, rides }: TopBarProps) {
       });
     }
   }
-
-  // const isValidPhoneNumber = (phone: string) => {
-  //   // Only digits, length 10 (US)
-  //   return /^\d{10}$/.test(phone.replace(/\D/g, ""));
-  // };
 
   /* ----------------  UI  ---------------- */
   return (

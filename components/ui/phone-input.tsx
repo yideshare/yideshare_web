@@ -42,7 +42,7 @@ export function CustomPhoneInput({
     <div className="space-y-2">
       <Label>
         {label}
-        {required && <span className="text-red-500">*</span>}
+        {required && <span className="text-red-500"> *</span>}
       </Label>
       <PhoneInput
         value={value}
