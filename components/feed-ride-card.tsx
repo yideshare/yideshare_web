@@ -4,6 +4,7 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Bookmark } from "lucide-react";
+import { formatPhoneNumberIntl } from "react-phone-number-input";
 
 import {
   Card,
@@ -43,17 +44,6 @@ export default function FeedRideCard({
   const [isBookmarked, setIsBookmarked] = React.useState(isBookmarkedInitial);
   // const [message, setMessage] = React.useState("Hi, is this ride still available...");
   // const [requestSeat, setRequestSeat] = React.useState(false);
-
-  const formatPhoneNumber = (phone: string) => {
-    // Remove all non-digit characters
-    const cleaned = phone.replace(/\D/g, "");
-    // Format as (xxx)-xxx-xxxx
-    const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
-    if (match) {
-      return `(${match[1]})-${match[2]}-${match[3]}`;
-    }
-    return phone; // Return original if doesn't match expected format
-  };
 
   /* ------------ helpers ------------ */
   // const postedAgo = "1d ago";          // TODO real calc
@@ -156,7 +146,7 @@ export default function FeedRideCard({
             </span> */}
             <span className="text-xl text-black">
               {ride.ownerPhone
-                ? formatPhoneNumber(ride.ownerPhone)
+                ? formatPhoneNumberIntl(ride.ownerPhone)
                 : "No phone provided"}
             </span>
           </div>
@@ -206,7 +196,7 @@ export default function FeedRideCard({
             </div>
             {ride.ownerPhone && (
               <div className="text-lg text-black mt-1">
-                Phone: {formatPhoneNumber(ride.ownerPhone)}
+                Phone: {formatPhoneNumberIntl(ride.ownerPhone)}
               </div>
             )}
             <div className="text-lg text-black mt-1">
