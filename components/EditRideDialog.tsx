@@ -16,13 +16,16 @@ import { Label } from "@/components/ui/label";
 import { TimeSelect } from "@/components/ui/time-select";
 import { Ride } from "@prisma/client";
 import { useState } from "react";
+import { CustomPhoneInput } from "@/components/ui/phone-input";
 
 const formatTimeForDisplay = (date: Date) => {
   const hours = date.getHours();
   const minutes = date.getMinutes();
   const hour12 = ((hours + 11) % 12) + 1;
   const suffix = hours < 12 ? "AM" : "PM";
-  return `${hour12.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")} ${suffix}`;
+  return `${hour12.toString().padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")} ${suffix}`;
 };
 
 const formatTimeForServer = (timeStr: string, baseDate: Date) => {
@@ -47,30 +50,49 @@ export default function EditRideDialog({
   ride,
   onSave,
 }: EditRideDialogProps) {
+  const [organizerName, setOrganizerName] = React.useState(
+    ride.ownerName || ""
+  );
+  const [phoneNumber, setPhoneNumber] = React.useState(ride.ownerPhone || "");
+  const [phoneError, setPhoneError] = React.useState<string | undefined>(
+    undefined
+  );
   const [formData, setFormData] = useState({
     beginning: ride.beginning,
     destination: ride.destination,
     description: ride.description || "",
-    startTime: ride.startTime ? formatTimeForDisplay(new Date(ride.startTime)) : "12:00 AM",
-    endTime: ride.endTime ? formatTimeForDisplay(new Date(ride.endTime)) : "12:00 AM",
+    startTime: ride.startTime
+      ? formatTimeForDisplay(new Date(ride.startTime))
+      : "12:00 AM",
+    endTime: ride.endTime
+      ? formatTimeForDisplay(new Date(ride.endTime))
+      : "12:00 AM",
     totalSeats: ride.totalSeats,
-    organizerName: ride.ownerName || "",
-    phoneNumber: ride.ownerPhone || "",
   });
 
-  const ready = formData.beginning && formData.destination && formData.startTime && formData.endTime && formData.phoneNumber;
+  const ready =
+    formData.beginning &&
+    formData.destination &&
+    formData.startTime &&
+    formData.endTime &&
+    formData.totalSeats &&
+    !phoneError;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!ready) return;
     const updatedRide = {
       beginning: formData.beginning,
       destination: formData.destination,
-      startTime: formatTimeForServer(formData.startTime, new Date(ride.startTime)),
+      startTime: formatTimeForServer(
+        formData.startTime,
+        new Date(ride.startTime)
+      ),
       endTime: formatTimeForServer(formData.endTime, new Date(ride.endTime)),
       description: formData.description,
       totalSeats: formData.totalSeats,
-      ownerName: formData.organizerName,
-      ownerPhone: formData.phoneNumber,
+      ownerName: organizerName,
+      ownerPhone: phoneNumber,
     };
     await onSave(updatedRide);
     setOpen(false);
@@ -99,62 +121,81 @@ export default function EditRideDialog({
             </Label>
             <Input
               id="organizer"
-              value={formData.organizerName}
-              onChange={(e) => setFormData({ ...formData, organizerName: e.target.value })}
+              value={organizerName}
+              onChange={(e) => setOrganizerName(e.target.value)}
               placeholder="John Doe"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="phone">
-              Phone Number <span className="text-red-500">*</span>
-            </Label>
-            <Input
-              id="phone"
-              value={formData.phoneNumber}
-              onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
-              placeholder="(123) 456-7890"
+            <CustomPhoneInput
+              label={
+                <>
+                  Phone Number 
+                </>
+              }
               required
+              value={phoneNumber}
+              onChange={setPhoneNumber}
+              onErrorChange={setPhoneError}
             />
           </div>
 
           {/* route */}
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="from">Leaving from</Label>
+              <Label htmlFor="from">
+                Leaving from <span className="text-red-500">*</span>
+              </Label>
               <Input
                 id="from"
                 value={formData.beginning}
-                onChange={(e) => setFormData({ ...formData, beginning: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, beginning: e.target.value })
+                }
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="to">Heading to</Label>
+              <Label htmlFor="to">
+                Heading to <span className="text-red-500">*</span>
+              </Label>
               <Input
                 id="to"
                 value={formData.destination}
-                onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, destination: e.target.value })
+                }
                 required
               />
             </div>
 
-            <div className="flex gap-4">
-              <TimeSelect
-                label="Start time"
-                value={formData.startTime}
-                onChange={(timeStr) => setFormData({ ...formData, startTime: timeStr })}
-                className="flex-1"
-              />
+            <TimeSelect
+              label={
+                <>
+                  Start time <span className="text-red-500">*</span>
+                </>
+              }
+              value={formData.startTime}
+              onChange={(timeStr) =>
+                setFormData({ ...formData, startTime: timeStr })
+              }
+              className="mt-2 sm:mt-0"
+            />
 
-              <TimeSelect
-                label="End time"
-                value={formData.endTime}
-                onChange={(timeStr) => setFormData({ ...formData, endTime: timeStr })}
-                className="flex-1"
-              />
-            </div>
+            <TimeSelect
+              label={
+                <>
+                  End time <span className="text-red-500">*</span>
+                </>
+              }
+              value={formData.endTime}
+              onChange={(timeStr) =>
+                setFormData({ ...formData, endTime: timeStr })
+              }
+              className="mt-2 sm:mt-0"
+            />
           </div>
 
           {/* seats */}
@@ -168,7 +209,12 @@ export default function EditRideDialog({
               min="1"
               max="10"
               value={formData.totalSeats}
-              onChange={(e) => setFormData({ ...formData, totalSeats: parseInt(e.target.value) })}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  totalSeats: parseInt(e.target.value),
+                })
+              }
               required
             />
           </div>
@@ -182,7 +228,9 @@ export default function EditRideDialog({
             <Textarea
               id="desc"
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
               placeholder="I have two suitcases, planning to order an UberXL..."
               rows={3}
             />
@@ -197,4 +245,4 @@ export default function EditRideDialog({
       </DialogContent>
     </Dialog>
   );
-} 
+}

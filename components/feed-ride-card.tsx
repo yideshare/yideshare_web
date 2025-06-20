@@ -4,11 +4,10 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Bookmark } from "lucide-react";
+import { formatPhoneNumberIntl } from "react-phone-number-input";
 
 import {
   Card,
-  // CardContent,
-  // CardHeader,
 } from "@/components/ui/card";
 
 import {
@@ -17,18 +16,9 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  // DialogDescription,
-  // DialogFooter,
+
 } from "@/components/ui/dialog";
 
-// import {
-//   Tooltip,
-//   TooltipProvider,
-//   TooltipContent,
-// } from "@/components/ui/tooltip";
-
-// import { Checkbox } from "@/components/ui/checkbox";
-// import { Textarea } from "@/components/ui/textarea";
 
 import { FeedRideCardProps } from "@/app/interface/main";
 
@@ -41,25 +31,11 @@ export default function FeedRideCard({
 }: FeedRideCardProps & { hideBookmark?: boolean }) {
   const { toast } = useToast();
   const [isBookmarked, setIsBookmarked] = React.useState(isBookmarkedInitial);
-  // const [message, setMessage] = React.useState("Hi, is this ride still available...");
-  // const [requestSeat, setRequestSeat] = React.useState(false);
 
-  const formatPhoneNumber = (phone: string) => {
-    // Remove all non-digit characters
-    const cleaned = phone.replace(/\D/g, "");
-    // Format as (xxx)-xxx-xxxx
-    const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
-    if (match) {
-      return `(${match[1]})-${match[2]}-${match[3]}`;
-    }
-    return phone; // Return original if doesn't match expected format
-  };
 
   /* ------------ helpers ------------ */
-  // const postedAgo = "1d ago";          // TODO real calc
   const ownerName = ride.ownerName ?? "Driver";
   const totalSeats = ride.totalSeats;
-  // const occupantCount = ride.currentTakenSeats;
 
   const sDate = new Date(ride.startTime);
   const eDate = new Date(ride.endTime);
@@ -92,26 +68,6 @@ export default function FeedRideCard({
     }
   }
 
-  /* ------------ message handling ------------ */
-  // const handleMessageChange = (e) => {
-  //   setMessage(e.target.value);
-  // };
-
-  // const handleSendMessage = () => {
-  //   // Handle sending message logic here
-  //   toast({
-  //     title: "Message Sent",
-  //     description: requestSeat ? "Your seat request has been sent" : "Your message has been sent"
-  //   });
-  // };
-
-  // const handleAddToCalendar = () => {
-  //   // Handle calendar logic here
-  //   toast({
-  //     title: "Added to Calendar",
-  //     description: "This ride has been added to your calendar"
-  //   });
-  // };
 
   /* ------------ UI ------------ */
   const cardContent = (
@@ -151,19 +107,16 @@ export default function FeedRideCard({
           </div>
           <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-black">
             <span className="text-xl">{ownerName}</span>
-            {/* <span className="text-xl text-black">
-              {ride.owner.email ?? "driver@yale.edu"}
-            </span> */}
+
             <span className="text-xl text-black">
               {ride.ownerPhone
-                ? formatPhoneNumber(ride.ownerPhone)
+                ? formatPhoneNumberIntl(ride.ownerPhone)
                 : "No phone provided"}
             </span>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
-          {/* <span className="text-lg text-black">{postedAgo}</span> */}
           {!hideBookmark && (
             <Button
               variant="ghost"
@@ -206,7 +159,7 @@ export default function FeedRideCard({
             </div>
             {ride.ownerPhone && (
               <div className="text-lg text-black mt-1">
-                Phone: {formatPhoneNumber(ride.ownerPhone)}
+                Phone: {formatPhoneNumberIntl(ride.ownerPhone)}
               </div>
             )}
             <div className="text-lg text-black mt-1">
@@ -230,42 +183,7 @@ export default function FeedRideCard({
           </div>
         </DialogHeader>
 
-        {/* <div className="mt-6">
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="text-lg font-medium text-black">Message the driver:</h3>
-            <div className="flex items-center gap-2">
-              <Checkbox 
-                id="request-seat" 
-                checked={requestSeat} 
-                onCheckedChange={setRequestSeat}
-              />
-              <label htmlFor="request-seat" className="text-base cursor-pointer text-black">
-                Request a seat
-              </label>
-            </div>
-          </div>
-          
-          <Textarea 
-            value={message} 
-            onChange={handleMessageChange} 
-            placeholder="Type your message here..." 
-            className="min-h-24"
-          />
-        </div> */}
 
-        {/* <DialogFooter>
-          <Button 
-            variant="outline" 
-            onClick={handleAddToCalendar}
-            className="gap-2"
-          >
-            <Calendar className="h-4 w-4" />
-            Add to Calendar
-          </Button>
-          <Button onClick={handleSendMessage}>
-            Send
-          </Button>
-        </DialogFooter> */}
       </DialogContent>
     </Dialog>
   );
