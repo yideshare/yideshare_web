@@ -5,3 +5,5 @@ export const righteous = localFont({
   display: 'swap',
   variable: '--font-righteous',
 });
+
+//hi this is lauren! testing to see whether this is how i can commit changes... 
