@@ -66,7 +66,7 @@ export default function YourRidesClient({
 
     try {
       const res = await fetch(
-        `${API_BASE}/api/update-rides?rideId=${editingRide.rideId}`,
+        `${API_BASE}/api/update-ride?rideId=${editingRide.rideId}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -88,7 +88,7 @@ export default function YourRidesClient({
         title: "Ride Updated",
         description: "Your ride has been successfully updated.",
       });
-    } catch (error) {
+    } catch {
       toast({
         title: "Error",
         description: "Failed to update ride. Please try again.",

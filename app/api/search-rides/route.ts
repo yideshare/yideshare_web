@@ -4,7 +4,6 @@ import { findFilteredRides } from "@/lib/ride";
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
-
     const from = searchParams.get("from") || "";
     const to = searchParams.get("to") || "";
     const date = searchParams.get("date") || new Date().toISOString();

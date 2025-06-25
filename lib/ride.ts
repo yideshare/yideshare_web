@@ -100,8 +100,8 @@ export async function findBookmarkedRides(netId: string) {
 export async function findFilteredRides(
   from: string,
   to: string,
-  startTime: Date,
-  endTime: Date
+  filterStartTime: Date,
+  filterEndTime: Date
 ) {
   // Build the where clause dynamically based on non-empty criteria
   const whereClause: any = {
@@ -124,23 +124,23 @@ export async function findFilteredRides(
     });
   }
 
-  const hasStart = startTime && !isNaN(startTime.getTime());
-  const hasEnd   = endTime   && !isNaN(endTime.getTime());
+  const hasStart = filterStartTime && !isNaN(filterStartTime.getTime());
+  const hasEnd   = filterEndTime   && !isNaN(filterEndTime.getTime());
 
   if (hasStart && hasEnd) {
     whereClause.AND.push({
       OR: [
         {
-          AND: [
-            { startTime: { lte: startTime } },
-            { endTime:   { gte: startTime } },
-          ]
+          startTime: {
+            gte: filterStartTime,
+            lte: filterEndTime,
+          }
         },
         {
-          AND: [
-            { startTime: { lte: endTime } },
-            { endTime:   { gte: endTime } },
-          ]
+          endTime: {
+            gte: filterStartTime,
+            lte: filterEndTime,
+          }
         }
       ]
     });
