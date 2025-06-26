@@ -34,7 +34,7 @@ export default function YourRidesClient({
 
   const handleDeleteRide = async (rideId: string) => {
     try {
-      const res = await fetch(`${API_BASE}/api/update-rides?rideId=${rideId}`, {
+      const res = await fetch(`${API_BASE}/api/update-ride?rideId=${rideId}`, {
         method: "DELETE",
       });
 
