@@ -24,9 +24,9 @@ export function withApiErrorHandler(
       return NextResponse.json(
         {
           error:
-            error instanceof Error
+            error instanceof ApiError
               ? error.message
-              : "Internal Server Error",
+              : "An unexpected error occurred",
         },
         { status }
       );
