@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { findFilteredRides } from "@/lib/ride";
-import { withApiErrorHandler, ApiError } from "@/lib/withApiErrorHandler";
+import { withApiErrorHandler } from "@/lib/withApiErrorHandler";
 
 async function getHandler(request: Request) {
   const url = new URL(request.url);
