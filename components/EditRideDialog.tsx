@@ -17,6 +17,7 @@ import { TimeSelect } from "@/components/ui/time-select";
 import { Ride } from "@prisma/client";
 import { useState } from "react";
 import { CustomPhoneInput } from "@/components/ui/phone-input";
+import { createStartEndDateTimes, isNextDay } from "@/lib/time";
 
 const formatTimeForDisplay = (date: Date) => {
   const hours = date.getHours();
@@ -28,13 +29,16 @@ const formatTimeForDisplay = (date: Date) => {
     .padStart(2, "0")} ${suffix}`;
 };
 
-const formatTimeForServer = (timeStr: string, baseDate: Date) => {
-  const [time, period] = timeStr.split(" ");
-  const [hours, minutes] = time.split(":").map(Number);
-  const date = new Date(baseDate);
-  const hour24 = period === "PM" ? (hours % 12) + 12 : hours % 12;
-  date.setHours(hour24, minutes);
-  return date;
+// logic flow that handles next-day scenarios
+const createUpdatedTimes = (startTimeStr: string, endTimeStr: string, originalStartTime: Date) => {
+  // use the original date as the base date for the time conversion
+  const baseDate = new Date(originalStartTime);
+  const { startTimeObject, endTimeObject } = createStartEndDateTimes(
+    baseDate,
+    startTimeStr,
+    endTimeStr
+  );
+  return { startTimeObject, endTimeObject };
 };
 
 interface EditRideDialogProps {
@@ -81,14 +85,18 @@ export default function EditRideDialog({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!ready) return;
+    
+    const { startTimeObject, endTimeObject } = createUpdatedTimes(
+      formData.startTime,
+      formData.endTime,
+      new Date(ride.startTime)
+    );
+    
     const updatedRide = {
       beginning: formData.beginning,
       destination: formData.destination,
-      startTime: formatTimeForServer(
-        formData.startTime,
-        new Date(ride.startTime)
-      ),
-      endTime: formatTimeForServer(formData.endTime, new Date(ride.endTime)),
+      startTime: startTimeObject,
+      endTime: endTimeObject,
       description: formData.description,
       totalSeats: formData.totalSeats,
       ownerName: organizerName,
@@ -194,6 +202,8 @@ export default function EditRideDialog({
               onChange={(timeStr) =>
                 setFormData({ ...formData, endTime: timeStr })
               }
+              startTime={formData.startTime}
+              isEndTime={true}
               className="mt-2 sm:mt-0"
             />
           </div>

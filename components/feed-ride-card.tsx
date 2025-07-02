@@ -42,13 +42,16 @@ export default function FeedRideCard({
   const dateLabel = `${sDate.getDate()} ${sDate.toLocaleString("en", {
     month: "short",
   })}`;
+  
+  // check if end date is different from start date (it's in the next day)
+  const isNextDay = sDate.toDateString() !== eDate.toDateString();
   const timeLabel = `${sDate.toLocaleTimeString("en", {
     hour: "numeric",
     minute: "2-digit",
   })} - ${eDate.toLocaleTimeString("en", {
     hour: "numeric",
     minute: "2-digit",
-  })}`;
+  })}${isNextDay ? ' (+1)' : ''}`;
 
   /* ------------ bookmark ------------ */
   async function handleBookmark() {
