@@ -37,8 +37,8 @@ interface TimeSelectProps {
   value: string;
   onChange: (v: string) => void;
   className?: string;
-  startTime?: string; // For end time selects, pass the start time to show +1 indicators
-  isEndTime?: boolean; // Flag to indicate this is an end time selector
+  startTime?: string;
+  isEndTime?: boolean;
 }
 
 export function TimeSelect({
