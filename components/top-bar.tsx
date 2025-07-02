@@ -20,7 +20,7 @@ import {
 
 import { TimeSelect } from "@/components/ui/time-select";
 import { LocationCombobox } from "@/components/location-combobox";
-import { createStartEndDateTimes } from "@/lib/time";
+import { createStartEndDateTimes, isNextDay } from "@/lib/time";
 import ShareYideDialog from "./ShareYideDialog";
 
 import { Ride } from "@prisma/client";
@@ -234,7 +234,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
           </PopoverContent>
         </Popover>
       </div>
-      <div className="w-full sm:w-auto sm:flex-none max-w-[250px] sm:min-w-[180px]">
+      <div className="w-full sm:w-auto sm:flex-none max-w-[300px] sm:min-w-[220px]">
         <label className="text-sm font-bold text-black">
           Departure Time Range (EST)
         </label>
@@ -246,7 +246,12 @@ export function TopBar({ onResults, rides }: TopBarProps) {
               className="justify-start text-left text-lg font-bold bg-transparent text-black w-full border-[#cde3dd] focus:ring-[#cde3dd] h-10"
             >
               {startTime && endTime ? (
-                `${startTime} - ${endTime}`
+                <>
+                  {`${startTime} - ${endTime}`}
+                  {isNextDay(startTime, endTime) && (
+                    <span className="text-xs text-gray-500 ml-1">(+1)</span>
+                  )}
+                </>
               ) : (
                 <span className="text-gray-500">Select time</span>
               )}
@@ -262,9 +267,15 @@ export function TopBar({ onResults, rides }: TopBarProps) {
                 className="bg-transparent w-full border-[#cde3dd] focus:ring-[#cde3dd]"
               />
               <TimeSelect
-                label="Latest departure"
+                label={
+                  <>
+                    Latest departure
+                  </>
+                }
                 value={endTime}
                 onChange={setEndTime}
+                startTime={startTime}
+                isEndTime={true}
                 className="bg-transparent w-full border-[#cde3dd] focus:ring-[#cde3dd]"
               />
             </div>

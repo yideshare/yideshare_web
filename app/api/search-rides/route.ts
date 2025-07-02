@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { findFilteredRides } from "@/lib/ride";
+import { createStartEndDateTimes } from "@/lib/time";
 
 export async function GET(request: NextRequest) {
   try {
@@ -10,35 +11,25 @@ export async function GET(request: NextRequest) {
     const startTime = searchParams.get("startTime") || "";
     const endTime = searchParams.get("endTime") || "";
 
-    // Convert date string to Date object
+    // convert date string to "Date" object and create time objects with next-day logic
     const dateObject = new Date(date);
-
-    // Create start and end time objects
-    const startTimeObject = new Date(dateObject);
-    const endTimeObject = new Date(dateObject);
-
-    if (startTime) {
-      const [time, period] = startTime.split(" ");
-      const [hours, minutes] = time.split(":").map(Number);
-      let adjustedHours = hours;
-      if (period === "PM" && hours !== 12) {
-        adjustedHours += 12;
-      } else if (period === "AM" && hours === 12) {
-        adjustedHours = 0;
-      }
-      startTimeObject.setHours(adjustedHours, minutes);
-    }
-
-    if (endTime) {
-      const [time, period] = endTime.split(" ");
-      const [hours, minutes] = time.split(":").map(Number);
-      let adjustedHours = hours;
-      if (period === "PM" && hours !== 12) {
-        adjustedHours += 12;
-      } else if (period === "AM" && hours === 12) {
-        adjustedHours = 0;
-      }
-      endTimeObject.setHours(adjustedHours, minutes);
+    
+    let startTimeObject: Date;
+    let endTimeObject: Date;
+    
+    if (startTime && endTime) {
+      // use the logic that handles next-day occurences
+      const { startTimeObject: start, endTimeObject: end } = createStartEndDateTimes(
+        dateObject,
+        startTime,
+        endTime
+      );
+      startTimeObject = start;
+      endTimeObject = end;
+    } else {
+      // fallback for when times are not provided
+      startTimeObject = new Date(dateObject);
+      endTimeObject = new Date(dateObject);
     }
 
     // Find rides that match the filter criteria
