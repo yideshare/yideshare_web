@@ -1,0 +1,135 @@
+{
+  "used": [
+    {
+      "name": "react",
+      "count": 42,
+      "files": 42
+    },
+    {
+      "name": "next",
+      "count": 20,
+      "files": 20
+    },
+    {
+      "name": "lucide-react",
+      "count": 19,
+      "files": 19
+    },
+    {
+      "name": "class-variance-authority",
+      "count": 4,
+      "files": 4
+    },
+    {
+      "name": "date-fns",
+      "count": 3,
+      "files": 3
+    },
+    {
+      "name": "luxon",
+      "count": 3,
+      "files": 3
+    },
+    {
+      "name": "react-phone-number-input",
+      "count": 3,
+      "files": 3
+    },
+    {
+      "name": "react-day-picker",
+      "count": 2,
+      "files": 2
+    },
+    {
+      "name": "clsx",
+      "count": 1,
+      "files": 1
+    },
+    {
+      "name": "cmdk",
+      "count": 1,
+      "files": 1
+    },
+    {
+      "name": "lodash.debounce",
+      "count": 1,
+      "files": 1
+    },
+    {
+      "name": "tailwind-merge",
+      "count": 1,
+      "files": 1
+    },
+    {
+      "name": "tailwindcss-animate",
+      "count": 1,
+      "files": 1
+    }
+  ],
+  "unused": [
+    {
+      "name": "@prisma/client",
+      "type": "prod"
+    },
+    {
+      "name": "@radix-ui/react-avatar",
+      "type": "prod"
+    },
+    {
+      "name": "@radix-ui/react-checkbox",
+      "type": "prod"
+    },
+    {
+      "name": "@radix-ui/react-collapsible",
+      "type": "prod"
+    },
+    {
+      "name": "@radix-ui/react-dialog",
+      "type": "prod"
+    },
+    {
+      "name": "@radix-ui/react-dropdown-menu",
+      "type": "prod"
+    },
+    {
+      "name": "@radix-ui/react-icons",
+      "type": "prod"
+    },
+    {
+      "name": "@radix-ui/react-popover",
+      "type": "prod"
+    },
+    {
+      "name": "@radix-ui/react-scroll-area",
+      "type": "prod"
+    },
+    {
+      "name": "@radix-ui/react-select",
+      "type": "prod"
+    },
+    {
+      "name": "@radix-ui/react-separator",
+      "type": "prod"
+    },
+    {
+      "name": "@radix-ui/react-slot",
+      "type": "prod"
+    },
+    {
+      "name": "@radix-ui/react-toast",
+      "type": "prod"
+    },
+    {
+      "name": "@radix-ui/react-tooltip",
+      "type": "prod"
+    },
+    {
+      "name": "react-dom",
+      "type": "prod"
+    },
+    {
+      "name": "prisma",
+      "type": "dev"
+    }
+  ]
+}

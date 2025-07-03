@@ -1,0 +1,2540 @@
+{
+  "summary": {
+    "totalDependencies": 29,
+    "usedDependencies": 13,
+    "unusedDependencies": 16,
+    "analyzedFiles": 90,
+    "totalImports": 101
+  },
+  "usedDependencies": [
+    {
+      "name": "react",
+      "used": true,
+      "files": [
+        "app\\bookmarks\\bookmarks-client.tsx",
+        "app\\feed\\feed-page-client.tsx",
+        "app\\page.tsx",
+        "app\\your-rides\\your-rides-client.tsx",
+        "components\\app-sidebar.tsx",
+        "components\\date-picker.tsx",
+        "components\\EditRideDialog.tsx",
+        "components\\EditRideDialog.tsx",
+        "components\\feed-ride-card.tsx",
+        "components\\location-combobox.tsx",
+        "components\\ShareYideDialog.tsx",
+        "components\\team-switcher.tsx",
+        "components\\top-bar.tsx",
+        "components\\ui\\avatar.tsx",
+        "components\\ui\\breadcrumb.tsx",
+        "components\\ui\\button.tsx",
+        "components\\ui\\calendar.tsx",
+        "components\\ui\\card.tsx",
+        "components\\ui\\checkbox.tsx",
+        "components\\ui\\command.tsx",
+        "components\\ui\\dialog.tsx",
+        "components\\ui\\dropdown-menu.tsx",
+        "components\\ui\\FeedHeader.tsx",
+        "components\\ui\\FeedList.tsx",
+        "components\\ui\\FeedSortBar.tsx",
+        "components\\ui\\input.tsx",
+        "components\\ui\\label.tsx",
+        "components\\ui\\phone-input.tsx",
+        "components\\ui\\popover.tsx",
+        "components\\ui\\scroll-area.tsx",
+        "components\\ui\\select.tsx",
+        "components\\ui\\separator.tsx",
+        "components\\ui\\sheet.tsx",
+        "components\\ui\\sidebar.tsx",
+        "components\\ui\\textarea.tsx",
+        "components\\ui\\time-select.tsx",
+        "components\\ui\\toast.tsx",
+        "components\\ui\\tooltip.tsx",
+        "hooks\\use-logged-in.tsx",
+        "hooks\\use-mobile.tsx",
+        "hooks\\use-toast.ts",
+        "lib\\useSortedRides.ts"
+      ],
+      "importTypes": [
+        "es6"
+      ],
+      "importCount": 42,
+      "subImports": []
+    },
+    {
+      "name": "next",
+      "used": true,
+      "files": [
+        "advanced-dependency-report.json",
+        "advanced-dependency-report.json",
+        "app\\api\\auth\\cas-login\\route.ts",
+        "app\\api\\auth\\cas-validate\\route.ts",
+        "app\\api\\auth\\logout\\route.ts",
+        "app\\api\\bookmark\\route.ts",
+        "app\\api\\owned-rides\\route.ts",
+        "app\\api\\post-ride\\route.ts",
+        "app\\api\\search-rides\\route.ts",
+        "app\\api\\update-ride\\route.ts",
+        "app\\api\\user-cookies\\route.ts",
+        "app\\api\\user-cookies\\route.ts",
+        "app\\fonts.ts",
+        "app\\page.tsx",
+        "app\\page.tsx",
+        "app\\your-rides\\page.tsx",
+        "components\\app-sidebar.tsx",
+        "components\\top-nav-buttons.tsx",
+        "components\\ui\\FeedHeader.tsx",
+        "lib\\user.ts"
+      ],
+      "importTypes": [
+        "es6"
+      ],
+      "importCount": 20,
+      "subImports": [
+        "font/local",
+        "server",
+        "headers",
+        "image",
+        "link"
+      ]
+    },
+    {
+      "name": "lucide-react",
+      "used": true,
+      "files": [
+        "app\\page.tsx",
+        "components\\app-sidebar.tsx",
+        "components\\feed-ride-card.tsx",
+        "components\\location-combobox.tsx",
+        "components\\nav-projects.tsx",
+        "components\\nav-user.tsx",
+        "components\\team-switcher.tsx",
+        "components\\top-bar.tsx",
+        "components\\top-nav-buttons.tsx",
+        "components\\ui\\breadcrumb.tsx",
+        "components\\ui\\calendar.tsx",
+        "components\\ui\\checkbox.tsx",
+        "components\\ui\\dialog.tsx",
+        "components\\ui\\dropdown-menu.tsx",
+        "components\\ui\\FeedList.tsx",
+        "components\\ui\\select.tsx",
+        "components\\ui\\sheet.tsx",
+        "components\\ui\\sidebar.tsx",
+        "components\\ui\\toast.tsx"
+      ],
+      "importTypes": [
+        "es6"
+      ],
+      "importCount": 19,
+      "subImports": []
+    },
+    {
+      "name": "class-variance-authority",
+      "used": true,
+      "files": [
+        "components\\ui\\button.tsx",
+        "components\\ui\\sheet.tsx",
+        "components\\ui\\sidebar.tsx",
+        "components\\ui\\toast.tsx"
+      ],
+      "importTypes": [
+        "es6"
+      ],
+      "importCount": 4,
+      "subImports": []
+    },
+    {
+      "name": "date-fns",
+      "used": true,
+      "files": [
+        "app\\page.tsx",
+        "components\\date-picker.tsx",
+        "components\\top-bar.tsx"
+      ],
+      "importTypes": [
+        "es6"
+      ],
+      "importCount": 3,
+      "subImports": []
+    },
+    {
+      "name": "luxon",
+      "used": true,
+      "files": [
+        "advanced-dependency-report.json",
+        "advanced-dependency-report.json",
+        "lib\\time.ts"
+      ],
+      "importTypes": [
+        "es6"
+      ],
+      "importCount": 3,
+      "subImports": []
+    },
+    {
+      "name": "react-phone-number-input",
+      "used": true,
+      "files": [
+        "components\\feed-ride-card.tsx",
+        "components\\ui\\phone-input.tsx",
+        "components\\ui\\phone-input.tsx"
+      ],
+      "importTypes": [
+        "es6"
+      ],
+      "importCount": 3,
+      "subImports": [
+        "style.css"
+      ]
+    },
+    {
+      "name": "react-day-picker",
+      "used": true,
+      "files": [
+        "components\\date-picker.tsx",
+        "components\\ui\\calendar.tsx"
+      ],
+      "importTypes": [
+        "es6"
+      ],
+      "importCount": 2,
+      "subImports": []
+    },
+    {
+      "name": "clsx",
+      "used": true,
+      "files": [
+        "lib\\frontend.ts"
+      ],
+      "importTypes": [
+        "es6"
+      ],
+      "importCount": 1,
+      "subImports": []
+    },
+    {
+      "name": "cmdk",
+      "used": true,
+      "files": [
+        "components\\ui\\command.tsx"
+      ],
+      "importTypes": [
+        "es6"
+      ],
+      "importCount": 1,
+      "subImports": []
+    },
+    {
+      "name": "lodash.debounce",
+      "used": true,
+      "files": [
+        "components\\top-bar.tsx"
+      ],
+      "importTypes": [
+        "es6"
+      ],
+      "importCount": 1,
+      "subImports": []
+    },
+    {
+      "name": "tailwind-merge",
+      "used": true,
+      "files": [
+        "lib\\frontend.ts"
+      ],
+      "importTypes": [
+        "es6"
+      ],
+      "importCount": 1,
+      "subImports": []
+    },
+    {
+      "name": "tailwindcss-animate",
+      "used": true,
+      "files": [
+        "tailwind.config.ts"
+      ],
+      "importTypes": [
+        "commonjs"
+      ],
+      "importCount": 1,
+      "subImports": []
+    }
+  ],
+  "unusedDependencies": [
+    "@prisma/client",
+    "@radix-ui/react-avatar",
+    "@radix-ui/react-checkbox",
+    "@radix-ui/react-collapsible",
+    "@radix-ui/react-dialog",
+    "@radix-ui/react-dropdown-menu",
+    "@radix-ui/react-icons",
+    "@radix-ui/react-popover",
+    "@radix-ui/react-scroll-area",
+    "@radix-ui/react-select",
+    "@radix-ui/react-separator",
+    "@radix-ui/react-slot",
+    "@radix-ui/react-toast",
+    "@radix-ui/react-tooltip",
+    "react-dom",
+    "prisma"
+  ],
+  "fileDependencies": {
+    "advanced-dependency-analyzer.js": [
+      {
+        "package": "fs",
+        "fullPath": "fs",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import fs from 'fs'"
+      },
+      {
+        "package": "path",
+        "fullPath": "path",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import path from 'path'"
+      },
+      {
+        "package": "url",
+        "fullPath": "url",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { fileURLToPath } from 'url'"
+      }
+    ],
+    "advanced-dependency-report.json": [
+      {
+        "package": "fs",
+        "fullPath": "fs",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import fs from 'fs'"
+      },
+      {
+        "package": "path",
+        "fullPath": "path",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import path from 'path'"
+      },
+      {
+        "package": "url",
+        "fullPath": "url",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { fileURLToPath } from 'url'"
+      },
+      {
+        "package": "fs",
+        "fullPath": "fs",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import fs from 'fs'"
+      },
+      {
+        "package": "path",
+        "fullPath": "path",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import path from 'path'"
+      },
+      {
+        "package": "url",
+        "fullPath": "url",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { fileURLToPath } from 'url'"
+      },
+      {
+        "package": "next",
+        "fullPath": "next/font/local",
+        "subPath": "font/local",
+        "type": "es6",
+        "fullMatch": "import localFont from 'next/font/local'"
+      },
+      {
+        "package": "fs",
+        "fullPath": "fs",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import fs from 'fs'"
+      },
+      {
+        "package": "path",
+        "fullPath": "path",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import path from 'path'"
+      },
+      {
+        "package": "url",
+        "fullPath": "url",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { fileURLToPath } from 'url'"
+      },
+      {
+        "package": "luxon",
+        "fullPath": "luxon",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { DateTime } from 'luxon'"
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/prisma",
+        "subPath": "lib/prisma",
+        "type": "es6",
+        "fullMatch": "import { prisma } from '@/lib/prisma'"
+      },
+      {
+        "package": "next",
+        "fullPath": "next/font/local",
+        "subPath": "font/local",
+        "type": "es6",
+        "fullMatch": "import localFont from 'next/font/local'"
+      },
+      {
+        "package": "fs",
+        "fullPath": "fs",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import fs from 'fs'"
+      },
+      {
+        "package": "child_process",
+        "fullPath": "child_process",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { execSync } from 'child_process'"
+      },
+      {
+        "package": "fs",
+        "fullPath": "fs",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import fs from 'fs'"
+      },
+      {
+        "package": "path",
+        "fullPath": "path",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import path from 'path'"
+      },
+      {
+        "package": "url",
+        "fullPath": "url",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { fileURLToPath } from 'url'"
+      },
+      {
+        "package": "luxon",
+        "fullPath": "luxon",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { DateTime } from 'luxon'"
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/prisma",
+        "subPath": "lib/prisma",
+        "type": "es6",
+        "fullMatch": "import { prisma } from '@/lib/prisma'"
+      },
+      {
+        "package": "readline",
+        "fullPath": "readline",
+        "subPath": null,
+        "type": "commonjs",
+        "fullMatch": "require('readline')"
+      }
+    ],
+    "app\\api\\auth\\cas-login\\route.ts": [
+      {
+        "package": "next",
+        "fullPath": "next/server",
+        "subPath": "server",
+        "type": "es6",
+        "fullMatch": "import { NextResponse } from \"next/server\""
+      }
+    ],
+    "app\\api\\auth\\cas-validate\\route.ts": [
+      {
+        "package": "next",
+        "fullPath": "next/server",
+        "subPath": "server",
+        "type": "es6",
+        "fullMatch": "import { NextResponse } from \"next/server\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/user",
+        "subPath": "lib/user",
+        "type": "es6",
+        "fullMatch": "import { findOrCreateUser } from \"@/lib/user\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/yalies",
+        "subPath": "lib/yalies",
+        "type": "es6",
+        "fullMatch": "import { fetchYaliesData } from \"@/lib/yalies\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/validate",
+        "subPath": "lib/validate",
+        "type": "es6",
+        "fullMatch": "import { extractNetIdFromCASTicket } from \"@/lib/validate\""
+      }
+    ],
+    "app\\api\\auth\\logout\\route.ts": [
+      {
+        "package": "next",
+        "fullPath": "next/server",
+        "subPath": "server",
+        "type": "es6",
+        "fullMatch": "import { NextResponse } from \"next/server\""
+      }
+    ],
+    "app\\api\\bookmark\\route.ts": [
+      {
+        "package": "next",
+        "fullPath": "next/server",
+        "subPath": "server",
+        "type": "es6",
+        "fullMatch": "import { NextResponse } from \"next/server\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/ride",
+        "subPath": "lib/ride",
+        "type": "es6",
+        "fullMatch": "import { bookmarkRide } from \"@/lib/ride\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/user",
+        "subPath": "lib/user",
+        "type": "es6",
+        "fullMatch": "import { getUserNetIdFromCookies } from \"@/lib/user\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/validate",
+        "subPath": "lib/validate",
+        "type": "es6",
+        "fullMatch": "import { extractRideIdFromPayload } from \"@/lib/validate\""
+      }
+    ],
+    "app\\api\\owned-rides\\route.ts": [
+      {
+        "package": "next",
+        "fullPath": "next/server",
+        "subPath": "server",
+        "type": "es6",
+        "fullMatch": "import { NextResponse } from \"next/server\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/ride",
+        "subPath": "lib/ride",
+        "type": "es6",
+        "fullMatch": "import { findOwnedRide } from \"@/lib/ride\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/user",
+        "subPath": "lib/user",
+        "type": "es6",
+        "fullMatch": "import { getUserNetIdFromCookies } from \"@/lib/user\""
+      }
+    ],
+    "app\\api\\post-ride\\route.ts": [
+      {
+        "package": "next",
+        "fullPath": "next/server",
+        "subPath": "server",
+        "type": "es6",
+        "fullMatch": "import { NextResponse } from \"next/server\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/ride",
+        "subPath": "lib/ride",
+        "type": "es6",
+        "fullMatch": "import { createRide } from \"@/lib/ride\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/user",
+        "subPath": "lib/user",
+        "type": "es6",
+        "fullMatch": "import { getUserNetIdFromCookies } from \"@/lib/user\""
+      }
+    ],
+    "app\\api\\search-rides\\route.ts": [
+      {
+        "package": "next",
+        "fullPath": "next/server",
+        "subPath": "server",
+        "type": "es6",
+        "fullMatch": "import { NextRequest, NextResponse } from \"next/server\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/ride",
+        "subPath": "lib/ride",
+        "type": "es6",
+        "fullMatch": "import { findFilteredRides } from \"@/lib/ride\""
+      }
+    ],
+    "app\\api\\update-ride\\route.ts": [
+      {
+        "package": "next",
+        "fullPath": "next/server",
+        "subPath": "server",
+        "type": "es6",
+        "fullMatch": "import { NextResponse } from \"next/server\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/prisma",
+        "subPath": "lib/prisma",
+        "type": "es6",
+        "fullMatch": "import { prisma } from \"@/lib/prisma\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/user",
+        "subPath": "lib/user",
+        "type": "es6",
+        "fullMatch": "import { getUserNetIdFromCookies } from \"@/lib/user\""
+      }
+    ],
+    "app\\api\\user-cookies\\route.ts": [
+      {
+        "package": "next",
+        "fullPath": "next/headers",
+        "subPath": "headers",
+        "type": "es6",
+        "fullMatch": "import { cookies } from \"next/headers\""
+      },
+      {
+        "package": "next",
+        "fullPath": "next/server",
+        "subPath": "server",
+        "type": "es6",
+        "fullMatch": "import { NextResponse } from \"next/server\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/user",
+        "subPath": "lib/user",
+        "type": "es6",
+        "fullMatch": "import { getUserFromCookies } from \"@/lib/user\""
+      }
+    ],
+    "app\\bookmarks\\bookmarks-client.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/separator",
+        "subPath": "components/ui/separator",
+        "type": "es6",
+        "fullMatch": "import { Separator } from \"@/components/ui/separator\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/FeedHeader",
+        "subPath": "components/ui/FeedHeader",
+        "type": "es6",
+        "fullMatch": "import { FeedHeader } from \"@/components/ui/FeedHeader\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/FeedSortBar",
+        "subPath": "components/ui/FeedSortBar",
+        "type": "es6",
+        "fullMatch": "import { FeedSortBar } from \"@/components/ui/FeedSortBar\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/FeedList",
+        "subPath": "components/ui/FeedList",
+        "type": "es6",
+        "fullMatch": "import { FeedList } from \"@/components/ui/FeedList\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/useSortedRides",
+        "subPath": "lib/useSortedRides",
+        "type": "es6",
+        "fullMatch": "import { useSortedRides } from \"@/lib/useSortedRides\""
+      },
+      {
+        "package": "@prisma",
+        "fullPath": "@prisma/client",
+        "subPath": "client",
+        "type": "es6",
+        "fullMatch": "import { Ride } from \"@prisma/client\""
+      }
+    ],
+    "app\\bookmarks\\page.tsx": [
+      {
+        "package": "@",
+        "fullPath": "@/lib/user",
+        "subPath": "lib/user",
+        "type": "es6",
+        "fullMatch": "import { getUserNetIdFromCookies } from \"@/lib/user\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/ride",
+        "subPath": "lib/ride",
+        "type": "es6",
+        "fullMatch": "import { findBookmarkedRides } from \"@/lib/ride\""
+      }
+    ],
+    "app\\feed\\feed-page-client.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/separator",
+        "subPath": "components/ui/separator",
+        "type": "es6",
+        "fullMatch": "import { Separator } from \"@/components/ui/separator\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/top-bar",
+        "subPath": "components/top-bar",
+        "type": "es6",
+        "fullMatch": "import { TopBar } from \"@/components/top-bar\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/FeedHeader",
+        "subPath": "components/ui/FeedHeader",
+        "type": "es6",
+        "fullMatch": "import { FeedHeader } from \"@/components/ui/FeedHeader\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/FeedSortBar",
+        "subPath": "components/ui/FeedSortBar",
+        "type": "es6",
+        "fullMatch": "import { FeedSortBar } from \"@/components/ui/FeedSortBar\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/FeedList",
+        "subPath": "components/ui/FeedList",
+        "type": "es6",
+        "fullMatch": "import { FeedList } from \"@/components/ui/FeedList\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/useSortedRides",
+        "subPath": "lib/useSortedRides",
+        "type": "es6",
+        "fullMatch": "import { useSortedRides } from \"@/lib/useSortedRides\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/app/interface/main",
+        "subPath": "app/interface/main",
+        "type": "es6",
+        "fullMatch": "import { FeedPageClientProps } from \"@/app/interface/main\""
+      }
+    ],
+    "app\\feed\\page.tsx": [
+      {
+        "package": "@",
+        "fullPath": "@/app/feed/feed-page-client",
+        "subPath": "app/feed/feed-page-client",
+        "type": "es6",
+        "fullMatch": "import FeedPageClient from \"@/app/feed/feed-page-client\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/ride",
+        "subPath": "lib/ride",
+        "type": "es6",
+        "fullMatch": "import { findBookmarkedRides, findManyRides } from \"@/lib/ride\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/user",
+        "subPath": "lib/user",
+        "type": "es6",
+        "fullMatch": "import { getUserNetIdFromCookies } from \"@/lib/user\""
+      }
+    ],
+    "app\\fonts.ts": [
+      {
+        "package": "next",
+        "fullPath": "next/font/local",
+        "subPath": "font/local",
+        "type": "es6",
+        "fullMatch": "import localFont from 'next/font/local'"
+      }
+    ],
+    "app\\interface\\main.ts": [
+      {
+        "package": "@prisma",
+        "fullPath": "@prisma/client",
+        "subPath": "client",
+        "type": "es6",
+        "fullMatch": "import { Ride } from \"@prisma/client\""
+      }
+    ],
+    "app\\layout.tsx": [],
+    "app\\page.tsx": [
+      {
+        "package": "next",
+        "fullPath": "next/image",
+        "subPath": "image",
+        "type": "es6",
+        "fullMatch": "import Image from \"next/image\""
+      },
+      {
+        "package": "lucide-react",
+        "fullPath": "lucide-react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { LogIn, MapPin, Calendar, Users } from \"lucide-react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/location-combobox",
+        "subPath": "components/location-combobox",
+        "type": "es6",
+        "fullMatch": "import { LocationCombobox } from \"@/components/location-combobox\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/button",
+        "subPath": "components/ui/button",
+        "type": "es6",
+        "fullMatch": "import { Button } from \"@/components/ui/button\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/calendar",
+        "subPath": "components/ui/calendar",
+        "type": "es6",
+        "fullMatch": "import { Calendar as ShadCalendar } from \"@/components/ui/calendar\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/popover",
+        "subPath": "components/ui/popover",
+        "type": "es6",
+        "fullMatch": "import {\r\n//   Popover,\r\n//   PopoverTrigger,\r\n//   PopoverContent,\r\n// } from \"@/components/ui/popover\""
+      },
+      {
+        "package": "date-fns",
+        "fullPath": "date-fns",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { format } from \"date-fns\""
+      },
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "next",
+        "fullPath": "next/link",
+        "subPath": "link",
+        "type": "es6",
+        "fullMatch": "import Link from \"next/link\""
+      }
+    ],
+    "app\\results\\page.tsx": [
+      {
+        "package": "@",
+        "fullPath": "@/lib/time",
+        "subPath": "lib/time",
+        "type": "es6",
+        "fullMatch": "import { createStartEndDateTimes } from \"@/lib/time\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/ride",
+        "subPath": "lib/ride",
+        "type": "es6",
+        "fullMatch": "import { findBookmarkedRides, findFilteredRides } from \"@/lib/ride\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/search",
+        "subPath": "lib/search",
+        "type": "es6",
+        "fullMatch": "import { extractSearchParams } from \"@/lib/search\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/user",
+        "subPath": "lib/user",
+        "type": "es6",
+        "fullMatch": "import { getUserNetIdFromCookies } from \"@/lib/user\""
+      }
+    ],
+    "app\\your-rides\\page.tsx": [
+      {
+        "package": "@",
+        "fullPath": "@/lib/prisma",
+        "subPath": "lib/prisma",
+        "type": "es6",
+        "fullMatch": "import { prisma } from \"@/lib/prisma\""
+      },
+      {
+        "package": "next",
+        "fullPath": "next/headers",
+        "subPath": "headers",
+        "type": "es6",
+        "fullMatch": "import { cookies } from \"next/headers\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/ride",
+        "subPath": "lib/ride",
+        "type": "es6",
+        "fullMatch": "import { findBookmarkedRides } from \"@/lib/ride\""
+      }
+    ],
+    "app\\your-rides\\your-rides-client.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/separator",
+        "subPath": "components/ui/separator",
+        "type": "es6",
+        "fullMatch": "import { Separator } from \"@/components/ui/separator\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/FeedHeader",
+        "subPath": "components/ui/FeedHeader",
+        "type": "es6",
+        "fullMatch": "import { FeedHeader } from \"@/components/ui/FeedHeader\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/FeedSortBar",
+        "subPath": "components/ui/FeedSortBar",
+        "type": "es6",
+        "fullMatch": "import { FeedSortBar } from \"@/components/ui/FeedSortBar\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/FeedList",
+        "subPath": "components/ui/FeedList",
+        "type": "es6",
+        "fullMatch": "import { FeedList } from \"@/components/ui/FeedList\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/useSortedRides",
+        "subPath": "lib/useSortedRides",
+        "type": "es6",
+        "fullMatch": "import { useSortedRides } from \"@/lib/useSortedRides\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/EditRideDialog",
+        "subPath": "components/EditRideDialog",
+        "type": "es6",
+        "fullMatch": "import EditRideDialog from \"@/components/EditRideDialog\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/hooks/use-toast",
+        "subPath": "hooks/use-toast",
+        "type": "es6",
+        "fullMatch": "import { useToast } from \"@/hooks/use-toast\""
+      },
+      {
+        "package": "@prisma",
+        "fullPath": "@prisma/client",
+        "subPath": "client",
+        "type": "es6",
+        "fullMatch": "import { Ride } from \"@prisma/client\""
+      }
+    ],
+    "cleanup-dependencies.js": [
+      {
+        "package": "fs",
+        "fullPath": "fs",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import fs from 'fs'"
+      },
+      {
+        "package": "node:child_process",
+        "fullPath": "node:child_process",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { execSync } from 'node:child_process'"
+      },
+      {
+        "package": "node:readline",
+        "fullPath": "node:readline/promises",
+        "subPath": "promises",
+        "type": "es6",
+        "fullMatch": "import readline from 'node:readline/promises'"
+      }
+    ],
+    "components\\app-sidebar.tsx": [
+      {
+        "package": "next",
+        "fullPath": "next/link",
+        "subPath": "link",
+        "type": "es6",
+        "fullMatch": "import Link from \"next/link\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/nav-user",
+        "subPath": "components/nav-user",
+        "type": "es6",
+        "fullMatch": "import { NavUser } from \"@/components/nav-user\""
+      },
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { useEffect, useState } from \"react\""
+      },
+      {
+        "package": "lucide-react",
+        "fullPath": "lucide-react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import {\r\n  Calendar,\r\n  User,\r\n  Bookmark,\r\n  PowerOffIcon,\r\n  MessageSquare,\r\n} from \"lucide-react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/sidebar",
+        "subPath": "components/ui/sidebar",
+        "type": "es6",
+        "fullMatch": "import {\r\n  Sidebar,\r\n  SidebarContent,\r\n  SidebarFooter,\r\n  SidebarRail,\r\n} from \"@/components/ui/sidebar\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      }
+    ],
+    "components\\date-picker.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { useState } from \"react\""
+      },
+      {
+        "package": "date-fns",
+        "fullPath": "date-fns",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { format } from \"date-fns\""
+      },
+      {
+        "package": "react-day-picker",
+        "fullPath": "react-day-picker",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { DayPicker } from \"react-day-picker\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      }
+    ],
+    "components\\EditRideDialog.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/dialog",
+        "subPath": "components/ui/dialog",
+        "type": "es6",
+        "fullMatch": "import {\r\n  Dialog,\r\n  DialogTrigger,\r\n  DialogContent,\r\n  DialogHeader,\r\n  DialogTitle,\r\n  DialogDescription,\r\n} from \"@/components/ui/dialog\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/button",
+        "subPath": "components/ui/button",
+        "type": "es6",
+        "fullMatch": "import { Button } from \"@/components/ui/button\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/input",
+        "subPath": "components/ui/input",
+        "type": "es6",
+        "fullMatch": "import { Input } from \"@/components/ui/input\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/textarea",
+        "subPath": "components/ui/textarea",
+        "type": "es6",
+        "fullMatch": "import { Textarea } from \"@/components/ui/textarea\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/label",
+        "subPath": "components/ui/label",
+        "type": "es6",
+        "fullMatch": "import { Label } from \"@/components/ui/label\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/time-select",
+        "subPath": "components/ui/time-select",
+        "type": "es6",
+        "fullMatch": "import { TimeSelect } from \"@/components/ui/time-select\""
+      },
+      {
+        "package": "@prisma",
+        "fullPath": "@prisma/client",
+        "subPath": "client",
+        "type": "es6",
+        "fullMatch": "import { Ride } from \"@prisma/client\""
+      },
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { useState } from \"react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/phone-input",
+        "subPath": "components/ui/phone-input",
+        "type": "es6",
+        "fullMatch": "import { CustomPhoneInput } from \"@/components/ui/phone-input\""
+      }
+    ],
+    "components\\feed-ride-card.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/button",
+        "subPath": "components/ui/button",
+        "type": "es6",
+        "fullMatch": "import { Button } from \"@/components/ui/button\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/hooks/use-toast",
+        "subPath": "hooks/use-toast",
+        "type": "es6",
+        "fullMatch": "import { useToast } from \"@/hooks/use-toast\""
+      },
+      {
+        "package": "lucide-react",
+        "fullPath": "lucide-react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { Bookmark } from \"lucide-react\""
+      },
+      {
+        "package": "react-phone-number-input",
+        "fullPath": "react-phone-number-input",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { formatPhoneNumberIntl } from \"react-phone-number-input\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/card",
+        "subPath": "components/ui/card",
+        "type": "es6",
+        "fullMatch": "import {\r\n  Card,\r\n} from \"@/components/ui/card\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/dialog",
+        "subPath": "components/ui/dialog",
+        "type": "es6",
+        "fullMatch": "import {\r\n  Dialog,\r\n  DialogTrigger,\r\n  DialogContent,\r\n  DialogHeader,\r\n  DialogTitle,\r\n\r\n} from \"@/components/ui/dialog\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/app/interface/main",
+        "subPath": "app/interface/main",
+        "type": "es6",
+        "fullMatch": "import { FeedRideCardProps } from \"@/app/interface/main\""
+      }
+    ],
+    "components\\labeled-input.tsx": [
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/input",
+        "subPath": "components/ui/input",
+        "type": "es6",
+        "fullMatch": "import { Input } from \"@/components/ui/input\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      }
+    ],
+    "components\\location-combobox.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "lucide-react",
+        "fullPath": "lucide-react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { Check, ChevronsUpDown } from \"lucide-react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/general",
+        "subPath": "lib/general",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/general\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/button",
+        "subPath": "components/ui/button",
+        "type": "es6",
+        "fullMatch": "import { Button } from \"@/components/ui/button\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/popover",
+        "subPath": "components/ui/popover",
+        "type": "es6",
+        "fullMatch": "import {\r\n  Popover,\r\n  PopoverTrigger,\r\n  PopoverContent,\r\n} from \"@/components/ui/popover\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/command",
+        "subPath": "components/ui/command",
+        "type": "es6",
+        "fullMatch": "import {\r\n  Command,\r\n  CommandInput,\r\n  CommandEmpty,\r\n  CommandList,\r\n  CommandItem,\r\n} from \"@/components/ui/command\""
+      }
+    ],
+    "components\\location-data.ts": [],
+    "components\\nav-projects.tsx": [
+      {
+        "package": "lucide-react",
+        "fullPath": "lucide-react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import {\r\n  Folder,\r\n  Forward,\r\n  MoreHorizontal,\r\n  Trash2,\r\n  type LucideIcon,\r\n} from \"lucide-react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/dropdown-menu",
+        "subPath": "components/ui/dropdown-menu",
+        "type": "es6",
+        "fullMatch": "import {\r\n  DropdownMenu,\r\n  DropdownMenuContent,\r\n  DropdownMenuItem,\r\n  DropdownMenuSeparator,\r\n  DropdownMenuTrigger,\r\n} from \"@/components/ui/dropdown-menu\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/sidebar",
+        "subPath": "components/ui/sidebar",
+        "type": "es6",
+        "fullMatch": "import {\r\n  SidebarGroup,\r\n  SidebarGroupLabel,\r\n  SidebarMenu,\r\n  SidebarMenuAction,\r\n  SidebarMenuButton,\r\n  SidebarMenuItem,\r\n  useSidebar,\r\n} from \"@/components/ui/sidebar\""
+      }
+    ],
+    "components\\nav-user.tsx": [
+      {
+        "package": "lucide-react",
+        "fullPath": "lucide-react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import {\r\n//   BadgeCheck,\r\n//   Bell,\r\n//   ChevronsUpDown,\r\n//   CreditCard,\r\n//   LogOut,\r\n//   Sparkles,\r\n// } from \"lucide-react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/avatar",
+        "subPath": "components/ui/avatar",
+        "type": "es6",
+        "fullMatch": "import { Avatar, AvatarFallback, AvatarImage } from \"@/components/ui/avatar\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/dropdown-menu",
+        "subPath": "components/ui/dropdown-menu",
+        "type": "es6",
+        "fullMatch": "import {\r\n//   DropdownMenu,\r\n//   DropdownMenuContent,\r\n//   DropdownMenuGroup,\r\n//   DropdownMenuItem,\r\n//   DropdownMenuLabel,\r\n//   DropdownMenuSeparator,\r\n//   DropdownMenuTrigger,\r\n// } from \"@/components/ui/dropdown-menu\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/sidebar",
+        "subPath": "components/ui/sidebar",
+        "type": "es6",
+        "fullMatch": "import {\r\n  SidebarMenu,\r\n  // useSidebar,\r\n  // SidebarMenuButton,\r\n  // SidebarMenuItem,\r\n} from \"@/components/ui/sidebar\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/initials",
+        "subPath": "lib/initials",
+        "type": "es6",
+        "fullMatch": "import { getInitials } from \"@/lib/initials\""
+      }
+    ],
+    "components\\search-bar.tsx": [
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/input",
+        "subPath": "components/ui/input",
+        "type": "es6",
+        "fullMatch": "import { Input } from \"@/components/ui/input\""
+      }
+    ],
+    "components\\ShareYideDialog.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/dialog",
+        "subPath": "components/ui/dialog",
+        "type": "es6",
+        "fullMatch": "import {\r\n  Dialog,\r\n  DialogTrigger,\r\n  DialogContent,\r\n  DialogHeader,\r\n  DialogTitle,\r\n  DialogDescription,\r\n} from \"@/components/ui/dialog\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/button",
+        "subPath": "components/ui/button",
+        "type": "es6",
+        "fullMatch": "import { Button } from \"@/components/ui/button\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/input",
+        "subPath": "components/ui/input",
+        "type": "es6",
+        "fullMatch": "import { Input } from \"@/components/ui/input\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/textarea",
+        "subPath": "components/ui/textarea",
+        "type": "es6",
+        "fullMatch": "import { Textarea } from \"@/components/ui/textarea\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/label",
+        "subPath": "components/ui/label",
+        "type": "es6",
+        "fullMatch": "import { Label } from \"@/components/ui/label\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/time-select",
+        "subPath": "components/ui/time-select",
+        "type": "es6",
+        "fullMatch": "import { TimeSelect } from \"@/components/ui/time-select\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/phone-input",
+        "subPath": "components/ui/phone-input",
+        "type": "es6",
+        "fullMatch": "import { CustomPhoneInput } from \"@/components/ui/phone-input\""
+      }
+    ],
+    "components\\team-switcher.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "lucide-react",
+        "fullPath": "lucide-react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { ChevronsUpDown, Plus } from \"lucide-react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/dropdown-menu",
+        "subPath": "components/ui/dropdown-menu",
+        "type": "es6",
+        "fullMatch": "import {\r\n  DropdownMenu,\r\n  DropdownMenuContent,\r\n  DropdownMenuItem,\r\n  DropdownMenuLabel,\r\n  DropdownMenuSeparator,\r\n  DropdownMenuShortcut,\r\n  DropdownMenuTrigger,\r\n} from \"@/components/ui/dropdown-menu\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/sidebar",
+        "subPath": "components/ui/sidebar",
+        "type": "es6",
+        "fullMatch": "import {\r\n  SidebarMenu,\r\n  SidebarMenuButton,\r\n  SidebarMenuItem,\r\n  useSidebar,\r\n} from \"@/components/ui/sidebar\""
+      }
+    ],
+    "components\\top-bar.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "date-fns",
+        "fullPath": "date-fns",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { format } from \"date-fns\""
+      },
+      {
+        "package": "lucide-react",
+        "fullPath": "lucide-react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { ChevronsUpDown } from \"lucide-react\""
+      },
+      {
+        "package": "lodash.debounce",
+        "fullPath": "lodash.debounce",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import debounce from \"lodash.debounce\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/time",
+        "subPath": "lib/time",
+        "type": "es6",
+        "fullMatch": "import { encodeDate } from \"@/lib/time\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/hooks/use-toast",
+        "subPath": "hooks/use-toast",
+        "type": "es6",
+        "fullMatch": "import { useToast } from \"@/hooks/use-toast\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/button",
+        "subPath": "components/ui/button",
+        "type": "es6",
+        "fullMatch": "import { Button } from \"@/components/ui/button\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/calendar",
+        "subPath": "components/ui/calendar",
+        "type": "es6",
+        "fullMatch": "import { Calendar } from \"@/components/ui/calendar\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/popover",
+        "subPath": "components/ui/popover",
+        "type": "es6",
+        "fullMatch": "import {\r\n  Popover,\r\n  PopoverTrigger,\r\n  PopoverContent,\r\n} from \"@/components/ui/popover\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/time-select",
+        "subPath": "components/ui/time-select",
+        "type": "es6",
+        "fullMatch": "import { TimeSelect } from \"@/components/ui/time-select\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/location-combobox",
+        "subPath": "components/location-combobox",
+        "type": "es6",
+        "fullMatch": "import { LocationCombobox } from \"@/components/location-combobox\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/time",
+        "subPath": "lib/time",
+        "type": "es6",
+        "fullMatch": "import { createStartEndDateTimes } from \"@/lib/time\""
+      },
+      {
+        "package": "@prisma",
+        "fullPath": "@prisma/client",
+        "subPath": "client",
+        "type": "es6",
+        "fullMatch": "import { Ride } from \"@prisma/client\""
+      }
+    ],
+    "components\\top-nav-buttons.tsx": [
+      {
+        "package": "next",
+        "fullPath": "next/link",
+        "subPath": "link",
+        "type": "es6",
+        "fullMatch": "import Link from \"next/link\""
+      },
+      {
+        "package": "lucide-react",
+        "fullPath": "lucide-react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { Calendar, User, Bookmark, PowerOffIcon } from \"lucide-react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/button",
+        "subPath": "components/ui/button",
+        "type": "es6",
+        "fullMatch": "import { Button } from \"@/components/ui/button\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      }
+    ],
+    "components\\ui\\avatar.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@radix-ui",
+        "fullPath": "@radix-ui/react-avatar",
+        "subPath": "react-avatar",
+        "type": "es6",
+        "fullMatch": "import * as AvatarPrimitive from \"@radix-ui/react-avatar\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      }
+    ],
+    "components\\ui\\breadcrumb.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@radix-ui",
+        "fullPath": "@radix-ui/react-slot",
+        "subPath": "react-slot",
+        "type": "es6",
+        "fullMatch": "import { Slot } from \"@radix-ui/react-slot\""
+      },
+      {
+        "package": "lucide-react",
+        "fullPath": "lucide-react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { ChevronRight, MoreHorizontal } from \"lucide-react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      }
+    ],
+    "components\\ui\\button.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@radix-ui",
+        "fullPath": "@radix-ui/react-slot",
+        "subPath": "react-slot",
+        "type": "es6",
+        "fullMatch": "import { Slot } from \"@radix-ui/react-slot\""
+      },
+      {
+        "package": "class-variance-authority",
+        "fullPath": "class-variance-authority",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { cva, type VariantProps } from \"class-variance-authority\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      }
+    ],
+    "components\\ui\\calendar.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "lucide-react",
+        "fullPath": "lucide-react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { ChevronLeft, ChevronRight } from \"lucide-react\""
+      },
+      {
+        "package": "react-day-picker",
+        "fullPath": "react-day-picker",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { DayPicker } from \"react-day-picker\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/button",
+        "subPath": "components/ui/button",
+        "type": "es6",
+        "fullMatch": "import { buttonVariants } from \"@/components/ui/button\""
+      }
+    ],
+    "components\\ui\\card.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      }
+    ],
+    "components\\ui\\checkbox.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@radix-ui",
+        "fullPath": "@radix-ui/react-checkbox",
+        "subPath": "react-checkbox",
+        "type": "es6",
+        "fullMatch": "import * as CheckboxPrimitive from \"@radix-ui/react-checkbox\""
+      },
+      {
+        "package": "lucide-react",
+        "fullPath": "lucide-react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { Check } from \"lucide-react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      }
+    ],
+    "components\\ui\\collapsible.tsx": [
+      {
+        "package": "@radix-ui",
+        "fullPath": "@radix-ui/react-collapsible",
+        "subPath": "react-collapsible",
+        "type": "es6",
+        "fullMatch": "import * as CollapsiblePrimitive from \"@radix-ui/react-collapsible\""
+      }
+    ],
+    "components\\ui\\command.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "cmdk",
+        "fullPath": "cmdk",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { Command as CommandPrimitive } from \"cmdk\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/general",
+        "subPath": "lib/general",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/general\""
+      }
+    ],
+    "components\\ui\\dialog.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@radix-ui",
+        "fullPath": "@radix-ui/react-dialog",
+        "subPath": "react-dialog",
+        "type": "es6",
+        "fullMatch": "import * as DialogPrimitive from \"@radix-ui/react-dialog\""
+      },
+      {
+        "package": "lucide-react",
+        "fullPath": "lucide-react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { X } from \"lucide-react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      }
+    ],
+    "components\\ui\\dropdown-menu.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@radix-ui",
+        "fullPath": "@radix-ui/react-dropdown-menu",
+        "subPath": "react-dropdown-menu",
+        "type": "es6",
+        "fullMatch": "import * as DropdownMenuPrimitive from \"@radix-ui/react-dropdown-menu\""
+      },
+      {
+        "package": "lucide-react",
+        "fullPath": "lucide-react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { Check, ChevronRight, Circle } from \"lucide-react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      }
+    ],
+    "components\\ui\\FeedHeader.tsx": [
+      {
+        "package": "next",
+        "fullPath": "next/link",
+        "subPath": "link",
+        "type": "es6",
+        "fullMatch": "import Link from \"next/link\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/top-nav-buttons",
+        "subPath": "components/top-nav-buttons",
+        "type": "es6",
+        "fullMatch": "import { TopNavButtons } from \"@/components/top-nav-buttons\""
+      },
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import React from \"react\""
+      }
+    ],
+    "components\\ui\\FeedList.tsx": [
+      {
+        "package": "@",
+        "fullPath": "@/components/feed-ride-card",
+        "subPath": "components/feed-ride-card",
+        "type": "es6",
+        "fullMatch": "import FeedRideCard from \"@/components/feed-ride-card\""
+      },
+      {
+        "package": "@prisma",
+        "fullPath": "@prisma/client",
+        "subPath": "client",
+        "type": "es6",
+        "fullMatch": "import { Ride } from \"@prisma/client\""
+      },
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import React from \"react\""
+      },
+      {
+        "package": "lucide-react",
+        "fullPath": "lucide-react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { Trash2, Pencil } from \"lucide-react\""
+      }
+    ],
+    "components\\ui\\FeedSortBar.tsx": [
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/select",
+        "subPath": "components/ui/select",
+        "type": "es6",
+        "fullMatch": "import {\r\n  Select,\r\n  SelectTrigger,\r\n  SelectValue,\r\n  SelectContent,\r\n  SelectItem,\r\n} from \"@/components/ui/select\""
+      },
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import React from \"react\""
+      }
+    ],
+    "components\\ui\\input.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      }
+    ],
+    "components\\ui\\label.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/general",
+        "subPath": "lib/general",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/general\""
+      }
+    ],
+    "components\\ui\\phone-input.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "react-phone-number-input",
+        "fullPath": "react-phone-number-input",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import PhoneInput, { isPossiblePhoneNumber } from \"react-phone-number-input\""
+      },
+      {
+        "package": "react-phone-number-input",
+        "fullPath": "react-phone-number-input/style.css",
+        "subPath": "style.css",
+        "type": "es6",
+        "fullMatch": "import \"react-phone-number-input/style.css\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/input",
+        "subPath": "components/ui/input",
+        "type": "es6",
+        "fullMatch": "import { Input } from \"@/components/ui/input\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/label",
+        "subPath": "components/ui/label",
+        "type": "es6",
+        "fullMatch": "import { Label } from \"@/components/ui/label\""
+      }
+    ],
+    "components\\ui\\popover.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@radix-ui",
+        "fullPath": "@radix-ui/react-popover",
+        "subPath": "react-popover",
+        "type": "es6",
+        "fullMatch": "import * as PopoverPrimitive from \"@radix-ui/react-popover\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      }
+    ],
+    "components\\ui\\scroll-area.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@radix-ui",
+        "fullPath": "@radix-ui/react-scroll-area",
+        "subPath": "react-scroll-area",
+        "type": "es6",
+        "fullMatch": "import * as ScrollAreaPrimitive from \"@radix-ui/react-scroll-area\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      }
+    ],
+    "components\\ui\\select.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@radix-ui",
+        "fullPath": "@radix-ui/react-select",
+        "subPath": "react-select",
+        "type": "es6",
+        "fullMatch": "import * as SelectPrimitive from \"@radix-ui/react-select\""
+      },
+      {
+        "package": "lucide-react",
+        "fullPath": "lucide-react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { Check, ChevronDown, ChevronUp } from \"lucide-react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      }
+    ],
+    "components\\ui\\separator.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@radix-ui",
+        "fullPath": "@radix-ui/react-separator",
+        "subPath": "react-separator",
+        "type": "es6",
+        "fullMatch": "import * as SeparatorPrimitive from \"@radix-ui/react-separator\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      }
+    ],
+    "components\\ui\\sheet.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@radix-ui",
+        "fullPath": "@radix-ui/react-dialog",
+        "subPath": "react-dialog",
+        "type": "es6",
+        "fullMatch": "import * as SheetPrimitive from \"@radix-ui/react-dialog\""
+      },
+      {
+        "package": "class-variance-authority",
+        "fullPath": "class-variance-authority",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { cva, type VariantProps } from \"class-variance-authority\""
+      },
+      {
+        "package": "lucide-react",
+        "fullPath": "lucide-react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { X } from \"lucide-react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      }
+    ],
+    "components\\ui\\sidebar.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@radix-ui",
+        "fullPath": "@radix-ui/react-slot",
+        "subPath": "react-slot",
+        "type": "es6",
+        "fullMatch": "import { Slot } from \"@radix-ui/react-slot\""
+      },
+      {
+        "package": "class-variance-authority",
+        "fullPath": "class-variance-authority",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { VariantProps, cva } from \"class-variance-authority\""
+      },
+      {
+        "package": "lucide-react",
+        "fullPath": "lucide-react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { PanelLeft } from \"lucide-react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/hooks/use-mobile",
+        "subPath": "hooks/use-mobile",
+        "type": "es6",
+        "fullMatch": "import { useIsMobile } from \"@/hooks/use-mobile\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/button",
+        "subPath": "components/ui/button",
+        "type": "es6",
+        "fullMatch": "import { Button } from \"@/components/ui/button\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/input",
+        "subPath": "components/ui/input",
+        "type": "es6",
+        "fullMatch": "import { Input } from \"@/components/ui/input\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/separator",
+        "subPath": "components/ui/separator",
+        "type": "es6",
+        "fullMatch": "import { Separator } from \"@/components/ui/separator\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/sheet",
+        "subPath": "components/ui/sheet",
+        "type": "es6",
+        "fullMatch": "import { Sheet, SheetContent } from \"@/components/ui/sheet\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/skeleton",
+        "subPath": "components/ui/skeleton",
+        "type": "es6",
+        "fullMatch": "import { Skeleton } from \"@/components/ui/skeleton\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/tooltip",
+        "subPath": "components/ui/tooltip",
+        "type": "es6",
+        "fullMatch": "import {\r\n  Tooltip,\r\n  TooltipContent,\r\n  TooltipProvider,\r\n  TooltipTrigger,\r\n} from \"@/components/ui/tooltip\""
+      }
+    ],
+    "components\\ui\\skeleton.tsx": [
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      }
+    ],
+    "components\\ui\\textarea.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/general",
+        "subPath": "lib/general",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/general\""
+      }
+    ],
+    "components\\ui\\time-select.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/select",
+        "subPath": "components/ui/select",
+        "type": "es6",
+        "fullMatch": "import {\r\n  Select,\r\n  SelectTrigger,\r\n  SelectContent,\r\n  SelectItem,\r\n  SelectValue,\r\n} from \"@/components/ui/select\""
+      }
+    ],
+    "components\\ui\\toast.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@radix-ui",
+        "fullPath": "@radix-ui/react-toast",
+        "subPath": "react-toast",
+        "type": "es6",
+        "fullMatch": "import * as ToastPrimitives from \"@radix-ui/react-toast\""
+      },
+      {
+        "package": "class-variance-authority",
+        "fullPath": "class-variance-authority",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { cva, type VariantProps } from \"class-variance-authority\""
+      },
+      {
+        "package": "lucide-react",
+        "fullPath": "lucide-react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { X } from \"lucide-react\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      }
+    ],
+    "components\\ui\\toaster.tsx": [
+      {
+        "package": "@",
+        "fullPath": "@/hooks/use-toast",
+        "subPath": "hooks/use-toast",
+        "type": "es6",
+        "fullMatch": "import { useToast } from \"@/hooks/use-toast\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/components/ui/toast",
+        "subPath": "components/ui/toast",
+        "type": "es6",
+        "fullMatch": "import {\r\n  Toast,\r\n  ToastClose,\r\n  ToastDescription,\r\n  ToastProvider,\r\n  ToastTitle,\r\n  ToastViewport,\r\n} from \"@/components/ui/toast\""
+      }
+    ],
+    "components\\ui\\tooltip.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      },
+      {
+        "package": "@radix-ui",
+        "fullPath": "@radix-ui/react-tooltip",
+        "subPath": "react-tooltip",
+        "type": "es6",
+        "fullMatch": "import * as TooltipPrimitive from \"@radix-ui/react-tooltip\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/frontend",
+        "subPath": "lib/frontend",
+        "type": "es6",
+        "fullMatch": "import { cn } from \"@/lib/frontend\""
+      }
+    ],
+    "components.json": [],
+    "dependency-analyzer.js": [
+      {
+        "package": "fs",
+        "fullPath": "fs",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import fs from 'fs'"
+      },
+      {
+        "package": "path",
+        "fullPath": "path",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import path from 'path'"
+      },
+      {
+        "package": "url",
+        "fullPath": "url",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { fileURLToPath } from 'url'"
+      }
+    ],
+    "dependency-visualization.json": [],
+    "hooks\\use-logged-in.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { useEffect, useState } from \"react\""
+      }
+    ],
+    "hooks\\use-mobile.tsx": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      }
+    ],
+    "hooks\\use-toast.ts": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import * as React from \"react\""
+      }
+    ],
+    "lib\\frontend.ts": [
+      {
+        "package": "tailwind-merge",
+        "fullPath": "tailwind-merge",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { twMerge } from \"tailwind-merge\""
+      },
+      {
+        "package": "clsx",
+        "fullPath": "clsx",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { clsx, type ClassValue } from \"clsx\""
+      }
+    ],
+    "lib\\general.ts": [],
+    "lib\\initials.ts": [],
+    "lib\\prisma.ts": [
+      {
+        "package": "@prisma",
+        "fullPath": "@prisma/client",
+        "subPath": "client",
+        "type": "es6",
+        "fullMatch": "import { PrismaClient } from \"@prisma/client\""
+      }
+    ],
+    "lib\\ride.ts": [
+      {
+        "package": "@",
+        "fullPath": "@/lib/prisma",
+        "subPath": "lib/prisma",
+        "type": "es6",
+        "fullMatch": "import { prisma } from \"@/lib/prisma\""
+      },
+      {
+        "package": "@prisma",
+        "fullPath": "@prisma/client",
+        "subPath": "client",
+        "type": "es6",
+        "fullMatch": "import { Ride } from \"@prisma/client\""
+      }
+    ],
+    "lib\\search.ts": [
+      {
+        "package": "@",
+        "fullPath": "@/app/interface/main",
+        "subPath": "app/interface/main",
+        "type": "es6",
+        "fullMatch": "import { searchParamsType } from \"@/app/interface/main\""
+      },
+      {
+        "package": "@",
+        "fullPath": "@/lib/time",
+        "subPath": "lib/time",
+        "type": "es6",
+        "fullMatch": "import { decodeDate } from \"@/lib/time\""
+      }
+    ],
+    "lib\\time.ts": [
+      {
+        "package": "luxon",
+        "fullPath": "luxon",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { DateTime } from 'luxon'"
+      }
+    ],
+    "lib\\user.ts": [
+      {
+        "package": "@",
+        "fullPath": "@/lib/prisma",
+        "subPath": "lib/prisma",
+        "type": "es6",
+        "fullMatch": "import { prisma } from \"@/lib/prisma\""
+      },
+      {
+        "package": "next",
+        "fullPath": "next/headers",
+        "subPath": "headers",
+        "type": "es6",
+        "fullMatch": "import { cookies } from \"next/headers\""
+      }
+    ],
+    "lib\\useSortedRides.ts": [
+      {
+        "package": "react",
+        "fullPath": "react",
+        "subPath": null,
+        "type": "es6",
+        "fullMatch": "import { useEffect, useState } from \"react\""
+      },
+      {
+        "package": "@prisma",
+        "fullPath": "@prisma/client",
+        "subPath": "client",
+        "type": "es6",
+        "fullMatch": "import { Ride } from \"@prisma/client\""
+      }
+    ],
+    "lib\\validate.ts": [],
+    "lib\\yalies.ts": [],
+    "next-env.d.ts": [],
+    "next.config.ts": [],
+    "package-lock.json": [],
+    "package.json": [],
+    "prisma\\clean.ts": [
+      {
+        "package": "@",
+        "fullPath": "@/lib/prisma",
+        "subPath": "lib/prisma",
+        "type": "es6",
+        "fullMatch": "import { prisma } from '@/lib/prisma'"
+      }
+    ],
+    "prisma\\seed.ts": [
+      {
+        "package": "@prisma",
+        "fullPath": "@prisma/client",
+        "subPath": "client",
+        "type": "es6",
+        "fullMatch": "import { PrismaClient } from \"@prisma/client\""
+      }
+    ],
+    "tailwind.config.ts": [
+      {
+        "package": "tailwindcss-animate",
+        "fullPath": "tailwindcss-animate",
+        "subPath": null,
+        "type": "commonjs",
+        "fullMatch": "require(\"tailwindcss-animate\")"
+      },
+      {
+        "package": "@tailwindcss",
+        "fullPath": "@tailwindcss/forms",
+        "subPath": "forms",
+        "type": "commonjs",
+        "fullMatch": "require(\"@tailwindcss/forms\")"
+      }
+    ],
+    "tsconfig.json": []
+  },
+  "importPatterns": {
+    "next": [
+      "next/font/local",
+      "next/server",
+      "next/headers",
+      "next/image",
+      "next/link"
+    ],
+    "luxon": [
+      "luxon"
+    ],
+    "react": [
+      "react"
+    ],
+    "lucide-react": [
+      "lucide-react"
+    ],
+    "date-fns": [
+      "date-fns"
+    ],
+    "react-day-picker": [
+      "react-day-picker"
+    ],
+    "react-phone-number-input": [
+      "react-phone-number-input",
+      "react-phone-number-input/style.css"
+    ],
+    "lodash.debounce": [
+      "lodash.debounce"
+    ],
+    "class-variance-authority": [
+      "class-variance-authority"
+    ],
+    "cmdk": [
+      "cmdk"
+    ],
+    "tailwind-merge": [
+      "tailwind-merge"
+    ],
+    "clsx": [
+      "clsx"
+    ],
+    "tailwindcss-animate": [
+      "tailwindcss-animate"
+    ]
+  }
+}

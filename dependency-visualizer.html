@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dependency Analysis Visualizer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .used { color: #059669; }
+        .unused { color: #dc2626; }
+        .total { color: #2563eb; }
+        .files { color: #7c3aed; }
+        
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section h2 {
+            color: #0f172a;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .dependency-list {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .dependency-item {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .dependency-item.unused {
+            border-left-color: #ef4444;
+            background: #fef2f2;
+        }
+        
+        .dependency-name {
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .dependency-meta {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+        
+        .dependency-files {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        .category-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .category-tab {
+            padding: 0.5rem 1rem;
+            background: #e2e8f0;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .category-tab.active {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .category-tab:hover {
+            background: #cbd5e1;
+        }
+        
+        .category-tab.active:hover {
+            background: #2563eb;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #64748b;
+        }
+        
+        .error {
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Dependency Analysis</h1>
+            <p>Comprehensive overview of your project's dependencies</p>
+        </div>
+        
+        <div id="loading" class="loading">
+            <p>Loading dependency data...</p>
+        </div>
+        
+        <div id="content" class="hidden">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number used" id="used-count">-</div>
+                    <div class="stat-label">Used Dependencies</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number unused" id="unused-count">-</div>
+                    <div class="stat-label">Unused Dependencies</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number total" id="total-count">-</div>
+                    <div class="stat-label">Total Dependencies</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number files" id="files-count">-</div>
+                    <div class="stat-label">Files Analyzed</div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="category-tabs" id="main-tabs">
+                    <button class="category-tab active" id="tab-deps">Browse by Dependency</button>
+                    <button class="category-tab" id="tab-files">Browse by File</button>
+                </div>
+                <div id="tab-content-deps">
+                    <h2>📦 Used Dependencies</h2>
+                    <input type="text" id="used-search" class="search-box" placeholder="Search used dependencies...">
+                    <div class="dependency-list" id="used-dependencies"></div>
+                </div>
+                <div id="tab-content-files" style="display:none;">
+                    <h2>📁 Files & Their Dependencies</h2>
+                    <input type="text" id="file-search" class="search-box" placeholder="Search files...">
+                    <div class="dependency-list" id="file-list"></div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>❌ Unused Dependencies</h2>
+                <input type="text" id="unused-search" class="search-box" placeholder="Search unused dependencies...">
+                <div class="dependency-list" id="unused-dependencies"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let dependencyData = null;
+        
+        async function loadData() {
+            try {
+                const response = await fetch('advanced-dependency-report.json');
+                if (!response.ok) {
+                    throw new Error('Failed to load dependency report');
+                }
+                dependencyData = await response.json();
+                renderVisualization();
+            } catch (error) {
+                document.getElementById('loading').innerHTML = `
+                    <div class="error">
+                        <strong>Error loading data:</strong> ${error.message}<br>
+                        Make sure to run the dependency analyzer first: <code>node advanced-dependency-analyzer.js</code>
+                    </div>
+                `;
+            }
+        }
+        
+        function renderVisualization() {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('content').classList.remove('hidden');
+            
+            // Update stats
+            document.getElementById('used-count').textContent = dependencyData.summary.usedDependencies;
+            document.getElementById('unused-count').textContent = dependencyData.summary.unusedDependencies;
+            document.getElementById('total-count').textContent = dependencyData.summary.totalDependencies;
+            document.getElementById('files-count').textContent = dependencyData.summary.analyzedFiles;
+            
+            // Render used dependencies
+            renderUsedDependencies();
+            
+            // Render unused dependencies
+            renderUnusedDependencies();
+            
+            // Render file list
+            renderFileList();
+        }
+        
+        function renderUsedDependencies() {
+            const container = document.getElementById('used-dependencies');
+            const searchBox = document.getElementById('used-search');
+            
+            function createFileList(files) {
+                return `<div class="file-list-modal-bg" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.2);z-index:1000;display:flex;align-items:center;justify-content:center;">
+                    <div class="file-list-modal" style="background:white;padding:2rem;border-radius:12px;max-width:90vw;max-height:80vh;overflow:auto;box-shadow:0 8px 32px rgba(0,0,0,0.2);position:relative;">
+                        <button id="close-file-list" style="position:absolute;top:1rem;right:1rem;font-size:1.5rem;background:none;border:none;cursor:pointer;">&times;</button>
+                        <h3 style="margin-bottom:1rem;">Files using this dependency (${files.length}):</h3>
+                        <ul style="max-height:60vh;overflow:auto;list-style:disc inside;">
+                            ${files.map(f => `<li style='margin-bottom:0.5rem;font-family:monospace;'>${f}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>`;
+            }
+            
+            function filterAndRender() {
+                const searchTerm = searchBox.value.toLowerCase();
+                const filtered = dependencyData.usedDependencies.filter(dep => 
+                    dep.name.toLowerCase().includes(searchTerm)
+                );
+                
+                container.innerHTML = filtered.map(dep => `
+                    <div class="dependency-item">
+                        <div class="dependency-name">${dep.name}</div>
+                        <div class="dependency-meta">
+                            ${dep.importCount} imports • ${dep.files.length} files • ${dep.importTypes.join(', ')}
+                        </div>
+                        ${dep.subImports.length > 0 ? `
+                            <div class="dependency-meta">
+                                Sub-imports: ${dep.subImports.slice(0, 3).join(', ')}${dep.subImports.length > 3 ? '...' : ''}
+                            </div>
+                        ` : ''}
+                        <div class="dependency-files">
+                            ${dep.files.slice(0, 2).join(', ')}${dep.files.length > 2 ? ` (<a href="#" class="show-all-files" data-files='${JSON.stringify(dep.files)}'>+${dep.files.length - 2} more</a>)` : ''}
+                        </div>
+                    </div>
+                `).join('');
+
+                // Add click listeners for 'show all files'
+                container.querySelectorAll('.show-all-files').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const files = JSON.parse(this.getAttribute('data-files'));
+                        const modal = document.createElement('div');
+                        modal.innerHTML = createFileList(files);
+                        document.body.appendChild(modal);
+                        document.getElementById('close-file-list').onclick = () => {
+                            modal.remove();
+                        };
+                        // Close modal on background click
+                        modal.onclick = (event) => {
+                            if (event.target === modal) modal.remove();
+                        };
+                    });
+                });
+            }
+            
+            searchBox.addEventListener('input', filterAndRender);
+            filterAndRender();
+        }
+        
+        function renderUnusedDependencies() {
+            const container = document.getElementById('unused-dependencies');
+            const searchBox = document.getElementById('unused-search');
+            
+            function filterAndRender() {
+                const searchTerm = searchBox.value.toLowerCase();
+                const filtered = dependencyData.unusedDependencies.filter(dep => 
+                    dep.toLowerCase().includes(searchTerm)
+                );
+                
+                container.innerHTML = filtered.map(dep => `
+                    <div class="dependency-item unused">
+                        <div class="dependency-name">${dep}</div>
+                        <div class="dependency-meta">
+                            Not used in any files
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            searchBox.addEventListener('input', filterAndRender);
+            filterAndRender();
+        }
+        
+        function renderFileList() {
+            const container = document.getElementById('file-list');
+            const searchBox = document.getElementById('file-search');
+            const fileDeps = dependencyData.fileDependencies;
+            const fileNames = Object.keys(fileDeps).sort();
+
+            function filterAndRender() {
+                const searchTerm = searchBox.value.toLowerCase();
+                const filtered = fileNames.filter(f => f.toLowerCase().includes(searchTerm));
+                container.innerHTML = filtered.map(file => {
+                    const deps = fileDeps[file];
+                    if (!deps || deps.length === 0) return '';
+                    return `
+                        <div class="dependency-item">
+                            <div class="dependency-name">${file}</div>
+                            <div class="dependency-meta">
+                                ${deps.length} dependenc${deps.length === 1 ? 'y' : 'ies'}
+                            </div>
+                            <div class="dependency-files">
+                                ${deps.map(dep => `<span style="display:inline-block;background:#e0e7ef;color:#334155;padding:0.2em 0.6em;border-radius:6px;margin:0 0.2em 0.2em 0;font-size:0.95em;">${dep.fullPath}</span>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            searchBox.addEventListener('input', filterAndRender);
+            filterAndRender();
+        }
+        
+        // Tab switching logic
+        document.getElementById('tab-deps').onclick = function() {
+            this.classList.add('active');
+            document.getElementById('tab-files').classList.remove('active');
+            document.getElementById('tab-content-deps').style.display = '';
+            document.getElementById('tab-content-files').style.display = 'none';
+        };
+        document.getElementById('tab-files').onclick = function() {
+            this.classList.add('active');
+            document.getElementById('tab-deps').classList.remove('active');
+            document.getElementById('tab-content-deps').style.display = 'none';
+            document.getElementById('tab-content-files').style.display = '';
+            renderFileList();
+        };
+        
+        // Load data when page loads
+        loadData();
+    </script>
+</body>
+</html> 
