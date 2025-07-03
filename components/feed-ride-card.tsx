@@ -3,8 +3,12 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+<<<<<<< HEAD
 import { Bookmark } from "lucide-react";
 import { formatPhoneNumberIntl } from "react-phone-number-input";
+=======
+import { Bookmark, Pen, Trash2 } from "lucide-react";
+>>>>>>> d69ae83a1bdb9ffca9ec54364b13e4c4e38e8af7
 
 import {
   Card,
@@ -27,8 +31,15 @@ export default function FeedRideCard({
   ride,
   isBookmarkedInitial,
   showDialog = true,
+<<<<<<< HEAD
   hideBookmark = false, // add default
 }: FeedRideCardProps & { hideBookmark?: boolean }) {
+=======
+  showEditIcon,
+  onEdit,
+  onDelete,
+}: FeedRideCardProps) {
+>>>>>>> d69ae83a1bdb9ffca9ec54364b13e4c4e38e8af7
   const { toast } = useToast();
   const [isBookmarked, setIsBookmarked] = React.useState(isBookmarkedInitial);
 
@@ -117,10 +128,41 @@ export default function FeedRideCard({
         </div>
 
         <div className="flex items-center gap-2">
+<<<<<<< HEAD
           {!hideBookmark && (
             <Button
               variant="ghost"
               size="icon"
+=======
+          {/* <span className="text-lg text-black">{postedAgo}</span> */}
+          {showEditIcon ? (
+            <>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit && onEdit();
+                }}
+              >
+                <Pen className="h-5 w-5 text-primary" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete && onDelete();
+                }}
+              >
+                <Trash2 className="h-5 w-5 text-red-500" />
+              </Button>
+            </>
+          ) : (
+            <Button 
+              variant="ghost" 
+              size="icon" 
+>>>>>>> d69ae83a1bdb9ffca9ec54364b13e4c4e38e8af7
               onClick={(e) => {
                 e.stopPropagation();
                 handleBookmark();

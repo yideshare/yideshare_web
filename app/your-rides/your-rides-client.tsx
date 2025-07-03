@@ -104,6 +104,7 @@ export default function YourRidesClient({
         <FeedSortBar sortBy={sortBy} setSortBy={setSortBy} />
         <Separator className="mb-4" />
         <div className="pt-16 flex justify-center">
+<<<<<<< HEAD
           <FeedList
             rides={sortedRides}
             bookmarkedRideIds={bookmarkedRideIds}
@@ -116,6 +117,35 @@ export default function YourRidesClient({
             }}
             onDelete={handleDeleteRide}
           />
+=======
+          <div className="flex flex-col gap-6 max-w-[1200px] w-full">
+            {localRides.map((ride) => (
+              <div key={ride.rideId} className="w-full">
+                <div className="relative">
+                  <FeedRideCard
+                    ride={ride}
+                    isBookmarkedInitial={bookmarkedRideIds.includes(ride.rideId)}
+                    showDialog={false}
+                    showEditIcon={true}
+                    onEdit={() => {
+                      setEditingRide(ride);
+                      setIsEditDialogOpen(true);
+                    }}
+                    onDelete={() => handleDeleteRide(ride.rideId)}
+                  />
+                </div>
+                {editingRide && editingRide.rideId === ride.rideId && (
+                  <EditRideDialog
+                    open={isEditDialogOpen}
+                    setOpen={setIsEditDialogOpen}
+                    ride={editingRide}
+                    onSave={handleEditRide}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+>>>>>>> d69ae83a1bdb9ffca9ec54364b13e4c4e38e8af7
         </div>
       </div>
       {editingRide && (
