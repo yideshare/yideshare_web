@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto("/");
 });
 
-test("has title", async ({ page }) => {
+test("CAS visible", async ({ page }) => {
   await expect(
     page.getByRole("button", { name: "Log in with CAS" })
   ).toBeVisible();
