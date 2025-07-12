@@ -29,6 +29,19 @@ Test:
 npx prisma studio
 ```
 
+## Using Playwright:
+```bash
+cd playwright-tests
+```
+To run tests simple:
+```bash
+npx playwright test
+```
+Recommended (in UI mode)
+```bash
+npx playwright test --ui
+```
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
