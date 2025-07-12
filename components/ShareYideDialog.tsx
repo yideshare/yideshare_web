@@ -179,13 +179,13 @@ export default function ShareYideDialog({
               type="number"
               min="1"
               max="10"
-              placeholder="2"
-              value={additionalPassengers}
-              onChange={(e) =>
-                setAdditionalPassengers(parseInt(e.target.value))
-              }
+              placeholder="3"
+              value={additionalPassengers === 0 ? "" : additionalPassengers}
+              onChange={(e) => {
+                const val = e.target.value;
+                setAdditionalPassengers(val === "" ? 0 : parseInt(val));
+              }}
               required
-              
             />
           </div>
 
