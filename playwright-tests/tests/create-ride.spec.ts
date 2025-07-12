@@ -49,4 +49,5 @@ test("Create Valid Ride", async ({ page }) => {
   //TODO: error when changing num seats
   // await expect(page.getByText("Ride posted successfully!")).toBeVisible(); //TODO maybe add a feature
   await expect(page.getByRole("link", { name: "Yideshare" })).toBeVisible();
+  await expect(page.getByText("Bob Dylan")).toBeVisible();
 });
