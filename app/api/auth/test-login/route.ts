@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { withApiErrorHandler, ApiError } from "@/lib/withApiErrorHandler";
 
 const BASE_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
 
-export async function GET() {
+async function testLoginHandler() {
   if (process.env.NODE_ENV === "production") {
-    return new NextResponse("Not allowed", { status: 403 }); //TODO: replace with error handler (wait on Nikita to answer my PR :| )
+    throw new ApiError("Not allowed", 403);
   }
   await prisma.user.upsert({
     where: { netId: "testuser" },
@@ -29,3 +30,13 @@ export async function GET() {
   );
   return response;
 }
+
+export async function GET() {
+  return testLoginHandler();
+}
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
