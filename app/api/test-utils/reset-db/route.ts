@@ -6,10 +6,12 @@ export async function POST() {
     return new NextResponse("Not allowed", { status: 403 });
   }
   // Clear tables
+  await prisma.message.deleteMany({});
+  await prisma.rideRequest.deleteMany({});
+  await prisma.rideParticipant.deleteMany({});
+  await prisma.bookmark.deleteMany({});
   await prisma.ride.deleteMany({});
   await prisma.user.deleteMany({});
-  await prisma.bookmark.deleteMany({});
-  // TODO:delete other tables as needed
 
   await prisma.user.create({
     data: {

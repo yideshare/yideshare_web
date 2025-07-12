@@ -1,6 +1,8 @@
 import { test, expect } from "@playwright/test";
 import { SetupTestUser } from "../helpers/testing-init";
 import { RideFunctions } from "../helpers/ride-functions";
+test.describe.configure({ mode: "serial" });
+
 test.beforeEach(async ({ context, page }) => {
   const setupTestUser = new SetupTestUser(page);
   await setupTestUser.resetDatabase();
