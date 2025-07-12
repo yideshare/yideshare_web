@@ -1,5 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-import { AuthHelper } from "../helpers/auth-helper";
+import { SetupTestUser } from "../helpers/testing-init";
 
 test("CAS visible", async ({ page }) => {
   await page.context().clearCookies();
@@ -11,7 +11,7 @@ test("CAS visible", async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Central Authentication Service' })).toBeVisible();
 });
 test("fake CAS login", async ({ page }) => {
-  const authHelper = new AuthHelper(page);
-  await authHelper.loginAsTestUser();
+  const setupTestUser = new SetupTestUser(page);
+  await setupTestUser.loginAsTestUser();
   await expect(page.getByText("YideShare")).toBeVisible();
 });
