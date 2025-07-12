@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { findFilteredRides } from "@/lib/ride";
 import { withApiErrorHandler } from "@/lib/withApiErrorHandler";
 
+
 async function getHandler(request: Request) {
   const url = new URL(request.url);
   const searchParams = url.searchParams;
