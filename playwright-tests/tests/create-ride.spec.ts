@@ -2,10 +2,9 @@ import { test, expect } from "@playwright/test";
 import { AuthHelper } from "../helpers/auth-helper";
 
 test.beforeEach(async ({ context, page }) => {
+  await page.request.post("/api/test-utils/reset-db");
   const authHelper = new AuthHelper(page);
   await authHelper.loginAsTestUser();
-  const cookies = await page.context().cookies();
-  console.log(cookies);
 });
 
 test("Correct buttons exist", async ({ page }) => {

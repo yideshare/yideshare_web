@@ -9,10 +9,8 @@ test("CAS visible", async ({ page }) => {
   ).toBeVisible();
   await page.getByRole('button', { name: 'Log in with CAS' }).click();
   await expect(page.getByRole('heading', { name: 'Central Authentication Service' })).toBeVisible();
-
-
 });
-test("CAS login", async ({ page }) => {
+test("fake CAS login", async ({ page }) => {
   const authHelper = new AuthHelper(page);
   await authHelper.loginAsTestUser();
   await expect(page.getByText("YideShare")).toBeVisible();
