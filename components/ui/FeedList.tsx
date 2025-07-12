@@ -3,6 +3,17 @@ import { Ride } from "@prisma/client";
 import React from "react";
 import { Trash2, Pencil } from "lucide-react";
 
+interface FeedListProps {
+  rides: Ride[];
+  bookmarkedRideIds?: string[];
+  showDialog?: boolean;
+  hideBookmark?: boolean;
+  onEdit?: (ride: Ride) => void;
+  onDelete?: (rideId: string) => void;
+  editable?: boolean;
+  onUnbookmark?: (rideId: string) => void;
+}
+
 export function FeedList({
   rides,
   bookmarkedRideIds = [],
@@ -11,15 +22,8 @@ export function FeedList({
   onEdit,
   onDelete,
   editable = false,
-}: {
-  rides: Ride[];
-  bookmarkedRideIds?: string[];
-  showDialog?: boolean;
-  hideBookmark?: boolean;
-  onEdit?: (ride: Ride) => void;
-  onDelete?: (rideId: string) => void;
-  editable?: boolean;
-}) {
+  onUnbookmark,
+}: FeedListProps) {
   if (!rides.length) {
     return <p className="text-black">No rides available.</p>;
   }
@@ -30,22 +34,22 @@ export function FeedList({
           {editable && onDelete && (
             <div className="absolute top-3 right-3 flex gap-2">
               <button
-            className="text-red-500"
-            onClick={() => onDelete(ride.rideId)}
-            aria-label="Delete"
+                className="text-red-500"
+                onClick={() => onDelete(ride.rideId)}
+                aria-label="Delete"
               >
-            <Trash2 className="h-5 w-5 text-red-500" />
+                <Trash2 className="h-5 w-5 text-red-500" />
               </button>
             </div>
           )}
           {editable && onEdit && (
             <div className="absolute bottom-3 right-3 flex gap-2">
               <button
-            className="text-blue-500"
-            onClick={() => onEdit(ride)}
-            aria-label="Edit"
+                className="text-blue-500"
+                onClick={() => onEdit(ride)}
+                aria-label="Edit"
               >
-            <Pencil className="h-5 w-5 text-blue-500" />
+                <Pencil className="h-5 w-5 text-blue-500" />
               </button>
             </div>
           )}
@@ -54,9 +58,11 @@ export function FeedList({
             isBookmarkedInitial={bookmarkedRideIds.includes(ride.rideId)}
             showDialog={showDialog}
             hideBookmark={hideBookmark}
+            onUnbookmark={onUnbookmark}
           />
         </div>
       ))}
     </div>
   );
 }
+

@@ -6,9 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Bookmark } from "lucide-react";
 import { formatPhoneNumberIntl } from "react-phone-number-input";
 
-import {
-  Card,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 
 import {
   Dialog,
@@ -16,9 +14,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-
 } from "@/components/ui/dialog";
-
 
 import { FeedRideCardProps } from "@/app/interface/main";
 
@@ -28,10 +24,10 @@ export default function FeedRideCard({
   isBookmarkedInitial,
   showDialog = true,
   hideBookmark = false, // add default
-}: FeedRideCardProps & { hideBookmark?: boolean }) {
+  onUnbookmark, 
+}: FeedRideCardProps & { hideBookmark?: boolean; onUnbookmark?: (rideId: string) => void }) {
   const { toast } = useToast();
   const [isBookmarked, setIsBookmarked] = React.useState(isBookmarkedInitial);
-
 
   /* ------------ helpers ------------ */
   const ownerName = ride.ownerName ?? "Driver";
@@ -63,6 +59,9 @@ export default function FeedRideCard({
       });
       const data = await res.json();
       setIsBookmarked(data.bookmarked);
+      if (!data.bookmarked && onUnbookmark) {
+        onUnbookmark(ride.rideId); 
+      }
       toast({
         title: data.bookmarked ? "Ride Bookmarked" : "Bookmark Removed",
       });
@@ -70,7 +69,6 @@ export default function FeedRideCard({
       toast({ title: "Error", description: "Could not update bookmark." });
     }
   }
-
 
   /* ------------ UI ------------ */
   const cardContent = (
@@ -185,8 +183,6 @@ export default function FeedRideCard({
             </div>
           </div>
         </DialogHeader>
-
-
       </DialogContent>
     </Dialog>
   );

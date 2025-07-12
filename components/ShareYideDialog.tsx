@@ -16,7 +16,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { TimeSelect } from "@/components/ui/time-select";
 import { CustomPhoneInput } from "@/components/ui/phone-input";
-import { isNextDay } from "@/lib/time";
 
 /* -------------------------------------------------------------------------- */
 /*  props                                                                     */
@@ -122,7 +121,6 @@ export default function ShareYideDialog({
 
           {/* route */}
           <div className="grid sm:grid-cols-2 gap-4">
-            
             <div className="space-y-2">
               <Label htmlFor="from">
                 Leaving from <span className="text-red-500">*</span>{" "}
@@ -159,6 +157,7 @@ export default function ShareYideDialog({
             />
 
             <TimeSelect
+              // label="Latest departure"
               label={
                 <>
                   Latest departure <span className="text-red-500">*</span>
@@ -166,8 +165,6 @@ export default function ShareYideDialog({
               }
               value={endTime}
               onChange={setEndTime}
-              startTime={startTime}
-              isEndTime={true}
               className="mt-2 sm:mt-0"
             />
           </div>
@@ -182,13 +179,13 @@ export default function ShareYideDialog({
               type="number"
               min="1"
               max="10"
-              placeholder="2"
-              value={additionalPassengers}
-              onChange={(e) =>
-                setAdditionalPassengers(parseInt(e.target.value))
-              }
+              placeholder="3"
+              value={additionalPassengers === 0 ? "" : additionalPassengers}
+              onChange={(e) => {
+                const val = e.target.value;
+                setAdditionalPassengers(val === "" ? 0 : parseInt(val));
+              }}
               required
-              
             />
           </div>
 
