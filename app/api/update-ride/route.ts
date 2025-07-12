@@ -1,124 +1,67 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma"; // Ensure this is your Prisma instance
-import { getUserNetIdFromCookies } from "@/lib/user"; // Utility to get the user from cookies
+import { prisma } from "@/lib/prisma";
+import { getUserNetIdFromCookies } from "@/lib/user";
+import { withApiErrorHandler, ApiError } from "@/lib/withApiErrorHandler";
 
-export async function DELETE(request: Request) {
-  try {
-    // Extract rideId from the query string (e.g., /api/rides/deleteRide?rideId=123)
-    const url = new URL(request.url);
-    const rideId = url.searchParams.get("rideId");
+async function deleteHandler(request: Request) {
+  const url = new URL(request.url);
+  const rideId = url.searchParams.get("rideId");
+  if (!rideId) throw new ApiError("rideId is required", 400);
 
-    if (!rideId) {
-      return NextResponse.json({ error: "rideId is required" }, { status: 400 });
-    }
+  const netId = await getUserNetIdFromCookies();
+  if (!netId) throw new ApiError("Unauthorized", 401);
 
-    // Get the user's netId from cookies
-    const netId = await getUserNetIdFromCookies();
-    if (!netId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+  const ride = await prisma.ride.findUnique({ where: { rideId } });
+  if (!ride) throw new ApiError("Ride not found", 404);
 
-    // Ensure the ride exists
-    const ride = await prisma.ride.findUnique({
-      where: { rideId: rideId },
-    });
+  if (ride.ownerNetId !== netId)
+    throw new ApiError("Unauthorized to delete this ride", 403);
 
-    if (!ride) {
-      return NextResponse.json({ error: "Ride not found" }, { status: 404 });
-    }
+  await prisma.bookmark.deleteMany({ where: { rideId: ride.rideId } });
+  await prisma.ride.delete({ where: { rideId: ride.rideId } });
 
-    // Check if the current user is the owner of the ride
-    if (ride.ownerNetId !== netId) {
-      return NextResponse.json(
-        { error: "Unauthorized to delete this ride" },
-        { status: 403 }
-      );
-    }
-
-    // Delete any related records (e.g., bookmarks) before deleting the ride
-    await prisma.bookmark.deleteMany({
-      where: { rideId: ride.rideId },
-    });
-
-    // Delete the ride
-    await prisma.ride.delete({
-      where: { rideId: ride.rideId },
-    });
-
-    return NextResponse.json(
-      { message: "Ride deleted successfully" },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error("Delete Ride Error:", error);
-    return NextResponse.json(
-      { error: "Failed to delete ride" },
-      { status: 500 }
-    );
-  }
+  return NextResponse.json(
+    { message: "Ride deleted successfully" },
+    { status: 200 }
+  );
 }
 
-export async function PATCH(request: Request) {
-  try {
-    // Extract rideId from the query string
-    const url = new URL(request.url);
-    const rideId = url.searchParams.get("rideId");
+async function patchHandler(request: Request) {
+  const url = new URL(request.url);
+  const rideId = url.searchParams.get("rideId");
+  if (!rideId) throw new ApiError("rideId is required", 400);
 
-    if (!rideId) {
-      return NextResponse.json({ error: "rideId is required" }, { status: 400 });
-    }
+  const netId = await getUserNetIdFromCookies();
+  if (!netId) throw new ApiError("Unauthorized", 401);
 
-    // Get the user's netId from cookies
-    const netId = await getUserNetIdFromCookies();
-    if (!netId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+  const existingRide = await prisma.ride.findUnique({ where: { rideId } });
+  if (!existingRide) throw new ApiError("Ride not found", 404);
 
-    // Ensure the ride exists
-    const existingRide = await prisma.ride.findUnique({
-      where: { rideId: rideId },
-    });
+  if (existingRide.ownerNetId !== netId)
+    throw new ApiError("Unauthorized to edit this ride", 403);
 
-    if (!existingRide) {
-      return NextResponse.json({ error: "Ride not found" }, { status: 404 });
-    }
+  const updatedRideData = await request.json();
 
-    // Check if the current user is the owner of the ride
-    if (existingRide.ownerNetId !== netId) {
-      return NextResponse.json(
-        { error: "Unauthorized to edit this ride" },
-        { status: 403 }
-      );
-    }
+  const updatedRide = await prisma.ride.update({
+    where: { rideId: existingRide.rideId },
+    data: {
+      beginning: updatedRideData.beginning?.toLowerCase(),
+      destination: updatedRideData.destination?.toLowerCase(),
+      description: updatedRideData.description,
+      startTime: updatedRideData.startTime
+        ? new Date(updatedRideData.startTime)
+        : undefined,
+      endTime: updatedRideData.endTime
+        ? new Date(updatedRideData.endTime)
+        : undefined,
+      totalSeats: updatedRideData.totalSeats,
+      ownerName: updatedRideData.ownerName,
+      ownerPhone: updatedRideData.ownerPhone,
+    },
+  });
 
-    // Get the updated ride data from the request body
-    const updatedRideData = await request.json();
-
-    // Update the ride
-    const updatedRide = await prisma.ride.update({
-      where: { rideId: existingRide.rideId },
-      data: {
-        beginning: updatedRideData.beginning?.toLowerCase(),
-        destination: updatedRideData.destination?.toLowerCase(),
-        description: updatedRideData.description,
-        startTime: updatedRideData.startTime
-          ? new Date(updatedRideData.startTime)
-          : undefined,
-        endTime: updatedRideData.endTime
-          ? new Date(updatedRideData.endTime)
-          : undefined,
-        totalSeats: updatedRideData.totalSeats,
-        ownerName: updatedRideData.ownerName,
-        ownerPhone: updatedRideData.ownerPhone,
-      },
-    });
-
-    return NextResponse.json(updatedRide);
-  } catch (error) {
-    console.error("Update Ride Error:", error);
-    return NextResponse.json(
-      { error: "Failed to update ride" },
-      { status: 500 }
-    );
-  }
+  return NextResponse.json(updatedRide);
 }
+
+export const DELETE = withApiErrorHandler(deleteHandler);
+export const PATCH = withApiErrorHandler(patchHandler);

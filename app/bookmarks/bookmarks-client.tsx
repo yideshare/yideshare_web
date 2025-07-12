@@ -11,9 +11,18 @@ interface BookmarksClientProps {
   bookmarkedRides: Ride[];
 }
 
-export default function BookmarksClient({ bookmarkedRides }: BookmarksClientProps) {
+export default function BookmarksClient({
+  bookmarkedRides,
+}: BookmarksClientProps) {
   const [sortBy, setSortBy] = React.useState("recent");
-  const sortedRides = useSortedRides(bookmarkedRides, sortBy);
+  const [localBookmarkedRides, setLocalBookmarkedRides] =
+    React.useState<Ride[]>(bookmarkedRides);
+  const sortedRides = useSortedRides(localBookmarkedRides, sortBy);
+  const handleUnbookmark = (rideId: string) => {
+    setLocalBookmarkedRides((rides) =>
+      rides.filter((r) => r.rideId !== rideId)
+    );
+  };
 
   return (
     <div className="bg-white min-h-screen">
@@ -22,7 +31,11 @@ export default function BookmarksClient({ bookmarkedRides }: BookmarksClientProp
         <FeedSortBar sortBy={sortBy} setSortBy={setSortBy} />
         <Separator className="mb-4" />
         <div className="pt-16 flex justify-center">
-          <FeedList rides={sortedRides} bookmarkedRideIds={bookmarkedRides.map(r => r.rideId)} />
+          <FeedList
+            rides={sortedRides}
+            bookmarkedRideIds={localBookmarkedRides.map((r) => r.rideId)}
+            onUnbookmark={handleUnbookmark} // Pass the handler down
+          />
         </div>
       </div>
     </div>

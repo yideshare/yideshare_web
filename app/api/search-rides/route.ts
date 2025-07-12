@@ -1,51 +1,57 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { findFilteredRides } from "@/lib/ride";
-import { createStartEndDateTimes } from "@/lib/time";
+import { withApiErrorHandler } from "@/lib/withApiErrorHandler";
 
-export async function GET(request: NextRequest) {
-  try {
-    const searchParams = request.nextUrl.searchParams;
-    const from = searchParams.get("from") || "";
-    const to = searchParams.get("to") || "";
-    const date = searchParams.get("date") || new Date().toISOString();
-    const startTime = searchParams.get("startTime") || "";
-    const endTime = searchParams.get("endTime") || "";
 
-    // convert date string to "Date" object and create time objects with next-day logic
-    const dateObject = new Date(date);
-    
-    let startTimeObject: Date;
-    let endTimeObject: Date;
-    
-    if (startTime && endTime) {
-      // use the logic that handles next-day occurences
-      const { startTimeObject: start, endTimeObject: end } = createStartEndDateTimes(
-        dateObject,
-        startTime,
-        endTime
-      );
-      startTimeObject = start;
-      endTimeObject = end;
-    } else {
-      // fallback for when times are not provided
-      startTimeObject = new Date(dateObject);
-      endTimeObject = new Date(dateObject);
+async function getHandler(request: Request) {
+  const url = new URL(request.url);
+  const searchParams = url.searchParams;
+  const from = searchParams.get("from") || "";
+  const to = searchParams.get("to") || "";
+  const date = searchParams.get("date") || new Date().toISOString();
+  const startTime = searchParams.get("startTime") || "";
+  const endTime = searchParams.get("endTime") || "";
+
+  // Convert date string to Date object
+  const dateObject = new Date(date);
+
+    // Create start and end time objects
+    const startTimeObject = new Date(dateObject);
+    const endTimeObject = new Date(dateObject);
+
+  if (startTime) {
+    const [time, period] = startTime.split(" ");
+    const [hours, minutes] = time.split(":").map(Number);
+    let adjustedHours = hours;
+    if (period === "PM" && hours !== 12) {
+      adjustedHours += 12;
+    } else if (period === "AM" && hours === 12) {
+      adjustedHours = 0;
     }
-
-    // Find rides that match the filter criteria
-    const rides = await findFilteredRides(
-      from,
-      to,
-      startTimeObject,
-      endTimeObject
-    );
-
-    return NextResponse.json(rides);
-  } catch (error) {
-    console.error("Search Error:", error);
-    return NextResponse.json(
-      { error: "Failed to search rides" },
-      { status: 500 }
-    );
+    startTimeObject.setHours(adjustedHours, minutes);
   }
+
+  if (endTime) {
+    const [time, period] = endTime.split(" ");
+    const [hours, minutes] = time.split(":").map(Number);
+    let adjustedHours = hours;
+    if (period === "PM" && hours !== 12) {
+      adjustedHours += 12;
+    } else if (period === "AM" && hours === 12) {
+      adjustedHours = 0;
+    }
+    endTimeObject.setHours(adjustedHours, minutes);
+  }
+
+  // Find rides that match the filter criteria
+  const rides = await findFilteredRides(
+    from,
+    to,
+    startTimeObject,
+    endTimeObject
+  );
+
+  return NextResponse.json(rides);
 }
+
+export const GET = withApiErrorHandler(getHandler);
