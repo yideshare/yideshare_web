@@ -18,6 +18,12 @@ jobs:
         working-directory: ./playwright-tests
       - name: Install main app dependencies
         run: npm ci
+      - name: Set up database
+        run: |
+          npx prisma generate
+          npx prisma db push --force-reset
+        env:
+          DATABASE_URL: "file:./test.db"
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
         working-directory: ./playwright-tests
