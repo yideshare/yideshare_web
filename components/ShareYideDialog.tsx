@@ -206,7 +206,7 @@ export default function ShareYideDialog({
 
           <div className="flex justify-end pt-2">
             <Button type="submit" disabled={!ready}>
-              Post Yide
+              Post Ride
             </Button>
           </div>
         </form>

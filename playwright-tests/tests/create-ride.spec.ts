@@ -29,7 +29,7 @@ test("Popup appears when clicking Post Ride", async ({ page }) => {
     page.getByRole("heading", { name: "Share a Yide" })
   ).toBeVisible();
   await expect(
-    page.locator("div").filter({ hasText: /^Post Yide$/ })
+    page.locator("div").filter({ hasText: /^Post Ride$/ })
   ).toBeVisible();
 });
 test("Create Valid Ride", async ({ page }) => {

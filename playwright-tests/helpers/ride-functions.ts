@@ -27,6 +27,6 @@ export class RideFunctions {
     await this.page
       .getByRole("spinbutton", { name: "Number of Open Seats *" })
       .fill("4");
-    await this.page.getByRole("button", { name: "Post Yide" }).click();
+    await this.page.getByRole("button", { name: "Post Ride" }).click();
   }
 }
