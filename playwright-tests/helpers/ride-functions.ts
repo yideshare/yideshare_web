@@ -2,6 +2,10 @@ import { Page } from "@playwright/test";
 export class RideFunctions {
   constructor(private page: Page) {}
 
+  getTodayDayNumber(): string {
+    const today = new Date();
+    return today.getDate().toString();
+  }
   async createValidRideViaPopup() {
     await this.page.getByRole("button", { name: "Post Ride" }).click();
     await this.page
@@ -28,5 +32,20 @@ export class RideFunctions {
       .getByRole("spinbutton", { name: "Number of Open Seats *" })
       .fill("4");
     await this.page.getByRole("button", { name: "Post Ride" }).click();
+  }
+  async fillNavBarMinusTime() {
+    await this.page.getByRole("combobox", { name: "Select departure date" }).click();
+    const dayNumber = this.getTodayDayNumber();
+    await this.page.getByRole("gridcell", { name: dayNumber }).click();
+
+    await this.page
+      .locator("div")
+      .filter({ hasText: /^Leaving from$/ })
+      .getByRole("combobox")
+      .click();
+    await this.page.getByPlaceholder("Search or type to create…").fill("Vegas");
+    await this.page.getByPlaceholder("Search or type to create…").press("Enter");
+    await this.page.getByPlaceholder("Search or type to create…").fill("Miami");
+    await this.page.getByPlaceholder("Search or type to create…").press("Enter");
   }
 }

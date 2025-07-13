@@ -52,6 +52,14 @@ Run tests with specific number of workers (recommended not to due to db conflict
 ```bash
 npx playwright test --workers=2
 ```
+### Writing Tests
+
+```bash
+npx playwright codegen
+```
+
+To bypass CAS (for non Production env only), use path:
+http://localhost:3000/api/auth/test-login
 
 ### Debugging
 
