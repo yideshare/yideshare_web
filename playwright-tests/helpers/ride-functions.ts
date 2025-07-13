@@ -2,7 +2,7 @@ import { Page } from "@playwright/test";
 export class RideFunctions {
   constructor(private page: Page) {}
 
-  async createValidRide() {
+  async createValidRideViaPopup() {
     await this.page.getByRole("button", { name: "Post Ride" }).click();
     await this.page
       .getByRole("textbox", { name: "Organizer name (optional)" })

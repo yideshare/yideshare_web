@@ -34,7 +34,7 @@ test("Popup appears when clicking Post Ride", async ({ page }) => {
 });
 test("Create Valid Ride", async ({ page }) => {
   const rideFunctions = new RideFunctions(page);
-  await rideFunctions.createValidRide();
+  await rideFunctions.createValidRideViaPopup();
   await expect(page.getByRole("link", { name: "Yideshare" })).toBeVisible();
   await expect(page.getByText("Bob Dylan")).toBeVisible();
 });

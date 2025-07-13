@@ -11,7 +11,7 @@ test.beforeEach(async ({ context, page }) => {
 
 export async function bookmarkAndCheckSaved(page: any) {
   const rideFunctions = new RideFunctions(page);
-  await rideFunctions.createValidRide();
+  await rideFunctions.createValidRideViaPopup();
   await page.getByRole("button").nth(3).click();
   await page.getByRole("button").nth(3).click();
 
@@ -25,6 +25,6 @@ test("Bookmark a ride, shows up in Saved Rides", async ({ page }) => {
 test("Unbookmark a ride, does not show up in Saved Rides", async ({ page }) => {
   await bookmarkAndCheckSaved(page);
 
-  await page.getByRole('button').nth(1).click();
+  await page.getByRole("button").nth(1).click();
   await expect(page.getByText("Bob Dylan")).not.toBeVisible();
 });

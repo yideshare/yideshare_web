@@ -210,6 +210,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
               id="event-date"
               variant="outline"
               role="combobox"
+              aria-label="Select departure date"
               className="justify-start text-left text-lg font-bold bg-transparent text-black w-full border-[#cde3dd] focus:ring-[#cde3dd] h-10"
             >
               {date ? (
