@@ -26,7 +26,7 @@ test("Correct buttons exist", async ({ page }) => {
 test("Popup appears when clicking Post Ride", async ({ page }) => {
   await page.getByRole("button", { name: "Post Ride" }).click();
   await expect(
-    page.getByRole("heading", { name: "Share a Yide" })
+    page.getByRole("heading", { name: "Share a Ride" })
   ).toBeVisible();
   await expect(
     page.locator("div").filter({ hasText: /^Post Ride$/ })
