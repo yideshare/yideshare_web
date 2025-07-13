@@ -5,11 +5,13 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 First, run the development server with following commands in coding IDE or local terminal:
 
 (first-time to install package dependencies)
+
 ```bash
 npm install
 ```
 
 Runs dev server on port 3000
+
 ```bash
 npm run dev
 ```
@@ -17,30 +19,42 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Using primsa:
+
 Open a second terminal window and input the following commands:
 
 Sync with latest db changes or create if no db:
+
 ```bash
 npx prisma db push
 ```
 
 Test:
+
 ```bash
 npx prisma studio
 ```
 
 ## Using Playwright:
+
+First navigate to testing folder:
+
 ```bash
 cd playwright-tests
 ```
+
 To run tests simple:
+
 ```bash
 npx playwright test
 ```
+
 Recommended (in UI mode)
+
 ```bash
 npx playwright test --ui
 ```
+
+For detailed Playwright testing instructions, see [playwright-tests/README.md](./playwright-tests/README.md)
 
 ## Learn More
 
