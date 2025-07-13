@@ -35,8 +35,7 @@ test("Popup appears when clicking Post Ride", async ({ page }) => {
 test("Create Valid Ride", async ({ page }) => {
   const rideFunctions = new RideFunctions(page);
   await rideFunctions.createValidRide();
-  //TODO: error when changing num seats
-  // await expect(page.getByText("Ride posted successfully!")).toBeVisible(); //TODO maybe add a feature
   await expect(page.getByRole("link", { name: "Yideshare" })).toBeVisible();
   await expect(page.getByText("Bob Dylan")).toBeVisible();
 });
+//TODO: create invalid ride tests
