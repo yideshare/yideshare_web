@@ -129,20 +129,10 @@ export async function findFilteredRides(
 
   if (hasStart && hasEnd) {
     whereClause.AND.push({
-      OR: [
-        {
-          startTime: {
-            gte: filterStartTime,
-            lte: filterEndTime,
-          }
-        },
-        {
-          endTime: {
-            gte: filterStartTime,
-            lte: filterEndTime,
-          }
-        }
-      ]
+      // Ride starts before or at the filter end time
+      // and ends after or at the filter start time
+      startTime: { lte: filterEndTime },
+      endTime: { gte: filterStartTime },
     });
   } 
 

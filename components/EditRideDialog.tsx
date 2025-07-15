@@ -17,7 +17,7 @@ import { TimeSelect } from "@/components/ui/time-select";
 import { Ride } from "@prisma/client";
 import { useState } from "react";
 import { CustomPhoneInput } from "@/components/ui/phone-input";
-import { createStartEndDateTimes, isNextDay } from "@/lib/time";
+import { createStartEndDateTimes } from "@/lib/time";
 
 const formatTimeForDisplay = (date: Date) => {
   const hours = date.getHours();

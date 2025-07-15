@@ -43,6 +43,10 @@ async function getHandler(request: Request) {
     endTimeObject.setHours(adjustedHours, minutes);
   }
 
+  // Reset seconds and milliseconds for more accurate filtering
+  startTimeObject.setSeconds(0, 0);
+  endTimeObject.setSeconds(0, 0);
+
   // Find rides that match the filter criteria
   const rides = await findFilteredRides(
     from,
