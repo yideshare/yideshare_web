@@ -103,8 +103,8 @@ export function TopBar({ onResults, rides }: TopBarProps) {
       const ridesResult: Ride[] = await res.json();
       onResults(ridesResult);
       setHasSearched(true);
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
       onResults([]);
       setHasSearched(true);
     }

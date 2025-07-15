@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { Ride } from "@prisma/client"
+import logger from "@/lib/logger";
 
 export async function createRide(ride: Ride, netId: string) {
   try {
@@ -18,10 +19,10 @@ export async function createRide(ride: Ride, netId: string) {
         isClosed: false,
       },
     });
-    console.log("Ride created successfully:", newRide);
+    logger.info(`DB RIDE: Ride created by ${netId}, Details: `, newRide);
     return newRide;
   } catch (error) {
-    console.error("Error creating ride:", error);
+    logger.error("DB RIDE: Error creating ride:", error);
     throw error;
   }
 }
@@ -34,8 +35,8 @@ export async function closeRide(rideId: string) {
     });
     return updatedRide;
   } catch (error) {
-    console.error("Error closing ride:", error);
-    return null; 
+    logger.error("DB RIDE: Error closing ride:", error);
+    return null;
   }
 }
 

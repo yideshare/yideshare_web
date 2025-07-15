@@ -1,10 +1,12 @@
+import logger from "./logger";
+
 const BASE_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
 const CAS_VALIDATE_URL = "https://secure.its.yale.edu/cas/serviceValidate";
 
 export async function extractNetIdFromCASTicket(ticket: string | null) {
   // if no ticket found
   if (!ticket) {
-    console.error("CAS Error: No ticket provided");
+    logger.error("CAS Error: No ticket provided");
     return null;
   }
 
@@ -16,7 +18,7 @@ export async function extractNetIdFromCASTicket(ticket: string | null) {
   // validate ticket
   const response = await fetch(casValidateUrl);
   if (!response.ok) {
-    console.error("CAS Error:", response.status, response.statusText);
+    logger.error("CAS Error:", response.status, response.statusText);
     return null;
   }
 

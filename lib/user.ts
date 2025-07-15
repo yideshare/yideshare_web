@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
+import logger from "@/lib/logger";
 
 export async function findOrCreateUser(
   netId: string,
@@ -12,13 +13,13 @@ export async function findOrCreateUser(
 
   // if user found
   if (user) {
-    console.log("DB USER Alert: User already exists in the database:", user);
+    logger.info("DB USER: User found in the database:", user);
     // otherwise
   } else {
     user = await prisma.user.create({
       data: { netId, name: `${firstName} ${lastName}`, email },
     });
-    console.log("DB USER Alert: New user added to the database:", user);
+    logger.info("DB USER: New user added to the database:", user);
   }
   return user;
 }
