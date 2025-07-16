@@ -73,7 +73,7 @@ export default function ShareYideDialog({
     undefined
   );
 
-  const ready = from && to && startTime && endTime && !phoneError; //in future, can add more checks
+  const ready = from && to && startTime && endTime && !phoneError && organizerName; //in future, can add more checks
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -98,14 +98,15 @@ export default function ShareYideDialog({
           {/* organiser + phone */}
           <div className="space-y-2">
             <Label htmlFor="organizer">
-              Organizer name{" "}
-              <span className="text-muted-foreground">(optional)</span>
+              Organizer name <span className="text-red-500">*</span>{" "}
+              {/* <span className="text-muted-foreground">(optional)</span> */}
             </Label>
             <Input
               id="organizer"
               value={organizerName}
               onChange={(e) => setOrganizerName(e.target.value)}
               placeholder="John Doe"
+              required
             />
           </div>
 

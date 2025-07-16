@@ -80,6 +80,7 @@ export default function EditRideDialog({
     formData.startTime &&
     formData.endTime &&
     formData.totalSeats &&
+    organizerName &&
     !phoneError;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -124,13 +125,13 @@ export default function EditRideDialog({
           {/* organiser + phone */}
           <div className="space-y-2">
             <Label htmlFor="organizer">
-              Organizer name{" "}
-              <span className="text-muted-foreground">(optional)</span>
+              Organizer name <span className="text-red-500">*</span>{" "}
             </Label>
             <Input
               id="organizer"
               value={organizerName}
               onChange={(e) => setOrganizerName(e.target.value)}
+              required
               placeholder="John Doe"
             />
           </div>
