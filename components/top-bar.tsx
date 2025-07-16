@@ -119,7 +119,6 @@ export function TopBar({ onResults, rides }: TopBarProps) {
   async function handleShareYide(e: React.FormEvent) {
     e.preventDefault();
 
-
     const selectedDate = date ?? new Date();
     const { startTimeObject, endTimeObject } = createStartEndDateTimes(
       selectedDate,
@@ -196,11 +195,18 @@ export function TopBar({ onResults, rides }: TopBarProps) {
           placeholder=""
           value={from}
           onChange={setFrom}
+          aria-label="Select departure location"
         />
       </div>
       <div className="w-full sm:w-auto sm:flex-none sm:min-w-[180px]">
         <label className="text-sm font-bold text-black">Going to</label>
-        <LocationCombobox label="" placeholder="" value={to} onChange={setTo} />
+        <LocationCombobox
+          label=""
+          placeholder=""
+          value={to}
+          onChange={setTo}
+          aria-label="Select destination location"
+        />
       </div>
       <div className="w-full sm:w-auto sm:flex-none max-w-[250px] sm:min-w-[180px]">
         <label className="text-sm font-bold text-black">Date</label>
@@ -268,11 +274,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
                 className="bg-transparent w-full border-[#cde3dd] focus:ring-[#cde3dd]"
               />
               <TimeSelect
-                label={
-                  <>
-                    Latest departure
-                  </>
-                }
+                label={<>Latest departure</>}
                 value={endTime}
                 onChange={setEndTime}
                 startTime={startTime}

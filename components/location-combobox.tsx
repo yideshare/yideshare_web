@@ -27,6 +27,7 @@ interface LocationComboboxProps {
   placeholder?: string;
   value: string;
   onChange: (value: string) => void;
+  "aria-label"?: string;
 }
 
 export function LocationCombobox({
@@ -34,6 +35,7 @@ export function LocationCombobox({
   placeholder,
   value,
   onChange,
+  "aria-label": ariaLabel,
 }: LocationComboboxProps) {
   const [open, setOpen] = React.useState(false);
 
@@ -51,9 +53,7 @@ export function LocationCombobox({
   // detect when to offer “creatable”
   const customOption =
     inputValue.trim().length > 0 &&
-    !items.some(
-      (loc) => loc.label.toLowerCase() === inputValue.toLowerCase()
-    );
+    !items.some((loc) => loc.label.toLowerCase() === inputValue.toLowerCase());
 
   // who’s currently selected
   const selected = items.find((loc) => loc.label === value);
@@ -85,6 +85,7 @@ export function LocationCombobox({
           <Button
             variant="outline"
             role="combobox"
+            aria-label={ariaLabel}
             className="justify-start text-left text-lg font-bold bg-transparent text-black w-full border-[#cde3dd] focus:ring-[#cde3dd]"
           >
             {selected ? selected.label : placeholder ?? "Select…"}
