@@ -10,23 +10,40 @@ test.beforeEach(async ({ context, page }) => {
 });
 
 test("Search Ride - exact posting time", async ({ page }) => {
+  await helper(page, "12:00 AM", "01:00 AM");
+  await expect(page.getByText("Bob Dylan")).toBeVisible();
+});
+
+test("Search Ride - time in range (within 15 minutes)", async ({ page }) => {
+  await helper(page, "12:15 AM", "01:15 AM");
+  await expect(page.getByText("Bob Dylan")).toBeVisible();
+});
+
+test("Search Ride - time overlapping window", async ({ page }) => {
+  await helper(page, "12:15 AM", "12:45 AM");
+  await expect(page.getByText("Bob Dylan")).toBeVisible();
+});
+
+test("Search Ride - time out of range", async ({ page }) => {
+  await helper(page, "01:15 AM", "02:15 AM");
+  await expect(page.getByText("Bob Dylan")).toBeHidden();
+});
+async function helper(page: any, startTime: string, endTime: string) {
   const rideFunctions = new RideFunctions(page);
-  await rideFunctions.createValidRideViaPopup(); // defaults to today
+  await rideFunctions.createValidRideViaPopup();
   await rideFunctions.fillNavBarMinusTime();
 
-  //Easy time selection
   await page.getByRole("combobox").filter({ hasText: "Select time" }).click();
   await page
     .locator("div")
     .filter({ hasText: /^Earliest departure--:--$/ })
     .getByRole("combobox")
     .click();
-  await page.getByRole("option", { name: "12:00 AM" }).click();
+
+  await page.getByRole("option", { name: startTime }).click();
   await page.getByRole("combobox").filter({ hasText: "--:--" }).click();
-  await page.getByText("01:00 AM").click();
-  await page.getByRole("button", { name: "Search" }).click();
+  await page.getByText(endTime).click();
+  await page.getByRole("button", { name: 'Search' }).click();
+  await page.getByRole('button', { name: 'Search' }).click();
 
-  await expect(page.getByText("Bob Dylan")).toBeVisible();
-});
-//TODO: add more tests for search ride
-
+}
