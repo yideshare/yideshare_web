@@ -272,6 +272,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
                 value={startTime}
                 onChange={setStartTime}
                 className="bg-transparent w-full border-[#cde3dd] focus:ring-[#cde3dd]"
+                aria-label="Select earliest departure time"
               />
               <TimeSelect
                 label={<>Latest departure</>}
@@ -280,6 +281,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
                 startTime={startTime}
                 isEndTime={true}
                 className="bg-transparent w-full border-[#cde3dd] focus:ring-[#cde3dd]"
+                aria-label="Select latest departure time"
               />
             </div>
           </PopoverContent>

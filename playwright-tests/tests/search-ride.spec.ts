@@ -35,15 +35,14 @@ async function helper(page: any, startTime: string, endTime: string) {
 
   await page.getByRole("combobox").filter({ hasText: "Select time" }).click();
   await page
-    .locator("div")
-    .filter({ hasText: /^Earliest departure--:--$/ })
-    .getByRole("combobox")
+    .getByRole("combobox", { name: "Select earliest departure time" })
     .click();
-
   await page.getByRole("option", { name: startTime }).click();
-  await page.getByRole("combobox").filter({ hasText: "--:--" }).click();
-  await page.getByText(endTime).click();
-  await page.getByRole("button", { name: 'Search' }).click();
-  await page.getByRole('button', { name: 'Search' }).click();
 
+  await page
+    .getByRole("combobox", { name: "Select latest departure time" })
+    .click();
+  await page.getByText(endTime).click();
+
+  await page.getByRole("button", { name: "Search" }).click();
 }

@@ -39,6 +39,7 @@ interface TimeSelectProps {
   className?: string;
   startTime?: string;
   isEndTime?: boolean;
+  "aria-label"?: string;
 }
 
 export function TimeSelect({
@@ -48,6 +49,7 @@ export function TimeSelect({
   className,
   startTime,
   isEndTime = false,
+  "aria-label": ariaLabel,
 }: TimeSelectProps) {
   const getOrderedOptions = () => {
     if (!isEndTime || !startTime) {
@@ -75,19 +77,22 @@ export function TimeSelect({
       <p className="mb-1 text-sm font-medium">{label}</p>
 
       <Select value={value} onValueChange={onChange}>
-        <SelectTrigger className="h-10 w-[140px]">
+        <SelectTrigger className="h-10 w-[140px]" aria-label={ariaLabel}>
           <SelectValue placeholder="--:--" />
         </SelectTrigger>
 
         <SelectContent className="max-h-60">
           {orderedOptions.map((t) => {
-            const showNextDay = isEndTime && startTime && isNextDay(startTime, t);
+            const showNextDay =
+              isEndTime && startTime && isNextDay(startTime, t);
             return (
               <SelectItem key={t} value={t}>
                 <span className="flex items-center gap-1">
                   {t}
                   {showNextDay && (
-                    <span className="text-xs text-gray-500 font-medium">+1</span>
+                    <span className="text-xs text-gray-500 font-medium">
+                      +1
+                    </span>
                   )}
                 </span>
               </SelectItem>
