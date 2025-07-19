@@ -43,6 +43,5 @@ async function helper(page: any, startTime: string, endTime: string) {
     .getByRole("combobox", { name: "Select latest departure time" })
     .click();
   await page.getByText(endTime).click();
-
   await page.getByRole("button", { name: "Search" }).click();
 }
