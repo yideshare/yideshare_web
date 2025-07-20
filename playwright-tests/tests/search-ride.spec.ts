@@ -44,4 +44,8 @@ async function helper(page: any, startTime: string, endTime: string) {
     .click();
   await page.getByText(endTime).click();
   await page.getByRole("button", { name: "Search" }).click();
+
+  await expect(
+    page.getByRole("button", { name: "Clear Search" })
+  ).toBeVisible();
 }
