@@ -13,10 +13,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    // ✅ Apply righteous font to <html>
-    <html lang="en" className={`${righteous.variable}`}>
-      {/* ✅ apply to html */}
-      <body>{children}</body>
+    <html
+      lang="en"
+      className={`${righteous.variable}`}
+      suppressHydrationWarning
+    >
+      <body suppressHydrationWarning>{children}</body>
     </html>
   );
 }
