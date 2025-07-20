@@ -75,7 +75,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
     e.preventDefault();
 
     // Ensure required fields are filled
-    if (!from || !to || !date || !startTime || !endTime || !organizerName) {
+    if (!from || !to || !date || !startTime || !endTime) {
       setErrors({
         fromError: !from ? "Leaving from is required" : "",
         toError: !to ? "Heading to is required" : "",
@@ -83,7 +83,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
         startTimeError: !startTime ? "Start time is required" : "",
         endTimeError: !endTime ? "End time is required" : "",
         phoneNumberError: "",
-        organizerNameError: !organizerName ? "Name is required" : "",
+        organizerNameError: "",
       });
       console.log(errors);
       return;
