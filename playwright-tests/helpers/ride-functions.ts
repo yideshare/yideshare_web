@@ -9,7 +9,7 @@ export class RideFunctions {
   async createValidRideViaPopup() {
     await this.page.getByRole("button", { name: "Post Ride" }).click();
     await this.page
-      .getByRole("textbox", { name: "Organizer name (optional)" })
+      .getByRole("textbox", { name: "Organizer name" })
       .fill("Bob Dylan");
     await this.page.locator('input[type="tel"]').click();
     await this.page.locator('input[type="tel"]').fill("+1 615 123 4567");
