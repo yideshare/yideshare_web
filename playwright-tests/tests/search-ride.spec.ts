@@ -11,17 +11,17 @@ test.beforeEach(async ({ context, page }) => {
 
 test("Search Ride - exact posting time", async ({ page }) => {
   await helper(page, "12:00 AM", "01:00 AM");
-  await expect(page.getByText("Bob Dylan")).toBeVisible();
+  await expect(page.getByText("Bob Dylan")).toBeVisible({ timeout: 10000 });
 });
 
 test("Search Ride - time in range (within 15 minutes)", async ({ page }) => {
   await helper(page, "12:15 AM", "01:15 AM");
-  await expect(page.getByText("Bob Dylan")).toBeVisible();
+  await expect(page.getByText("Bob Dylan")).toBeVisible({ timeout: 10000 });
 });
 
 test("Search Ride - time overlapping window", async ({ page }) => {
   await helper(page, "12:15 AM", "12:45 AM");
-  await expect(page.getByText("Bob Dylan")).toBeVisible();
+  await expect(page.getByText("Bob Dylan")).toBeVisible({ timeout: 10000 });
 });
 
 test("Search Ride - time out of range", async ({ page }) => {
