@@ -44,36 +44,24 @@ export class RideFunctions {
       .getByRole("combobox", { name: "Select departure location" })
       .click();
 
-    await this.page
+    const departureInput = this.page
       .getByPlaceholder("Search or type to create…")
-      .first()
-      .waitFor({ state: "visible" });
-    await this.page
-      .getByPlaceholder("Search or type to create…")
-      .first()
-      .fill("Vegas");
-    await this.page
-      .getByPlaceholder("Search or type to create…")
-      .first()
-      .press("Enter");
+      .first();
+    await departureInput.waitFor({ state: "visible" });
+    await departureInput.fill("Vegas");
+    await departureInput.press("Enter");
 
-    await this.page.waitForTimeout(500);
+    await this.page.waitForLoadState('networkidle');
 
     await this.page
       .getByRole("combobox", { name: "Select destination location" })
       .click();
 
-    await this.page
+    const destinationInput = this.page
       .getByPlaceholder("Search or type to create…")
-      .last()
-      .waitFor({ state: "visible" });
-    await this.page
-      .getByPlaceholder("Search or type to create…")
-      .last()
-      .fill("Miami");
-    await this.page
-      .getByPlaceholder("Search or type to create…")
-      .last()
-      .press("Enter");
+      .last();
+    await destinationInput.waitFor({ state: "visible" });
+    await destinationInput.fill("Miami");
+    await destinationInput.press("Enter");
   }
 }
