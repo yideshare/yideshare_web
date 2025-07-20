@@ -44,7 +44,6 @@ export const GET = withApiErrorHandler(async (req: Request) => {
   try {
     return await getHandler(req);
   } catch {
-    // On error, redirect to BASE_URL (home page)
     return NextResponse.redirect(BASE_URL);
   }
 });

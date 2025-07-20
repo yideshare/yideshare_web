@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import logger from "@/lib/logger";
 
 const prisma = new PrismaClient();
 
@@ -39,8 +40,8 @@ async function main() {
 }
 
 main()
-  .catch((e) => {
-    console.error(e);
+  .catch((error) => {
+    logger.error(error);
     process.exit(1);
   })
   .finally(async () => {

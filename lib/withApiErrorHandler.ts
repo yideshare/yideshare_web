@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import logger from "@/lib/logger";
+
 export class ApiError extends Error {
   status: number;
   constructor(message: string, status = 400) {
@@ -14,7 +16,7 @@ export function withApiErrorHandler(
     try {
       return await handler(req);
     } catch (error) {
-      console.error("API Error:", error);
+      logger.error("API Error:", error);
 
       const status =
         error instanceof ApiError
