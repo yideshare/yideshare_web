@@ -46,9 +46,11 @@ prisma/migrations
 /logs
 
 # playwright tests
-node_modules/
 /playwright-tests/playwright-report/
 /playwright-tests/test-results/
 
 /playwright-tests/blob-report/
 /playwright-tests/playwright/.cache/
+
+# newer eslint
+eslint.config.mjs
