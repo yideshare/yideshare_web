@@ -30,7 +30,11 @@ const formatTimeForDisplay = (date: Date) => {
 };
 
 // logic flow that handles next-day scenarios
-const createUpdatedTimes = (startTimeStr: string, endTimeStr: string, originalStartTime: Date) => {
+const createUpdatedTimes = (
+  startTimeStr: string,
+  endTimeStr: string,
+  originalStartTime: Date
+) => {
   // use the original date as the base date for the time conversion
   const baseDate = new Date(originalStartTime);
   const { startTimeObject, endTimeObject } = createStartEndDateTimes(
@@ -62,8 +66,8 @@ export default function EditRideDialog({
     undefined
   );
   const [formData, setFormData] = useState({
-    beginning: ride.beginning,
-    destination: ride.destination,
+    from: ride.beginning,
+    to: ride.destination,
     description: ride.description || "",
     startTime: ride.startTime
       ? formatTimeForDisplay(new Date(ride.startTime))
@@ -71,35 +75,35 @@ export default function EditRideDialog({
     endTime: ride.endTime
       ? formatTimeForDisplay(new Date(ride.endTime))
       : "12:00 AM",
-    totalSeats: ride.totalSeats,
+    additionalPassengers: ride.totalSeats,
   });
 
   const ready =
-    formData.beginning &&
-    formData.destination &&
+    formData.from &&
+    formData.to &&
     formData.startTime &&
     formData.endTime &&
-    formData.totalSeats &&
+    formData.additionalPassengers &&
     organizerName &&
     !phoneError;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!ready) return;
-    
+
     const { startTimeObject, endTimeObject } = createUpdatedTimes(
       formData.startTime,
       formData.endTime,
       new Date(ride.startTime)
     );
-    
+
     const updatedRide = {
-      beginning: formData.beginning,
-      destination: formData.destination,
+      beginning: formData.from,
+      destination: formData.to,
       startTime: startTimeObject,
       endTime: endTimeObject,
       description: formData.description,
-      totalSeats: formData.totalSeats,
+      totalSeats: formData.additionalPassengers,
       ownerName: organizerName,
       ownerPhone: phoneNumber,
     };
@@ -138,11 +142,7 @@ export default function EditRideDialog({
 
           <div className="space-y-2">
             <CustomPhoneInput
-              label={
-                <>
-                  Phone Number 
-                </>
-              }
+              label={<>Phone Number</>}
               required
               value={phoneNumber}
               onChange={setPhoneNumber}
@@ -158,9 +158,9 @@ export default function EditRideDialog({
               </Label>
               <Input
                 id="from"
-                value={formData.beginning}
+                value={formData.from}
                 onChange={(e) =>
-                  setFormData({ ...formData, beginning: e.target.value })
+                  setFormData({ ...formData, from: e.target.value })
                 }
                 required
               />
@@ -172,9 +172,9 @@ export default function EditRideDialog({
               </Label>
               <Input
                 id="to"
-                value={formData.destination}
+                value={formData.to}
                 onChange={(e) =>
-                  setFormData({ ...formData, destination: e.target.value })
+                  setFormData({ ...formData, to: e.target.value })
                 }
                 required
               />
@@ -219,13 +219,19 @@ export default function EditRideDialog({
               type="number"
               min="1"
               max="10"
-              value={formData.totalSeats}
-              onChange={(e) =>
+              placeholder="3"
+              value={
+                formData.additionalPassengers === 0
+                  ? ""
+                  : formData.additionalPassengers
+              }
+              onChange={(e) => {
+                const val = e.target.value;
                 setFormData({
                   ...formData,
-                  totalSeats: parseInt(e.target.value),
-                })
-              }
+                  additionalPassengers: val === "" ? 0 : parseInt(val),
+                });
+              }}
               required
             />
           </div>

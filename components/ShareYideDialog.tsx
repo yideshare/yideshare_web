@@ -82,7 +82,7 @@ export default function ShareYideDialog({
 
       <DialogContent className="sm:max-w-xl bg-white">
         <DialogHeader>
-          <DialogTitle>Share a Yide</DialogTitle>
+          <DialogTitle>Share a Ride</DialogTitle>
           <DialogDescription>
             Fill out the details below to create a new ride listing.
           </DialogDescription>
@@ -207,7 +207,7 @@ export default function ShareYideDialog({
 
           <div className="flex justify-end pt-2">
             <Button type="submit" disabled={!ready}>
-              Post Yide
+              Post Ride
             </Button>
           </div>
         </form>

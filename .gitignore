@@ -41,3 +41,11 @@ next-env.d.ts
 #db files
 prisma/dev*
 prisma/migrations
+
+# Playwright
+node_modules/
+/playwright-tests/playwright-report/
+/playwright-tests/test-results/
+
+/playwright-tests/blob-report/
+/playwright-tests/playwright/.cache/
