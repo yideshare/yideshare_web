@@ -38,11 +38,14 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-#db files
+# db files
 prisma/dev*
 prisma/migrations
 
-# Playwright
+# logs
+/logs
+
+# playwright tests
 node_modules/
 /playwright-tests/playwright-report/
 /playwright-tests/test-results/
