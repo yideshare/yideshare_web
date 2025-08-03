@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { withApiErrorHandler, ApiError } from "@/lib/withApiErrorHandler";
+import { ApiError } from "@/lib/withApiErrorHandler";
 
 const BASE_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
 

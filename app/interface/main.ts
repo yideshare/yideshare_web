@@ -1,4 +1,5 @@
 import { Ride } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 export interface FeedPageClientProps {
   initialRides: Ride[];
@@ -22,4 +23,8 @@ export interface searchParamsType {
   date: string;
   startTime: string;
   endTime: string;
+}
+
+export interface RideWhereClauseWithArrayAND {
+  AND: Prisma.RideWhereInput[];
 }

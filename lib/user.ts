@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
+import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import logger from "@/lib/logger";
 
 export async function findOrCreateUser(
@@ -24,7 +25,7 @@ export async function findOrCreateUser(
   return user;
 }
 
-export function getUserFromCookies(cookieStore: any) {
+export function getUserFromCookies(cookieStore: ReadonlyRequestCookies) {
   // retrieve cookies
   const userCookie = cookieStore.get("user");
 

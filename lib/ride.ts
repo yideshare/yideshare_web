@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { Ride } from "@prisma/client"
+import { RideWhereClauseWithArrayAND } from "@/app/interface/main";
 import logger from "@/lib/logger";
 
 export async function createRide(ride: Ride, netId: string) {
@@ -105,7 +106,7 @@ export async function findFilteredRides(
   filterEndTime: Date
 ) {
   // Build the where clause dynamically based on non-empty criteria
-  const whereClause: any = {
+  const whereClause: RideWhereClauseWithArrayAND = {
     AND: [{ isClosed: false }],
   };
 
