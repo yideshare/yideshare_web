@@ -1,4 +1,4 @@
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 import { SetupTestUser } from "../helpers/testing-init";
 
 test("logout", async ({ page }) => {

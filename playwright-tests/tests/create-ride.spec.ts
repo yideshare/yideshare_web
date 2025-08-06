@@ -3,7 +3,7 @@ import { SetupTestUser } from "../helpers/testing-init";
 import { RideFunctions } from "../helpers/ride-functions";
 test.describe.configure({ mode: "serial" });
 
-test.beforeEach(async ({ context, page }) => {
+test.beforeEach(async ({ page }) => {
   const setupTestUser = new SetupTestUser(page);
   await setupTestUser.resetDatabase();
   await setupTestUser.loginAsTestUser();

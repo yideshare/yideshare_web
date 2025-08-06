@@ -1,15 +1,15 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, Page } from "@playwright/test";
 import { SetupTestUser } from "../helpers/testing-init";
 import { RideFunctions } from "../helpers/ride-functions";
 test.describe.configure({ mode: "serial" });
 
-test.beforeEach(async ({ context, page }) => {
+test.beforeEach(async ({ page }) => {
   const setupTestUser = new SetupTestUser(page);
   await setupTestUser.resetDatabase();
   await setupTestUser.loginAsTestUser();
 });
 
-export async function bookmarkAndCheckSaved(page: any) {
+export async function bookmarkAndCheckSaved(page: Page) {
   const rideFunctions = new RideFunctions(page);
   await rideFunctions.createValidRideViaPopup();
   await page.getByRole("button").nth(3).click();
