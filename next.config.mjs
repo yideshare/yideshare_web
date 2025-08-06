@@ -15,7 +15,12 @@ const nextConfig = {
   },
   reactStrictMode: true,
   images: {
-    domains: ['secure.its.yale.edu'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'secure.its.yale.edu',
+      },
+    ],
   },
 };
 
