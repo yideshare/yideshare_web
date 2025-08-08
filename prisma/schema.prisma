@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  netId      String  @id
+  name       String
+  email      String
+  avatar     Bytes?
+  avatarType String?
+
+  // one-to-many relationship with Rides
+  ridesOwned Ride[]
+
+  // many-to-many relationship with Rides
+  ridesParticipated RideParticipant[]
+
+  // relationship for bookmarks
+  bookmarks Bookmark[]
+
+  sentMessages     Message[]     @relation("MessageSender")
+  receivedMessages Message[]     @relation("MessageReceiver")
+  sentRequests     RideRequest[] @relation("RequestSender")
+  receivedRequests RideRequest[] @relation("RequestReceiver")
+}
+
+model Ride {
+  rideId            String   @id @default(cuid())
+  ownerName         String
+  ownerPhone        String
+  beginning         String
+  destination       String
+  description       String
+  startTime         DateTime
+  endTime           DateTime
+  totalSeats        Int
+  currentTakenSeats Int
+  isClosed          Boolean
+
+  // many-to-one relationship with User
+  ownerNetId String
+  owner      User   @relation(fields: [ownerNetId], references: [netId])
+
+  // many-to-many relationship with Users
+  participants RideParticipant[]
+  requests     RideRequest[]     @relation("RideRequests")
+
+  // many-to-many relationship with Users
+  bookmarks Bookmark[]
+}
+
+// junction table for many-to-many User-Ride relationship for bookmarks
+model Bookmark {
+  bookmarkId String @id @default(cuid())
+  netId      String
+  rideId     String
+
+  user User @relation(fields: [netId], references: [netId])
+  ride Ride @relation(fields: [rideId], references: [rideId])
+
+  @@unique([netId, rideId])
+}
+
+// junction table for many-to-many User-Ride relationship for ride request
+model RideParticipant {
+  netId  String
+  rideId String
+
+  user User @relation(fields: [netId], references: [netId])
+  ride Ride @relation(fields: [rideId], references: [rideId])
+
+  @@id([netId, rideId])
+}
+
+model RideRequest {
+  requestId     String   @id @default(cuid())
+  rideId        String
+  senderNetId   String
+  receiverNetId String
+  timestamp     DateTime @default(now())
+  payload       String
+  isAccepted    Boolean  @default(false)
+
+  ride     Ride @relation("RideRequests", fields: [rideId], references: [rideId])
+  sender   User @relation("RequestSender", fields: [senderNetId], references: [netId])
+  receiver User @relation("RequestReceiver", fields: [receiverNetId], references: [netId])
+}
+
+model Message {
+  messageId     String   @id @default(cuid())
+  senderNetId   String
+  receiverNetId String
+  timestamp     DateTime @default(now())
+  payload       String
+
+  sender   User @relation("MessageSender", fields: [senderNetId], references: [netId])
+  receiver User @relation("MessageReceiver", fields: [receiverNetId], references: [netId])
+}
