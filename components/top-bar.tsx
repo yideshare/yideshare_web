@@ -185,121 +185,143 @@ export function TopBar({ onResults, rides }: TopBarProps) {
     }
   }
 
-  /* ----------------  UI  ---------------- */
+  /* ----------------  Mobile-Friendly UI  ---------------- */
   return (
-    <div className="flex flex-col sm:flex-row flex-wrap items-center justify-between gap-4 w-full max-w-[1400px] mx-auto bg-white p-4 sm:p-4 sm:pr-2 rounded-2xl shadow-sm mb-8">
-      <div className="w-full sm:w-auto sm:flex-none sm:min-w-[180px]">
-        <label className="text-sm font-bold text-black">Leaving from</label>
-        <LocationCombobox
-          label=""
-          placeholder=""
-          value={from}
-          onChange={setFrom}
-          aria-label="Select departure location"
-        />
-      </div>
-      <div className="w-full sm:w-auto sm:flex-none sm:min-w-[180px]">
-        <label className="text-sm font-bold text-black">Going to</label>
-        <LocationCombobox
-          label=""
-          placeholder=""
-          value={to}
-          onChange={setTo}
-          aria-label="Select destination location"
-        />
-      </div>
-      <div className="w-full sm:w-auto sm:flex-none max-w-[250px] sm:min-w-[180px]">
-        <label className="text-sm font-bold text-black">Date</label>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              id="event-date"
-              variant="outline"
-              role="combobox"
-              aria-label="Select departure date"
-              className="justify-start text-left text-lg font-bold bg-transparent text-black w-full border-[#cde3dd] focus:ring-[#cde3dd] h-10"
-            >
-              {date ? (
-                format(date, "PPP")
-              ) : (
-                <span className="text-gray-500">Select date</span>
-              )}
-              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <Calendar
-              mode="single"
-              selected={date ?? undefined}
-              onSelect={(selectedDate) => {
-                if (selectedDate) {
-                  setDate(selectedDate);
-                }
-              }}
-              initialFocus
-            />
-          </PopoverContent>
-        </Popover>
-      </div>
-      <div className="w-full sm:w-auto sm:flex-none max-w-[300px] sm:min-w-[220px]">
-        <label className="text-sm font-bold text-black">
-          Departure Time Range (EST)
-        </label>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              className="justify-start text-left text-lg font-bold bg-transparent text-black w-full border-[#cde3dd] focus:ring-[#cde3dd] h-10"
-            >
-              {startTime && endTime ? (
-                <>
-                  {`${startTime} - ${endTime}`}
-                  {isNextDay(startTime, endTime) && (
-                    <span className="text-xs text-gray-500 ml-1">(+1)</span>
-                  )}
-                </>
-              ) : (
-                <span className="text-gray-500">Select time</span>
-              )}
-              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-4" align="start">
-            <div className="flex gap-4">
-              <TimeSelect
-                label="Earliest departure"
-                value={startTime}
-                onChange={setStartTime}
-                className="bg-transparent w-full border-[#cde3dd] focus:ring-[#cde3dd]"
-                aria-label="Select earliest departure time"
+    <div className="w-full max-w-6xl mx-auto bg-white rounded-2xl shadow-sm mb-4 sm:mb-8">
+      {/* Mobile: Stack vertically, Desktop: Grid layout */}
+      <div className="p-3 sm:p-4 space-y-3 sm:space-y-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-4">
+        <div className="space-y-1 sm:space-y-2">
+          <label className="text-xs sm:text-sm font-bold text-black block">
+            Leaving from
+          </label>
+          <LocationCombobox
+            label=""
+            placeholder="Select departure"
+            value={from}
+            onChange={setFrom}
+            aria-label="Select departure location"
+          />
+        </div>
+
+        <div className="space-y-1 sm:space-y-2">
+          <label className="text-xs sm:text-sm font-bold text-black block">
+            Going to
+          </label>
+          <LocationCombobox
+            label=""
+            placeholder="Select destination"
+            value={to}
+            onChange={setTo}
+            aria-label="Select destination location"
+          />
+        </div>
+
+        <div className="space-y-1 sm:space-y-2">
+          <label className="text-xs sm:text-sm font-bold text-black block">
+            Date
+          </label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                id="event-date"
+                variant="outline"
+                role="combobox"
+                aria-label="Select departure date"
+                className="justify-start text-left text-sm sm:text-base font-medium bg-transparent text-black w-full border-[#cde3dd] focus:ring-[#cde3dd] h-10"
+              >
+                {date ? (
+                  <span className="truncate">
+                    {format(date, "MMM d, yyyy")}
+                  </span>
+                ) : (
+                  <span className="text-gray-500">Select date</span>
+                )}
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={date ?? undefined}
+                onSelect={(selectedDate) => {
+                  if (selectedDate) {
+                    setDate(selectedDate);
+                  }
+                }}
+                initialFocus
               />
-              <TimeSelect
-                label={<>Latest departure</>}
-                value={endTime}
-                onChange={setEndTime}
-                startTime={startTime}
-                isEndTime={true}
-                className="bg-transparent w-full border-[#cde3dd] focus:ring-[#cde3dd]"
-                aria-label="Select latest departure time"
-              />
-            </div>
-          </PopoverContent>
-        </Popover>
+            </PopoverContent>
+          </Popover>
+        </div>
+
+        <div className="space-y-1 sm:space-y-2">
+          <label className="text-xs sm:text-sm font-bold text-black block">
+            <span className="hidden sm:inline">Departure Time Range (EST)</span>
+            <span className="sm:hidden">Time Range</span>
+          </label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                className="justify-start text-left text-sm sm:text-base font-medium bg-transparent text-black w-full border-[#cde3dd] focus:ring-[#cde3dd] h-10"
+              >
+                {startTime && endTime ? (
+                  <span className="truncate">
+                    {`${startTime} - ${endTime}`}
+                    {isNextDay(startTime, endTime) && (
+                      <span className="text-xs text-gray-500 ml-1">(+1)</span>
+                    )}
+                  </span>
+                ) : (
+                  <span className="text-gray-500">Select time</span>
+                )}
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-3 sm:p-4" align="start">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 min-w-[280px]">
+                <div className="flex-1">
+                  <TimeSelect
+                    label="Earliest departure"
+                    value={startTime}
+                    onChange={setStartTime}
+                    className="bg-transparent w-full border-[#cde3dd] focus:ring-[#cde3dd]"
+                    aria-label="Select earliest departure time"
+                  />
+                </div>
+                <div className="flex-1">
+                  <TimeSelect
+                    label="Latest departure"
+                    value={endTime}
+                    onChange={setEndTime}
+                    startTime={startTime}
+                    isEndTime={true}
+                    className="bg-transparent w-full border-[#cde3dd] focus:ring-[#cde3dd]"
+                    aria-label="Select latest departure time"
+                  />
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
       </div>
-      <div className="w-full sm:w-auto sm:flex-none flex gap-2 justify-center sm:justify-start">
-        <Button
-          className="bg-[#cde3dd] hover:bg-[#b8d4cc] text-[#397060] h-10 rounded-full w-[100px]"
-          onClick={hasSearched ? handleClearSearch : handleFindRide}
-        >
-          {hasSearched ? "Clear Search" : "Search"}
-        </Button>
-        <Button
-          className="bg-[#397060] hover:bg-[#2d5848] text-white h-10 rounded-full w-[100px]"
-          onClick={() => setOpen(true)}
-        >
-          Post Ride
-        </Button>
+
+      <div className="border-t border-gray-100 p-3 sm:p-4">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 sm:justify-center">
+          <Button
+            className="bg-[#cde3dd] hover:bg-[#b8d4cc] text-[#397060] h-10 rounded-full text-sm sm:text-base font-medium flex-1 sm:flex-none sm:w-32"
+            onClick={hasSearched ? handleClearSearch : handleFindRide}
+          >
+            {hasSearched ? "Clear" : "Search"}
+          </Button>
+          <Button
+            className="bg-[#397060] hover:bg-[#2d5848] text-white h-10 rounded-full text-sm sm:text-base font-medium flex-1 sm:flex-none sm:w-32"
+            onClick={() => setOpen(true)}
+          >
+            Post Ride
+          </Button>
+        </div>
       </div>
 
       <ShareYideDialog
