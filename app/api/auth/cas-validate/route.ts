@@ -4,8 +4,9 @@ import { fetchYaliesData } from "@/lib/yalies";
 import { validateCASTicket } from "@/lib/cas-validate";
 import { withApiErrorHandler, ApiError } from "@/lib/withApiErrorHandler";
 
-// Always use the main domain, not the deployment-specific URL
-const BASE_URL = process.env.NEXTAUTH_URL || "https://yideshare-1mw1.vercel.app";
+// app/api/auth/cas-validate/route.ts
+const BASE_URL = process.env.NEXTAUTH_URL || 
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 async function getHandler(req: Request) {
   // extract ticket from search params

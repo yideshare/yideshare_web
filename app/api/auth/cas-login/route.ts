@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 
 // Configure CAS login - using the main domain
-const baseUrl = process.env.NEXTAUTH_URL || "https://yideshare-1mw1.vercel.app";
+const baseUrl = process.env.NEXTAUTH_URL || 
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 const serviceURL = `${baseUrl}/api/auth/cas-validate`;
 
 export async function GET() {
