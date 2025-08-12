@@ -96,11 +96,9 @@ export default function ShareYideDialog({
           }}
           className="space-y-2 sm:space-y-4"
         >
-          {/* organiser + phone */}
           <div className="space-y-2">
             <Label htmlFor="organizer">
               Organizer name <span className="text-red-500">*</span>{" "}
-              {/* <span className="text-muted-foreground">(optional)</span> */}
             </Label>
             <Input
               id="organizer"
@@ -121,7 +119,6 @@ export default function ShareYideDialog({
             />
           </div>
 
-          {/* route - Stack all fields on very small screens */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div className="space-y-2">
               <Label htmlFor="from">
@@ -132,7 +129,7 @@ export default function ShareYideDialog({
                 value={from}
                 onChange={(e) => setFrom(e.target.value)}
                 required
-                className="text-sm sm:text-base" // Smaller text on mobile
+                className="text-sm sm:text-base" 
               />
             </div>
 
@@ -174,7 +171,6 @@ export default function ShareYideDialog({
             </div>
           </div>
 
-          {/* seats */}
           <div className="space-y-2">
             <Label htmlFor="seats">
               Number of Open Seats <span className="text-red-500">*</span>
@@ -194,7 +190,6 @@ export default function ShareYideDialog({
             />
           </div>
 
-          {/* description */}
           <div className="space-y-2">
             <Label htmlFor="desc">
               Description <span>(optional)</span>
