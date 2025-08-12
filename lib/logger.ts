@@ -1,11 +1,4 @@
 import { createLogger, format, transports } from "winston";
-import fs from "fs";
-import path from "path";
-
-const logDir = path.join(process.cwd(), "logs");
-if (!fs.existsSync(logDir)) {
-  fs.mkdirSync(logDir, { recursive: true });
-}
 
 const globalForLogger = global as unknown as {
     logger: ReturnType<typeof createLogger> | undefined 
@@ -21,15 +14,25 @@ const logger = globalForLogger.logger ?? createLogger({
     })
   ),
   transports: [
-    new transports.File({ filename: "logs/error.log", level: "error" }),
-    new transports.File({ filename: "logs/combined.log" }),
+    // Only use console transport in production (Vercel)
+    new transports.Console({
+      format: format.simple(),
+    }),
   ],
 });
 
+// Only add file transports in development
 if (process.env.NODE_ENV !== "production") {
-  logger.add(new transports.Console({
-    format: format.simple(),
-  }));
+  const fs = require("fs");
+  const path = require("path");
+  
+  const logDir = path.join(process.cwd(), "logs");
+  if (!fs.existsSync(logDir)) {
+    fs.mkdirSync(logDir, { recursive: true });
+  }
+  
+  logger.add(new transports.File({ filename: "logs/error.log", level: "error" }));
+  logger.add(new transports.File({ filename: "logs/combined.log" }));
 }
 
 export default logger;
