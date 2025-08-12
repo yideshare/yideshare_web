@@ -1,22 +1,26 @@
-import { DateTime } from 'luxon';
+import { DateTime } from "luxon";
 
 export function createStartEndDateTimes(
   date: Date,
   startTime: string,
   endTime: string
 ) {
-  const timeZone = 'America/New_York';
+  const timeZone = "America/New_York";
 
-  const dateStr = DateTime.fromJSDate(date).toFormat('yyyy-MM-dd'); 
+  // Always interpret the provided base date in America/New_York before extracting the date string.
+  // This ensures users outside ET (e.g., CST) don't shift the day inadvertently.
+  const dateStr = DateTime.fromJSDate(date)
+    .setZone(timeZone)
+    .toFormat("yyyy-MM-dd");
   const startDateTime = DateTime.fromFormat(
     `${dateStr} ${startTime}`,
-    'yyyy-MM-dd h:mm a',
+    "yyyy-MM-dd h:mm a",
     { zone: timeZone }
   );
 
   let endDateTime = DateTime.fromFormat(
     `${dateStr} ${endTime}`,
-    'yyyy-MM-dd h:mm a',
+    "yyyy-MM-dd h:mm a",
     { zone: timeZone }
   );
 
@@ -26,7 +30,7 @@ export function createStartEndDateTimes(
   }
 
   return {
-    startTimeObject: startDateTime.toJSDate(), 
+    startTimeObject: startDateTime.toJSDate(),
     endTimeObject: endDateTime.toJSDate(),
   };
 }
@@ -34,19 +38,19 @@ export function createStartEndDateTimes(
 // helper function to determine if a time would go to the next day for a start time
 export function isNextDay(startTime: string, endTime: string): boolean {
   if (!startTime || !endTime) return false;
-  
-  const timeZone = 'America/New_York';
-  const baseDate = '2024-01-01'; // arbitrary using this date for comparison
-  
+
+  const timeZone = "America/New_York";
+  const baseDate = "2024-01-01"; // arbitrary using this date for comparison
+
   const startDateTime = DateTime.fromFormat(
     `${baseDate} ${startTime}`,
-    'yyyy-MM-dd h:mm a',
+    "yyyy-MM-dd h:mm a",
     { zone: timeZone }
   );
 
   const endDateTime = DateTime.fromFormat(
     `${baseDate} ${endTime}`,
-    'yyyy-MM-dd h:mm a',
+    "yyyy-MM-dd h:mm a",
     { zone: timeZone }
   );
 
@@ -60,4 +64,10 @@ export function encodeDate(date: Date): string {
 export function decodeDate(dateString: string): Date {
   const parsed = new Date(dateString);
   return parsed;
+}
+
+// Format a JS Date for display as Eastern Time (America/New_York)
+export function formatTimeForDisplay(date: Date): string {
+  const timeZone = "America/New_York";
+  return DateTime.fromJSDate(date).setZone(timeZone).toFormat("hh:mm a");
 }

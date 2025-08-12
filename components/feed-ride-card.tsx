@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { FeedRideCardProps } from "@/app/interface/main";
+import { DateTime } from "luxon";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 export default function FeedRideCard({
@@ -36,21 +37,16 @@ export default function FeedRideCard({
   const ownerName = ride.ownerName ?? "Driver";
   const totalSeats = ride.totalSeats;
 
-  const sDate = new Date(ride.startTime);
-  const eDate = new Date(ride.endTime);
-  const dateLabel = `${sDate.getDate()} ${sDate.toLocaleString("en", {
-    month: "short",
-  })}`;
+  const zone = "America/New_York";
+  const sLux = DateTime.fromJSDate(new Date(ride.startTime)).setZone(zone);
+  const eLux = DateTime.fromJSDate(new Date(ride.endTime)).setZone(zone);
+  const dateLabel = sLux.toFormat("d LLL");
 
-  // check if end date is different from start date (it's in the next day)
-  const isNextDay = sDate.toDateString() !== eDate.toDateString();
-  const timeLabel = `${sDate.toLocaleTimeString("en", {
-    hour: "numeric",
-    minute: "2-digit",
-  })} - ${eDate.toLocaleTimeString("en", {
-    hour: "numeric",
-    minute: "2-digit",
-  })}${isNextDay ? " (+1)" : ""}`;
+  // check if end date is different from start date in EST (next day)
+  const isNextDay = eLux.hasSame(sLux, "day") === false;
+  const timeLabel = `${sLux.toFormat("h:mm a")} - ${eLux.toFormat("h:mm a")}${
+    isNextDay ? " (+1)" : ""
+  }`;
 
   /* ------------ bookmark ------------ */
   async function handleBookmark() {
