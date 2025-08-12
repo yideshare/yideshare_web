@@ -73,17 +73,18 @@ export default function ShareYideDialog({
     undefined
   );
 
-  const ready = from && to && startTime && endTime && !phoneError && organizerName; //in future, can add more checks
+  const ready =
+    from && to && startTime && endTime && !phoneError && organizerName; //in future, can add more checks
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <span />
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-xl bg-white">
+      <DialogContent className="sm:max-w-xl w-[100vw] max-w-[100vw] bg-white m-1 max-h-[100vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Share a Ride</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-lg sm:text-xl">Share a Ride</DialogTitle>
+          <DialogDescription className="text-sm sm:text-base">
             Fill out the details below to create a new ride listing.
           </DialogDescription>
         </DialogHeader>
@@ -93,7 +94,7 @@ export default function ShareYideDialog({
             handleShareYide(e);
             setOpen(false);
           }}
-          className="space-y-4"
+          className="space-y-2 sm:space-y-4"
         >
           {/* organiser + phone */}
           <div className="space-y-2">
@@ -120,54 +121,57 @@ export default function ShareYideDialog({
             />
           </div>
 
-          {/* route */}
-          <div className="grid sm:grid-cols-2 gap-4">
+          {/* route - Stack all fields on very small screens */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div className="space-y-2">
               <Label htmlFor="from">
-                Leaving from <span className="text-red-500">*</span>{" "}
+                Leaving from <span className="text-red-500">*</span>
               </Label>
               <Input
                 id="from"
                 value={from}
                 onChange={(e) => setFrom(e.target.value)}
                 required
+                className="text-sm sm:text-base" // Smaller text on mobile
               />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="to">
-                Heading to <span className="text-red-500">*</span>{" "}
+                Heading to <span className="text-red-500">*</span>
               </Label>
               <Input
                 id="to"
                 value={to}
                 onChange={(e) => setTo(e.target.value)}
                 required
+                className="text-sm sm:text-base"
               />
             </div>
 
-            <TimeSelect
-              label={
-                <>
-                  Earliest departure <span className="text-red-500">*</span>
-                </>
-              }
-              value={startTime}
-              onChange={setStartTime}
-              className="mt-2 sm:mt-0"
-            />
+            <div className="space-y-2">
+              <TimeSelect
+                label={
+                  <>
+                    Earliest departure <span className="text-red-500">*</span>
+                  </>
+                }
+                value={startTime}
+                onChange={setStartTime}
+              />
+            </div>
 
-            <TimeSelect
-              // label="Latest departure"
-              label={
-                <>
-                  Latest departure <span className="text-red-500">*</span>
-                </>
-              }
-              value={endTime}
-              onChange={setEndTime}
-              className="mt-2 sm:mt-0"
-            />
+            <div className="space-y-2">
+              <TimeSelect
+                label={
+                  <>
+                    Latest departure <span className="text-red-500">*</span>
+                  </>
+                }
+                value={endTime}
+                onChange={setEndTime}
+              />
+            </div>
           </div>
 
           {/* seats */}
