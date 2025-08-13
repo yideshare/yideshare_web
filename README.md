@@ -9,7 +9,18 @@ First, run the development server with following commands in coding IDE or local
 ```bash
 npm install
 ```
+Ensure your `.env` file includes the following variables for local dev:
+- `DATABASE_URL`
+- `DIRECT_URL`
+- `NEXTAUTH_URL`
+- `YALIES_API_KEY`
+- `NODE_ENV=development`
 
+Build, create, and start Docker containers:
+
+```bash
+docker compose up -d
+```
 Runs dev server on port 3000
 
 ```bash
@@ -17,6 +28,11 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+When done,
+```bash
+docker compose down
+```
 
 ## Using primsa:
 
