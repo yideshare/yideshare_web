@@ -15,6 +15,8 @@ Ensure your `.env` file includes the following variables for local dev:
 - `NEXTAUTH_URL`
 - `YALIES_API_KEY`
 - `NODE_ENV=development`
+- `POSTGRES_PASSWORD`
+- `POSTGRES_DB`
 
 Build, create, and start Docker containers:
 
@@ -26,28 +28,36 @@ Runs dev server on port 3000
 ```bash
 npm run dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-When done,
-```bash
-docker compose down
-```
-
-## Using primsa:
-
-Open a second terminal window and input the following commands:
-
 Sync with latest db changes or create if no db:
 
 ```bash
 npx prisma db push
 ```
 
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+To stop all running containers:
+```bash
+docker compose down
+```
+
+## Helpful Commands:
+
+
+(optional) Seed the DB:
+```bash
+npx prisma db seed
+```
+
 Test:
 
 ```bash
 npx prisma studio
+```
+To stop the containers AND delete all database data (useful for a clean restart):
+
+```bash
+docker-compose down -v
 ```
 
 ## Using Playwright:
