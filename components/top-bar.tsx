@@ -309,18 +309,43 @@ export function TopBar({ onResults, rides }: TopBarProps) {
 
       <div className="border-t border-gray-100 p-3 sm:p-4">
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 sm:justify-center">
-          <Button
-            className="bg-[#cde3dd] hover:bg-[#b8d4cc] text-[#397060] h-10 rounded-full text-sm sm:text-base font-medium flex-1 sm:flex-none sm:w-32"
-            onClick={hasSearched ? handleClearSearch : handleFindRide}
-          >
-            {hasSearched ? "Clear" : "Search"}
-          </Button>
-          <Button
-            className="bg-[#397060] hover:bg-[#2d5848] text-white h-10 rounded-full text-sm sm:text-base font-medium flex-1 sm:flex-none sm:w-32"
-            onClick={() => setOpen(true)}
-          >
-            Post Ride
-          </Button>
+          {hasSearched ? (
+            <>
+              <Button
+                className="bg-[#cde3dd] hover:bg-[#b8d4cc] text-[#397060] h-10 rounded-full text-sm sm:text-base font-medium flex-1 sm:flex-none sm:w-32"
+                onClick={handleClearSearch}
+              >
+                Clear
+              </Button>
+              <Button
+                className="bg-[#cde3dd] hover:bg-[#b8d4cc] text-[#397060] h-10 rounded-full text-sm sm:text-base font-medium flex-1 sm:flex-none sm:w-32"
+                onClick={handleFindRide}
+              >
+                Search
+              </Button>
+              <Button
+                className="bg-[#397060] hover:bg-[#2d5848] text-white h-10 rounded-full text-sm sm:text-base font-medium flex-1 sm:flex-none sm:w-32"
+                onClick={() => setOpen(true)}
+              >
+                Post Ride
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                className="bg-[#cde3dd] hover:bg-[#b8d4cc] text-[#397060] h-10 rounded-full text-sm sm:text-base font-medium flex-1 sm:flex-none sm:w-32"
+                onClick={handleFindRide}
+              >
+                Search
+              </Button>
+              <Button
+                className="bg-[#397060] hover:bg-[#2d5848] text-white h-10 rounded-full text-sm sm:text-base font-medium flex-1 sm:flex-none sm:w-32"
+                onClick={() => setOpen(true)}
+              >
+                Post Ride
+              </Button>
+            </>
+          )}
         </div>
       </div>
 
