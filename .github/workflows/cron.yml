@@ -1,0 +1,25 @@
+name: Test Ride Cleanup
+
+on:
+  # Run on push to add-cron branch for testing
+  push:
+    branches: [add-cron]
+  
+  # Schedule for regular runs (only on add-cron branch)
+  schedule:
+    - cron: '0 0 * * *'  # Runs at midnight UTC daily
+
+jobs:
+  cleanup:
+    # Only run scheduled jobs on add-cron branch
+    if: github.event_name != 'schedule' || github.ref == 'refs/heads/add-cron'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger cleanup API
+        run: |
+          curl -X GET "${{ vars.API_BASE_URL || 'https://add-cron-yideshare.vercel.app' }}/api/cron/cleanup-rides" \
+          -H "x-api-key: ${{ secrets.CRON_API_KEY }}" \
+          -H "Content-Type: application/json"
+      
+      - name: Log result
+        run: echo "Cleanup job completed"
