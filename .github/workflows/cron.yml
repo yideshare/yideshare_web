@@ -7,7 +7,7 @@ on:
   
   # Schedule for regular runs (only on add-cron branch)
   schedule:
-    - cron: '0 0 * * *'  # Runs at midnight UTC daily
+    - cron: '* * * * *'  # Runs every min (for fast initial testing)
 
 jobs:
   cleanup:
