@@ -75,7 +75,7 @@ export default function EditRideDialog({
     endTime: ride.endTime
       ? formatTimeForDisplay(new Date(ride.endTime))
       : "12:00 AM",
-    additionalPassengers: ride.totalSeats,
+    additionalPassengers: ride.totalSeats - 1,
   });
 
   const ready =
@@ -103,7 +103,7 @@ export default function EditRideDialog({
       startTime: startTimeObject,
       endTime: endTimeObject,
       description: formData.description,
-      totalSeats: formData.additionalPassengers,
+      totalSeats: formData.additionalPassengers + 1,
       ownerName: organizerName,
       ownerPhone: phoneNumber,
     };
