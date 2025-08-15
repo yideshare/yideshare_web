@@ -5,9 +5,9 @@ test("CAS visible", async ({ page }) => {
   await page.context().clearCookies();
   await page.goto("/");
   await expect(
-    page.getByRole("button", { name: "Log in with CAS" })
+    page.getByRole("button", { name: "Login" })
   ).toBeVisible();
-  await page.getByRole('button', { name: 'Log in with CAS' }).click();
+  await page.getByRole('button', { name: 'Login' }).click();
   await expect(page.getByRole('heading', { name: 'Central Authentication Service' })).toBeVisible();
 });
 test("fake CAS login", async ({ page }) => {

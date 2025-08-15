@@ -62,7 +62,13 @@ docker-compose down -v
 
 ## Using Playwright:
 
-First navigate to testing folder:
+First, install Playwright browsers (only needed once after installing Playwright):
+
+```bash
+npx playwright install
+```
+
+Then navigate to testing folder:
 
 ```bash
 cd playwright-tests
