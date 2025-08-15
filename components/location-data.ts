@@ -54,8 +54,8 @@ export interface LocationItem {
     { label: "The Yale Bookstore", address: "77 Broadway, New Haven CT 06511" },
     { label: "Atticus Bookstore Cafe", address: "1082 Chapel St, New Haven CT 06510" },
     { label: "Claire's Corner Copia", address: "1000 Chapel St, New Haven CT 06510" },
-    { label: "Pepe's Pizza", address: "157 Wooster St, New Haven CT 06511" },
-    { label: "Sally's Apizza", address: "237 Wooster St, New Haven CT 06511" },
+    { label: "Frank Pepe Pizzeria Napoletana", address: "157 Wooster St, New Haven CT 06511" },
+    { label: "Sally's Apizza New Haven", address: "237 Wooster St, New Haven CT 06511" },
   
     /* ——— Shopping / essentials ——— */
     { label: "IKEA New Haven", address: "450 Sargent Dr, New Haven CT 06511" },
