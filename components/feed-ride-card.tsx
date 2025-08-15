@@ -156,7 +156,7 @@ export default function FeedRideCard({
             <div className="flex items-center text-lg text-black">
               <span>Posted by: {ride.ownerName || "Raymond Hou"}</span>
               <span className="mx-2">•</span>
-              <span>{totalSeats} seats available</span>
+              <span>{totalSeats - 1} seats available</span>
             </div>
             {ride.ownerPhone && (
               <div className="text-lg text-black mt-1">
