@@ -45,8 +45,8 @@ async function patchHandler(request: Request) {
   const updatedRide = await prisma.ride.update({
     where: { rideId: existingRide.rideId },
     data: {
-      beginning: updatedRideData.beginning?.toLowerCase(),
-      destination: updatedRideData.destination?.toLowerCase(),
+      beginning: updatedRideData.beginning,
+      destination: updatedRideData.destination,
       description: updatedRideData.description,
       startTime: updatedRideData.startTime
         ? new Date(updatedRideData.startTime)

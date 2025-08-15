@@ -28,14 +28,15 @@ interface LocationComboboxProps {
   value: string;
   onChange: (value: string) => void;
   "aria-label"?: string;
+  className?: string;
 }
-
 export function LocationCombobox({
   label,
   placeholder,
   value,
   onChange,
   "aria-label": ariaLabel,
+  className,
 }: LocationComboboxProps) {
   const [open, setOpen] = React.useState(false);
 
@@ -86,7 +87,11 @@ export function LocationCombobox({
             variant="outline"
             role="combobox"
             aria-label={ariaLabel}
-            className="justify-start text-left text-lg font-bold bg-transparent text-black w-full border-[#cde3dd] focus:ring-[#cde3dd]"
+            className={cn(
+              "justify-between w-full text-sm sm:text-base font-medium bg-white hover:bg-gray-50", 
+              "border-[#cde3dd] focus:ring-[#cde3dd]", 
+              className
+            )}
           >
             {selected ? selected.label : placeholder ?? "Select…"}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
