@@ -51,7 +51,15 @@ async function closeExpiredRides() {
 }
 
 // API route handler
-async function handler() {
+async function handler(request: Request) {  // Add the request parameter
+  // Check for API key
+  const apiKey = request.headers.get('x-api-key');
+  if (apiKey !== process.env.CRON_API_KEY) {
+    logger.warn(`CRON: Unauthorized access attempt with key: ${apiKey?.substring(0, 4)}...`);
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  
+  // If authorized, proceed with the cron job
   const result = await closeExpiredRides();
   return NextResponse.json({ success: true, ...result });
 }
