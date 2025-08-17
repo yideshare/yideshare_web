@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { FeedRideCardProps } from "@/app/interface/main";
+import { DateTime } from "luxon";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 export default function FeedRideCard({
@@ -24,8 +25,11 @@ export default function FeedRideCard({
   isBookmarkedInitial,
   showDialog = true,
   hideBookmark = false, // add default
-  onUnbookmark, 
-}: FeedRideCardProps & { hideBookmark?: boolean; onUnbookmark?: (rideId: string) => void }) {
+  onUnbookmark,
+}: FeedRideCardProps & {
+  hideBookmark?: boolean;
+  onUnbookmark?: (rideId: string) => void;
+}) {
   const { toast } = useToast();
   const [isBookmarked, setIsBookmarked] = React.useState(isBookmarkedInitial);
 
@@ -33,21 +37,16 @@ export default function FeedRideCard({
   const ownerName = ride.ownerName ?? "Driver";
   const totalSeats = ride.totalSeats;
 
-  const sDate = new Date(ride.startTime);
-  const eDate = new Date(ride.endTime);
-  const dateLabel = `${sDate.getDate()} ${sDate.toLocaleString("en", {
-    month: "short",
-  })}`;
-  
-  // check if end date is different from start date (it's in the next day)
-  const isNextDay = sDate.toDateString() !== eDate.toDateString();
-  const timeLabel = `${sDate.toLocaleTimeString("en", {
-    hour: "numeric",
-    minute: "2-digit",
-  })} - ${eDate.toLocaleTimeString("en", {
-    hour: "numeric",
-    minute: "2-digit",
-  })}${isNextDay ? ' (+1)' : ''}`;
+  const zone = "America/New_York";
+  const sLux = DateTime.fromJSDate(new Date(ride.startTime)).setZone(zone);
+  const eLux = DateTime.fromJSDate(new Date(ride.endTime)).setZone(zone);
+  const dateLabel = sLux.toFormat("d LLL");
+
+  // check if end date is different from start date in EST (next day)
+  const isNextDay = eLux.hasSame(sLux, "day") === false;
+  const timeLabel = `${sLux.toFormat("h:mm a")} - ${eLux.toFormat("h:mm a")}${
+    isNextDay ? " (+1)" : ""
+  }`;
 
   /* ------------ bookmark ------------ */
   async function handleBookmark() {
@@ -60,7 +59,7 @@ export default function FeedRideCard({
       const data = await res.json();
       setIsBookmarked(data.bookmarked);
       if (!data.bookmarked && onUnbookmark) {
-        onUnbookmark(ride.rideId); 
+        onUnbookmark(ride.rideId);
       }
       toast({
         title: data.bookmarked ? "Ride Bookmarked" : "Bookmark Removed",
@@ -72,44 +71,53 @@ export default function FeedRideCard({
 
   /* ------------ UI ------------ */
   const cardContent = (
-    <Card className="rounded-2xl border border-border bg-white px-6 py-4 shadow-card hover:shadow-cardHover cursor-pointer">
-      <div className="grid grid-cols-4 gap-1">
+    <Card className="rounded-2xl border border-border bg-white px-3 sm:px-6 py-3 sm:py-4 shadow-card hover:shadow-cardHover cursor-pointer">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-1">
         <div>
-          <p className="text-lg font-medium text-black mb-1">Leaving from</p>
-          <p className="text-2xl font-semibold text-black">{ride.beginning}</p>
+          <p className="text-sm sm:text-lg font-medium text-black mb-1">
+            Leaving from
+          </p>
+          <p className="text-lg sm:text-2xl font-semibold text-black break-words">
+            {ride.beginning}
+          </p>
         </div>
 
         <div>
-          <p className="text-lg font-medium text-black mb-1">Going to</p>
-          <p className="text-2xl font-semibold text-black">
+          <p className="text-sm sm:text-lg font-medium text-black mb-1">
+            Going to
+          </p>
+          <p className="text-lg sm:text-2xl font-semibold text-black break-words">
             {ride.destination}
           </p>
         </div>
 
         <div>
-          <p className="text-lg font-medium text-black mb-1">Date</p>
-          <p className="text-2xl font-semibold text-black">{dateLabel}</p>
+          <p className="text-sm sm:text-lg font-medium text-black mb-1">Date</p>
+          <p className="text-lg sm:text-2xl font-semibold text-black">
+            {dateLabel}
+          </p>
         </div>
 
         <div>
-          <p className="text-lg font-medium text-black mb-1">
+          <p className="text-sm sm:text-lg font-medium text-black mb-1">
             Departure Time Range (EST)
           </p>
-          <p className="text-2xl font-semibold text-black">{timeLabel}</p>
+          <p className="text-lg sm:text-2xl font-semibold text-black">
+            {timeLabel}
+          </p>
         </div>
       </div>
 
-      <div className="h-px bg-border my-4" />
+      <div className="h-px bg-border my-3 sm:my-4" />
 
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="h-12 w-12 flex items-center justify-center rounded-full bg-muted text-2xl font-semibold text-black">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <div className="h-10 w-10 sm:h-12 sm:w-12 flex items-center justify-center rounded-full bg-muted text-lg sm:text-2xl font-semibold text-black">
             {ownerName[0]}
           </div>
-          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-black">
-            <span className="text-xl">{ownerName}</span>
-
-            <span className="text-xl text-black">
+          <div className="flex flex-col gap-1 text-black">
+            <span className="text-lg sm:text-xl">{ownerName}</span>
+            <span className="text-sm sm:text-xl text-black break-all">
               {ride.ownerPhone
                 ? formatPhoneNumberIntl(ride.ownerPhone)
                 : "No phone provided"}
@@ -117,7 +125,7 @@ export default function FeedRideCard({
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 self-end sm:self-auto">
           {!hideBookmark && (
             <Button
               variant="ghost"
@@ -128,7 +136,7 @@ export default function FeedRideCard({
               }}
             >
               <Bookmark
-                className="h-5 w-5 text-primary"
+                className="h-4 w-4 sm:h-5 sm:w-5 text-primary"
                 style={{ fill: isBookmarked ? "currentColor" : "none" }}
               />
             </Button>
@@ -156,7 +164,7 @@ export default function FeedRideCard({
             <div className="flex items-center text-lg text-black">
               <span>Posted by: {ride.ownerName || "Raymond Hou"}</span>
               <span className="mx-2">•</span>
-              <span>{totalSeats} seats available</span>
+              <span>{totalSeats - 1} seats available</span>
             </div>
             {ride.ownerPhone && (
               <div className="text-lg text-black mt-1">

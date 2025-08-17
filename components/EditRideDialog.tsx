@@ -17,17 +17,7 @@ import { TimeSelect } from "@/components/ui/time-select";
 import { Ride } from "@prisma/client";
 import { useState } from "react";
 import { CustomPhoneInput } from "@/components/ui/phone-input";
-import { createStartEndDateTimes } from "@/lib/time";
-
-const formatTimeForDisplay = (date: Date) => {
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const hour12 = ((hours + 11) % 12) + 1;
-  const suffix = hours < 12 ? "AM" : "PM";
-  return `${hour12.toString().padStart(2, "0")}:${minutes
-    .toString()
-    .padStart(2, "0")} ${suffix}`;
-};
+import { createStartEndDateTimes, formatTimeForDisplay } from "@/lib/time";
 
 // logic flow that handles next-day scenarios
 const createUpdatedTimes = (
@@ -75,7 +65,7 @@ export default function EditRideDialog({
     endTime: ride.endTime
       ? formatTimeForDisplay(new Date(ride.endTime))
       : "12:00 AM",
-    additionalPassengers: ride.totalSeats,
+    additionalPassengers: ride.totalSeats - 1,
   });
 
   const ready =
@@ -103,7 +93,7 @@ export default function EditRideDialog({
       startTime: startTimeObject,
       endTime: endTimeObject,
       description: formData.description,
-      totalSeats: formData.additionalPassengers,
+      totalSeats: formData.additionalPassengers + 1,
       ownerName: organizerName,
       ownerPhone: phoneNumber,
     };
@@ -117,15 +107,15 @@ export default function EditRideDialog({
         <span />
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-xl bg-white">
+      <DialogContent className="sm:max-w-xl w-[100vw] max-w-[100vw] bg-white m-1 max-h-[100vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Edit Ride</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-lg sm:text-xl">Edit Ride</DialogTitle>
+          <DialogDescription className="text-sm sm:text-base">
             Update the details of your ride listing.
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-2 sm:space-y-4">
           {/* organiser + phone */}
           <div className="space-y-2">
             <Label htmlFor="organizer">
@@ -142,7 +132,7 @@ export default function EditRideDialog({
 
           <div className="space-y-2">
             <CustomPhoneInput
-              label={<>Phone Number</>}
+              label="Phone Number"
               required
               value={phoneNumber}
               onChange={setPhoneNumber}
@@ -150,8 +140,7 @@ export default function EditRideDialog({
             />
           </div>
 
-          {/* route */}
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div className="space-y-2">
               <Label htmlFor="from">
                 Leaving from <span className="text-red-500">*</span>
@@ -163,6 +152,7 @@ export default function EditRideDialog({
                   setFormData({ ...formData, from: e.target.value })
                 }
                 required
+                className="text-sm sm:text-base"
               />
             </div>
 
@@ -177,39 +167,41 @@ export default function EditRideDialog({
                   setFormData({ ...formData, to: e.target.value })
                 }
                 required
+                className="text-sm sm:text-base"
               />
             </div>
 
-            <TimeSelect
-              label={
-                <>
-                  Start time <span className="text-red-500">*</span>
-                </>
-              }
-              value={formData.startTime}
-              onChange={(timeStr) =>
-                setFormData({ ...formData, startTime: timeStr })
-              }
-              className="mt-2 sm:mt-0"
-            />
+            <div className="space-y-2">
+              <TimeSelect
+                label={
+                  <>
+                    Start time <span className="text-red-500">*</span>
+                  </>
+                }
+                value={formData.startTime}
+                onChange={(timeStr) =>
+                  setFormData({ ...formData, startTime: timeStr })
+                }
+              />
+            </div>
 
-            <TimeSelect
-              label={
-                <>
-                  End time <span className="text-red-500">*</span>
-                </>
-              }
-              value={formData.endTime}
-              onChange={(timeStr) =>
-                setFormData({ ...formData, endTime: timeStr })
-              }
-              startTime={formData.startTime}
-              isEndTime={true}
-              className="mt-2 sm:mt-0"
-            />
+            <div className="space-y-2">
+              <TimeSelect
+                label={
+                  <>
+                    End time <span className="text-red-500">*</span>
+                  </>
+                }
+                value={formData.endTime}
+                onChange={(timeStr) =>
+                  setFormData({ ...formData, endTime: timeStr })
+                }
+                startTime={formData.startTime}
+                isEndTime={true}
+              />
+            </div>
           </div>
 
-          {/* seats */}
           <div className="space-y-2">
             <Label htmlFor="seats">
               Number of Open Seats <span className="text-red-500">*</span>
@@ -236,13 +228,12 @@ export default function EditRideDialog({
             />
           </div>
 
-          {/* description */}
           <div className="space-y-2">
             <Label htmlFor="desc">
-              Description{" "}
-              <span className="text-muted-foreground">(optional)</span>
+              Description <span>(optional)</span>
             </Label>
             <Textarea
+              className="bg-white"
               id="desc"
               value={formData.description}
               onChange={(e) =>
