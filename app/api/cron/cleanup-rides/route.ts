@@ -4,17 +4,18 @@ import  logger  from '@/lib/logger';
 import { withApiErrorHandler } from "@/lib/withApiErrorHandler";
 
 // add this to a vercel cron script when deployed
+// currently closing them (but not permanently deleting them) - trying this first and then will update
 
 async function closeExpiredRides() {
   const now = new Date();
   
-  // Log what rides will be closed for audit purposes
+  // Log what rides will be closed
   const expiredRides = await prisma.ride.findMany({
     where: {
       endTime: {
         lt: now,
       },
-      isClosed: false, // Only target rides that aren't already closed
+      isClosed: false, 
     },
     select: {
       rideId: true,
@@ -31,13 +32,13 @@ async function closeExpiredRides() {
     logger.info(`CRON: Ride details:`, expiredRides);
   }
 
-  // Close the rides instead of deleting them
+  // Close the rides 
   const result = await prisma.ride.updateMany({
     where: {
       endTime: {
         lt: now,
       },
-      isClosed: false, // Only update rides that aren't already closed
+      isClosed: false,
     },
     data: {
       isClosed: true,
