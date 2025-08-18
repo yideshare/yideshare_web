@@ -116,3 +116,10 @@
 .font-righteous {
   font-family: var(--font-righteous);
 }
+
+@supports (-webkit-touch-callout: none) {
+  input, select, textarea, button {
+    font-size: 16px; /* Prevent iOS Safari zoom on focus */
+  }
+}
+:root { overflow-x: hidden; }
