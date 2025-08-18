@@ -62,5 +62,6 @@ export interface LocationItem {
     { label: "Target New Haven", address: "310 Foxon Blvd, New Haven CT 06513" },
     { label: "Trader Joe's (Orange CT)", address: "230 Boston Post Rd, Orange CT 06477" },
     { label: "Stop & Shop (Whalley Ave)", address: "150 Whalley Ave, New Haven CT 06511" },
+    { label: "Harvard University", address: "1256 Massachusetts Ave, Cambridge MA 02138" }
   ];
   

@@ -71,8 +71,19 @@ export function TopBar({ onResults, rides }: TopBarProps) {
     setDate(new Date());
   }, []);
 
+  // Easter Egg
+  function checkHarvardRedirect(destination: string): boolean {
+    if (destination.trim().toLowerCase() === "harvard university") {
+      window.location.href = "https://www.youtube.com/watch?v=bMM3z3o6BAs";
+      return true;
+    }
+    return false;
+  }
+
   const handleFindRide = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (checkHarvardRedirect(to)) return;
 
     // Ensure required fields are filled
     if (!from || !to || !date || !startTime || !endTime) {
@@ -118,6 +129,8 @@ export function TopBar({ onResults, rides }: TopBarProps) {
   /* ----------------  share‑a‑ride -------------- */
   async function handleShareYide(e: React.FormEvent) {
     e.preventDefault();
+
+    if (checkHarvardRedirect(to)) return;
 
     const selectedDate = date ?? new Date();
     const { startTimeObject, endTimeObject } = createStartEndDateTimes(
