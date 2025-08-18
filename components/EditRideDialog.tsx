@@ -107,7 +107,7 @@ export default function EditRideDialog({
         <span />
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-xl w-[100vw] max-w-[100vw] bg-white m-1 max-h-[100vh] overflow-y-auto">
+      <DialogContent className="w-full max-w-sm sm:max-w-xl bg-white m-1 max-h-[calc(100dvh-1rem)] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-lg sm:text-xl">Edit Ride</DialogTitle>
           <DialogDescription className="text-sm sm:text-base">
@@ -116,7 +116,6 @@ export default function EditRideDialog({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-2 sm:space-y-4">
-          {/* organiser + phone */}
           <div className="space-y-2">
             <Label htmlFor="organizer">
               Organizer name <span className="text-red-500">*</span>{" "}
@@ -127,10 +126,11 @@ export default function EditRideDialog({
               onChange={(e) => setOrganizerName(e.target.value)}
               required
               placeholder="John Doe"
+              className="text-base"
             />
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2 text-base">
             <CustomPhoneInput
               label="Phone Number"
               required
@@ -152,7 +152,7 @@ export default function EditRideDialog({
                   setFormData({ ...formData, from: e.target.value })
                 }
                 required
-                className="text-sm sm:text-base"
+                className="text-base"
               />
             </div>
 
@@ -167,11 +167,11 @@ export default function EditRideDialog({
                   setFormData({ ...formData, to: e.target.value })
                 }
                 required
-                className="text-sm sm:text-base"
+                className="text-base"
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2 text-base">
               <TimeSelect
                 label={
                   <>
@@ -185,7 +185,7 @@ export default function EditRideDialog({
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2 text-base">
               <TimeSelect
                 label={
                   <>
@@ -225,6 +225,7 @@ export default function EditRideDialog({
                 });
               }}
               required
+              className="text-base"
             />
           </div>
 
@@ -233,7 +234,7 @@ export default function EditRideDialog({
               Description <span>(optional)</span>
             </Label>
             <Textarea
-              className="bg-white"
+              className="bg-white text-base"
               id="desc"
               value={formData.description}
               onChange={(e) =>

@@ -81,7 +81,9 @@ export default function ShareYideDialog({
         <span />
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-xl w-[100vw] max-w-[100vw] bg-white m-1 max-h-[100vh] overflow-y-auto">
+      <DialogContent
+        className="w-full max-w-sm sm:max-w-xl bg-white m-1 max-h-[calc(100dvh-1rem)] overflow-y-auto"
+      >
         <DialogHeader>
           <DialogTitle className="text-lg sm:text-xl">Share a Ride</DialogTitle>
           <DialogDescription className="text-sm sm:text-base">
@@ -106,10 +108,11 @@ export default function ShareYideDialog({
               onChange={(e) => setOrganizerName(e.target.value)}
               placeholder="John Doe"
               required
+              className="text-base"
             />
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2 text-base">
             <CustomPhoneInput
               label="Phone Number"
               required
@@ -129,7 +132,7 @@ export default function ShareYideDialog({
                 value={from}
                 onChange={(e) => setFrom(e.target.value)}
                 required
-                className="text-sm sm:text-base" 
+                className="text-base"
               />
             </div>
 
@@ -142,11 +145,11 @@ export default function ShareYideDialog({
                 value={to}
                 onChange={(e) => setTo(e.target.value)}
                 required
-                className="text-sm sm:text-base"
+                className="text-base"
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2 text-base">
               <TimeSelect
                 label={
                   <>
@@ -158,7 +161,7 @@ export default function ShareYideDialog({
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2 text-base">
               <TimeSelect
                 label={
                   <>
@@ -187,6 +190,7 @@ export default function ShareYideDialog({
                 setAdditionalPassengers(val === "" ? 0 : parseInt(val));
               }}
               required
+              className="text-base"
             />
           </div>
 
@@ -195,7 +199,7 @@ export default function ShareYideDialog({
               Description <span>(optional)</span>
             </Label>
             <Textarea
-              className="bg-white"
+              className="bg-white text-base"
               id="desc"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
