@@ -50,16 +50,18 @@ async function closeExpiredRides() {
   return { ridesClosed: result.count };
 }
 
-// API route handler
-async function handler(request: Request) {  // Add the request parameter
-  // Check for API key
-  const apiKey = request.headers.get('x-api-key');
-  if (apiKey !== process.env.CRON_API_KEY) {
-    logger.warn(`CRON: Unauthorized access attempt with key: ${apiKey?.substring(0, 4)}...`);
+async function handler(request: Request) {  
+  // Vercel Cron Authorization header (CRON_SECRET).
+  const authHeader = request.headers.get('authorization') ?? undefined;
+
+  const cronSecret = process.env.CRON_SECRET;
+
+  if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
+    logger.warn('CRON: Unauthorized access attempt');
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  
-  // If authorized, proceed with the cron job
+
+  // Proceed with the cron job
   const result = await closeExpiredRides();
   return NextResponse.json({ success: true, ...result });
 }
