@@ -1,16 +1,16 @@
 import { NextResponse } from "next/server";
 
+const BASE_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
+const SERVICE_URL = `${BASE_URL}/api/auth/cas-validate`;
+
 export async function GET() {
-  const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
-  const serviceURL = `${baseUrl}/api/auth/cas-validate`;
-  
   return NextResponse.json({
     message: "CAS Test Route",
-    baseUrl,
-    serviceURL,
+    baseUrl: BASE_URL,
+    serviceURL: SERVICE_URL,
     casLoginUrl: `/api/auth/cas-login`,
     casValidateUrl: `/api/auth/cas-validate`,
-    fullServiceURL: serviceURL,
-    encodedServiceURL: encodeURIComponent(serviceURL)
+    fullServiceURL: SERVICE_URL,
+    encodedServiceURL: encodeURIComponent(SERVICE_URL)
   });
 }
