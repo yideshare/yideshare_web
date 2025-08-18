@@ -2,9 +2,8 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { ApiError } from "@/lib/withApiErrorHandler";
 
-const BASE_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
-
 async function testLoginHandler() {
+  const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
   if (process.env.NODE_ENV === "production") {
     throw new ApiError("Not allowed", 403);
   }
@@ -18,7 +17,7 @@ async function testLoginHandler() {
     },
   });
 
-  const response = NextResponse.redirect(`${BASE_URL}/feed`);
+  const response = NextResponse.redirect(`${baseUrl}/feed`);
   response.cookies.set(
     "user",
     JSON.stringify({

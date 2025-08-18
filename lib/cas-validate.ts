@@ -1,10 +1,5 @@
 import logger from "./logger";
 
-// Always use the main domain, not the deployment-specific URL
-const BASE_URL =
-  process.env.NEXTAUTH_URL || "https://yideshare-1mw1.vercel.app";
-const CAS_VALIDATE_URL = "https://secure.its.yale.edu/cas/serviceValidate";
-
 /**
  * Validate CAS ticket using the same approach as YCrush (passport-cas2)
  * This mimics the behavior of passport-cas2 without requiring Express middleware

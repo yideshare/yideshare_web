@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
 
-const BASE_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
-
 export async function GET() {
+  const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
   // response points to the login page
   const response = NextResponse.redirect(
-    `https://secure.its.yale.edu/cas/logout?service=${BASE_URL}/`
+    `https://secure.its.yale.edu/cas/logout?service=${baseUrl}/`
   );
 
   // clear all cookies
