@@ -2,7 +2,7 @@
 const nextConfig = {
   // Disable checks to get the build working
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
   typescript: {
     ignoreBuildErrors: true,
