@@ -13,12 +13,16 @@ function getBaseUrl(req: Request) {
 
 export async function GET(req: Request) {
   const baseUrl = getBaseUrl(req);
-  const serviceURL = `${baseUrl}/api/auth/cas-validate`;
+  // Preserve redirect param from middleware 
+  const { searchParams } = new URL(req.url);
+  const redirectPath = searchParams.get("redirect") || "";
+
+  const serviceURL =
+    `${baseUrl}/api/auth/cas-validate` +
+    (redirectPath ? `?redirect=${encodeURIComponent(redirectPath)}` : "");
 
   const yaleCASUrl = `https://secure.its.yale.edu/cas/login?service=${encodeURIComponent(
     serviceURL
   )}`;
-  console.log("CAS Login - Service URL:", serviceURL);
-  console.log("CAS Login - Redirecting to:", yaleCASUrl);
   return NextResponse.redirect(yaleCASUrl);
 }

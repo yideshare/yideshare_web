@@ -14,11 +14,31 @@ function getBaseUrl(req: Request) {
   }
 }
 
+const ALLOWED_REDIRECT_PREFIXES = ["/feed", "/bookmarks", "/your-rides"];
+
+function resolveSafeRedirect(
+  redirectPath: string | null,
+  baseUrl: string
+): string {
+  if (!redirectPath || !redirectPath.startsWith("/")) {
+    return `${baseUrl}/feed`;
+  }
+  for (const prefix of ALLOWED_REDIRECT_PREFIXES) {
+    if (redirectPath === prefix || redirectPath.startsWith(prefix + "/")) {
+      return new URL(redirectPath, baseUrl).toString();
+    }
+  }
+  return `${baseUrl}/feed`;
+}
+
 async function getHandler(req: Request) {
   const baseUrl = getBaseUrl(req);
-  const serviceURL = `${baseUrl}/api/auth/cas-validate`;
-
   const { searchParams } = new URL(req.url);
+  const redirectPath = searchParams.get("redirect");
+  const serviceURL = `${baseUrl}/api/auth/cas-validate${
+    redirectPath ? `?redirect=${encodeURIComponent(redirectPath)}` : ""
+  }`;
+
   const ticket = searchParams.get("ticket");
 
   console.log(
@@ -50,7 +70,9 @@ async function getHandler(req: Request) {
 
   await findOrCreateUser(netId, firstName, lastName, email);
 
-  const successResponse = NextResponse.redirect(`${baseUrl}/feed`);
+  const redirectTo = resolveSafeRedirect(redirectPath, baseUrl);
+
+  const successResponse = NextResponse.redirect(redirectTo);
   successResponse.cookies.set(
     "user",
     JSON.stringify({ firstName, lastName, email, netId }),
@@ -64,7 +86,7 @@ async function getHandler(req: Request) {
   );
 
   console.log("CAS Validate - Successfully authenticated user:", netId);
-  console.log("CAS Validate - Redirecting to:", `${baseUrl}/feed`);
+  console.log("CAS Validate - Redirecting to:", redirectTo);
   return successResponse;
 }
 

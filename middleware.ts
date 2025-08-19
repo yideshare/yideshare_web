@@ -2,20 +2,12 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
   const userCookie = request.cookies.get("user");
-  const isAuthenticated = Boolean(userCookie && userCookie.value);
-
-  if (!isAuthenticated) {
-    const redirectUrl = request.nextUrl.clone();
-    redirectUrl.pathname = "/"; // send to landing/login page
-    // Preserve where the user wanted to go
-    redirectUrl.searchParams.set("redirect", pathname);
-    return NextResponse.redirect(redirectUrl);
-  }
-
-  return NextResponse.next();
+  if (userCookie) return NextResponse.next();
+  const intended = request.nextUrl.pathname + request.nextUrl.search;
+  const loginUrl = new URL("/api/auth/cas-login", request.url);
+  loginUrl.searchParams.set("redirect", intended);
+  return NextResponse.redirect(loginUrl);
 }
 
 export const config = {
