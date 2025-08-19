@@ -115,6 +115,7 @@ export async function findFilteredRides(
     whereClause.AND.push({
       beginning: {
         contains: from,
+        mode: "insensitive",
       },
     });
   }
@@ -122,6 +123,7 @@ export async function findFilteredRides(
     whereClause.AND.push({
       destination: {
         contains: to,
+        mode: "insensitive",
       },
     });
   }
