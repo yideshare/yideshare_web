@@ -8,6 +8,13 @@ export class RideFunctions {
   }
 
   async createValidRideViaPopup() {
+    //temp: first fill in date in the top-bar because it's not yet in the ShareYideDialog
+    await this.page
+      .getByRole("combobox", { name: /select departure date/i }) 
+      .click();
+    const dayNumber = this.getTodayDayNumber();
+    await this.page.getByRole("gridcell", { name: dayNumber }).click();
+    await this.page.keyboard.press("Escape");
     const openBtn = this.page.getByRole("button", { name: /^post ride$/i });
     await openBtn.waitFor({ state: "visible" });
     await openBtn.click();
