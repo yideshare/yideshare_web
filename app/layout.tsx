@@ -2,6 +2,7 @@
 import "./globals.css";
 import { righteous } from "./fonts";
 import type { Metadata, Viewport } from "next";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Yideshare",
@@ -24,7 +25,11 @@ export default function RootLayout({
       className={`${righteous.variable}`}
       suppressHydrationWarning
     >
-      <body suppressHydrationWarning>{children}</body>
+      <body suppressHydrationWarning>
+        {children}
+        {/* Global toast notifications */}
+        <Toaster />
+      </body>
     </html>
   );
 }
