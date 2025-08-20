@@ -41,7 +41,14 @@ export default function Home() {
               </h1>
             </Link>
             <button
-              onClick={() => (window.location.href = "/api/auth/cas-login")}
+              onClick={() => {
+                const params = new URLSearchParams(window.location.search);
+                const r = params.get("redirect");
+                const target = r
+                  ? `/api/auth/cas-login?redirect=${encodeURIComponent(r)}`
+                  : "/api/auth/cas-login";
+                window.location.href = target;
+              }}
               className="inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-2 sm:px-5 text-xs sm:text-sm font-semibold text-primary shadow hover:bg-white"
             >
               <LogIn size={16} className="sm:w-[18px] sm:h-[18px]" />
