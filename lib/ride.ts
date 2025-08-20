@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { Ride } from "@prisma/client"
+import { Ride } from "@prisma/client";
 import { RideWhereClauseWithArrayAND } from "@/app/interface/main";
 import logger from "@/lib/logger";
 
@@ -87,7 +87,7 @@ export async function findOwnedRide(netId: string) {
       endTime: true,
       totalSeats: true,
       currentTakenSeats: true,
-      isClosed: true, 
+      isClosed: true,
     },
   });
 }
@@ -102,8 +102,8 @@ export async function findBookmarkedRides(netId: string) {
 export async function findFilteredRides(
   from: string,
   to: string,
-  filterStartTime: Date,
-  filterEndTime: Date
+  filterStartTime?: Date | null,
+  filterEndTime?: Date | null
 ) {
   // Build the where clause dynamically based on non-empty criteria
   const whereClause: RideWhereClauseWithArrayAND = {
@@ -128,8 +128,8 @@ export async function findFilteredRides(
     });
   }
 
-  const hasStart = filterStartTime && !isNaN(filterStartTime.getTime());
-  const hasEnd   = filterEndTime   && !isNaN(filterEndTime.getTime());
+  const hasStart = !!(filterStartTime && !isNaN(filterStartTime.getTime()));
+  const hasEnd = !!(filterEndTime && !isNaN(filterEndTime.getTime()));
 
   if (hasStart && hasEnd) {
     whereClause.AND.push({
@@ -138,7 +138,7 @@ export async function findFilteredRides(
       startTime: { lte: filterEndTime },
       endTime: { gte: filterStartTime },
     });
-  } 
+  }
 
   return prisma.ride.findMany({
     where: whereClause,
@@ -147,4 +147,3 @@ export async function findFilteredRides(
     },
   });
 }
-
