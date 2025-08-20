@@ -91,7 +91,8 @@ export function TopBar({ onResults, rides }: TopBarProps) {
     if (!(hasFrom || hasTo || hasDate || hasTimeWindow)) {
       toast({
         title: "Add a filter",
-        description: "Enter at least one of 'Leaving from', 'Going to', 'Date', or 'Departure Time Range'.",
+        description:
+          "Enter at least one of 'Leaving from', 'Going to', 'Date', or 'Departure Time Range'.",
       });
       onResults([]);
       setHasSearched(true);
@@ -133,7 +134,16 @@ export function TopBar({ onResults, rides }: TopBarProps) {
 
     if (checkHarvardRedirect(to)) return;
 
-    const selectedDate = date ?? new Date();
+    //temporary: until date in post rides popups, will alert user why they can't post a ride
+    if (!date) {
+      toast({
+        title: "Select a date",
+        description: "Please choose a date before posting a ride.",
+        variant: "destructive",
+      });
+      return;
+    }
+    const selectedDate = date;
     const { startTimeObject, endTimeObject } = createStartEndDateTimes(
       selectedDate,
       startTime,
@@ -179,7 +189,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
       setPhoneNumber("");
       setAdditionalPassengers(0);
       setDescription("");
-      setDate(new Date());
+      setDate(null);
 
       // Show success toast
       toast({
@@ -340,6 +350,8 @@ export function TopBar({ onResults, rides }: TopBarProps) {
               <Button
                 className="bg-[#397060] hover:bg-[#2d5848] text-white h-10 rounded-full text-sm sm:text-base font-medium flex-1 sm:flex-none sm:w-32"
                 onClick={() => setOpen(true)}
+                // disabled={!date} optional
+                title={!date ? "Select a date first" : undefined}
               >
                 Post Ride
               </Button>
@@ -355,6 +367,8 @@ export function TopBar({ onResults, rides }: TopBarProps) {
               <Button
                 className="bg-[#397060] hover:bg-[#2d5848] text-white h-10 rounded-full text-sm sm:text-base font-medium flex-1 sm:flex-none sm:w-32"
                 onClick={() => setOpen(true)}
+                // disabled={!date} optional
+                title={!date ? "Select a date first" : undefined}
               >
                 Post Ride
               </Button>
