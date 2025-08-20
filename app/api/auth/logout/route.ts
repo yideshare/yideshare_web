@@ -1,7 +1,14 @@
 import { NextResponse } from "next/server";
 
+function getBaseUrl(): string {
+  if (process.env.NEXTAUTH_URL) return process.env.NEXTAUTH_URL;
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return "http://localhost:3000";
+}
+
 export async function GET() {
-  const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+  const baseUrl = getBaseUrl();
+
   // response points to the login page
   const response = NextResponse.redirect(
     `https://secure.its.yale.edu/cas/logout?service=${baseUrl}/`
