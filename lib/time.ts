@@ -7,11 +7,9 @@ export function createStartEndDateTimes(
 ) {
   const timeZone = "America/New_York";
 
-  // Always interpret the provided base date in America/New_York before extracting the date string.
-  // This ensures users outside ET (e.g., CST) don't shift the day inadvertently.
-  const dateStr = DateTime.fromJSDate(date)
-    .setZone(timeZone)
-    .toFormat("yyyy-MM-dd");
+  const dateStr = DateTime.fromJSDate(date).toFormat("yyyy-MM-dd");
+
+  // Now construct ET datetimes by combining the preserved date string with times.
   const startDateTime = DateTime.fromFormat(
     `${dateStr} ${startTime}`,
     "yyyy-MM-dd h:mm a",
@@ -24,7 +22,6 @@ export function createStartEndDateTimes(
     { zone: timeZone }
   );
 
-  // if end time is earlier than start time then ride goes into the next day
   if (endDateTime < startDateTime) {
     endDateTime = endDateTime.plus({ days: 1 });
   }
