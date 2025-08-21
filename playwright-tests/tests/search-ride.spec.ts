@@ -28,6 +28,65 @@ test("Search Ride - time out of range", async ({ page }) => {
   await helper(page, "01:15 AM", "02:15 AM");
   await expect(page.getByText("Bob Dylan")).toBeHidden();
 });
+
+test("Search Ride - from only filter", async ({ page }) => {
+  const rideFunctions = new RideFunctions(page);
+  await rideFunctions.createValidRideViaPopup();
+  await page
+    .getByRole("combobox", { name: /select departure location/i })
+    .click();
+  const departureInput = page
+    .getByPlaceholder("Search or type to create…")
+    .first();
+  await departureInput.fill("Vegas");
+  await departureInput.press("Enter");
+
+  await page.getByRole("button", { name: "Search" }).click();
+  await expect(page.getByText("Bob Dylan")).toBeVisible();
+});
+
+test("Search Ride - to only filter", async ({ page }) => {
+  const rideFunctions = new RideFunctions(page);
+  await rideFunctions.createValidRideViaPopup();
+  await page
+    .getByRole("combobox", { name: /select destination location/i })
+    .click();
+  const destinationInput = page
+    .getByPlaceholder("Search or type to create…")
+    .last();
+  await destinationInput.fill("Miami");
+  await destinationInput.press("Enter");
+
+  await page.getByRole("button", { name: "Search" }).click();
+  await expect(page.getByText("Bob Dylan")).toBeVisible();
+});
+
+test("Search Ride - date only filter (today)", async ({ page }) => {
+  const rideFunctions = new RideFunctions(page);
+  await rideFunctions.createValidRideViaPopup();
+  await page.getByRole("combobox", { name: /select departure date/i }).click();
+  const dayNumber = new Date().getDate().toString();
+  await page.getByRole("gridcell", { name: dayNumber }).click();
+  await page.keyboard.press("Escape");
+
+  await page.getByRole("button", { name: "Search" }).click();
+  await expect(page.getByText("Bob Dylan")).toBeVisible();
+});
+
+test("Search Ride - time only equal start=end treated as point-in-time", async ({
+  page,
+}) => {
+  await helper(page, "12:30 AM", "12:30 AM");
+  await expect(page.getByText("Bob Dylan")).toBeVisible();
+});
+
+test("Search Ride - wrapping window across midnight matches ride", async ({
+  page,
+}) => {
+  await helperDayBefore(page, "11:30 PM", "12:30 AM");
+  await expect(page.getByText("Bob Dylan")).toBeVisible();
+});
+
 async function helper(page: any, startTime: string, endTime: string) {
   const rideFunctions = new RideFunctions(page);
   await rideFunctions.createValidRideViaPopup();
@@ -42,10 +101,27 @@ async function helper(page: any, startTime: string, endTime: string) {
   await page
     .getByRole("combobox", { name: "Select latest departure time" })
     .click();
-  await page.getByText(endTime).click();
+  await page.getByRole("option", { name: endTime }).click();
   await page.getByRole("button", { name: "Search" }).click();
 
-  await expect(
-    page.getByRole("button", { name: "Clear" })
-  ).toBeVisible();
+  await expect(page.getByRole("button", { name: "Clear" })).toBeVisible();
+}
+async function helperDayBefore(page: any, startTime: string, endTime: string) {
+  const rideFunctions = new RideFunctions(page);
+  await rideFunctions.createValidRideViaPopup();
+  await rideFunctions.fillNavBarMinusTimeDayBeforeToday();
+
+  await page.getByRole("combobox").filter({ hasText: "Select time" }).click();
+  await page
+    .getByRole("combobox", { name: "Select earliest departure time" })
+    .click();
+  await page.getByRole("option", { name: startTime }).click();
+
+  await page
+    .getByRole("combobox", { name: "Select latest departure time" })
+    .click();
+  await page.getByRole("option", { name: endTime }).click();
+  await page.getByRole("button", { name: "Search" }).click();
+
+  await expect(page.getByRole("button", { name: "Clear" })).toBeVisible();
 }

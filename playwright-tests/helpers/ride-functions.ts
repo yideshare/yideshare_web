@@ -8,6 +8,13 @@ export class RideFunctions {
   }
 
   async createValidRideViaPopup() {
+    //temp: first fill in date in the top-bar because it's not yet in the ShareYideDialog
+    await this.page
+      .getByRole("combobox", { name: /select departure date/i }) 
+      .click();
+    const dayNumber = this.getTodayDayNumber();
+    await this.page.getByRole("gridcell", { name: dayNumber }).click();
+    await this.page.keyboard.press("Escape");
     const openBtn = this.page.getByRole("button", { name: /^post ride$/i });
     await openBtn.waitFor({ state: "visible" });
     await openBtn.click();
@@ -68,5 +75,34 @@ export class RideFunctions {
     await destinationInput.fill("Miami");
     await destinationInput.press("Enter");
     await this.page.waitForLoadState("networkidle");
+  }
+  async fillNavBarMinusTimeDayBeforeToday() {
+    await this.page
+      .getByRole("combobox", { name: /select departure date/i })
+      .click();
+    const dayNumber = new Date(Date.now() - 86400000).getDate().toString();
+    await this.page.getByRole("gridcell", { name: dayNumber }).click();
+    await this.page.keyboard.press("Escape");
+
+    await this.page
+      .getByRole("combobox", { name: /select departure location/i })
+      .click();
+    const departureInput = this.page
+      .getByPlaceholder("Search or type to create…")
+      .first();
+    await departureInput.waitFor({ state: "visible" });
+    await departureInput.fill("Vegas");
+    await departureInput.press("Enter");
+    await this.page.waitForLoadState("networkidle");
+
+    await this.page
+      .getByRole("combobox", { name: /select destination location/i })
+      .click();
+    const destinationInput = this.page
+      .getByPlaceholder("Search or type to create…")
+      .last();
+    await destinationInput.waitFor({ state: "visible" });
+    await destinationInput.fill("Miami");
+    await destinationInput.press("Enter");
   }
 }

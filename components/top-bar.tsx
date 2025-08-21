@@ -42,7 +42,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
   /* ----------------  form state  ---------------- */
   const [from, setFrom] = React.useState("");
   const [to, setTo] = React.useState("");
-  const [date, setDate] = React.useState<Date | null>(new Date());
+  const [date, setDate] = React.useState<Date | null>(null);
   const [startTime, setStartTime] = React.useState("");
   const [endTime, setEndTime] = React.useState("");
 
@@ -67,10 +67,6 @@ export function TopBar({ onResults, rides }: TopBarProps) {
     phoneNumberError: "",
   });
 
-  React.useEffect(() => {
-    setDate(new Date());
-  }, []);
-
   // Easter Egg
   function checkHarvardRedirect(destination: string): boolean {
     if (destination.trim().toLowerCase() === "harvard university") {
@@ -85,28 +81,34 @@ export function TopBar({ onResults, rides }: TopBarProps) {
 
     if (checkHarvardRedirect(to)) return;
 
-    // Ensure required fields are filled
-    if (!from || !to || !date || !startTime || !endTime) {
-      setErrors({
-        fromError: !from ? "Leaving from is required" : "",
-        toError: !to ? "Heading to is required" : "",
-        dateError: !date ? "Date is required" : "",
-        startTimeError: !startTime ? "Start time is required" : "",
-        endTimeError: !endTime ? "End time is required" : "",
-        phoneNumberError: "",
-        organizerNameError: "",
+    const hasFrom = from.trim().length > 0;
+    const hasTo = to.trim().length > 0;
+    const hasDate = date !== null;
+    const hasStart = startTime.trim().length > 0;
+    const hasEnd = endTime.trim().length > 0;
+    const hasTimeWindow = hasStart && hasEnd;
+
+    if (!(hasFrom || hasTo || hasDate || hasTimeWindow)) {
+      toast({
+        title: "Add a filter",
+        description:
+          "Enter at least one of 'Leaving from', 'Going to', 'Date', or 'Departure Time Range'.",
       });
-      console.log(errors);
+      onResults([]);
+      setHasSearched(true);
       return;
     }
 
-    const qs = new URLSearchParams({
-      from,
-      to,
-      date: encodeDate(date),
-      startTime,
-      endTime,
-    }).toString();
+    const params = new URLSearchParams();
+    if (hasFrom) params.set("from", from);
+    if (hasTo) params.set("to", to);
+    if (hasDate && date) params.set("date", encodeDate(date));
+    if (hasTimeWindow) {
+      params.set("startTime", startTime);
+      params.set("endTime", endTime);
+    }
+
+    const qs = params.toString();
 
     try {
       const res = await fetch(`/api/search-rides?${qs}`);
@@ -132,7 +134,16 @@ export function TopBar({ onResults, rides }: TopBarProps) {
 
     if (checkHarvardRedirect(to)) return;
 
-    const selectedDate = date ?? new Date();
+    //temporary: until date in post rides popups, will alert user why they can't post a ride
+    if (!date) {
+      toast({
+        title: "Select a date",
+        description: "Please choose a date before posting a ride.",
+        variant: "destructive",
+      });
+      return;
+    }
+    const selectedDate = date;
     const { startTimeObject, endTimeObject } = createStartEndDateTimes(
       selectedDate,
       startTime,
@@ -178,7 +189,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
       setPhoneNumber("");
       setAdditionalPassengers(0);
       setDescription("");
-      setDate(new Date());
+      setDate(null);
 
       // Show success toast
       toast({
@@ -339,6 +350,8 @@ export function TopBar({ onResults, rides }: TopBarProps) {
               <Button
                 className="bg-[#397060] hover:bg-[#2d5848] text-white h-10 rounded-full text-sm sm:text-base font-medium flex-1 sm:flex-none sm:w-32"
                 onClick={() => setOpen(true)}
+                // disabled={!date} optional
+                title={!date ? "Select a date first" : undefined}
               >
                 Post Ride
               </Button>
@@ -354,6 +367,8 @@ export function TopBar({ onResults, rides }: TopBarProps) {
               <Button
                 className="bg-[#397060] hover:bg-[#2d5848] text-white h-10 rounded-full text-sm sm:text-base font-medium flex-1 sm:flex-none sm:w-32"
                 onClick={() => setOpen(true)}
+                // disabled={!date} optional
+                title={!date ? "Select a date first" : undefined}
               >
                 Post Ride
               </Button>
