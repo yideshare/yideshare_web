@@ -212,7 +212,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
 
   /* ----------------  Mobile-Friendly UI  ---------------- */
   return (
-    <div className="w-full max-w-6xl mx-auto bg-white rounded-2xl shadow-sm mb-4 sm:mb-8">
+    <div className="w-full max-w-6xl mx-auto bg-white rounded-2xl mb-4 sm:mb-8">
       {/* Mobile: Stack vertically, Desktop: Grid layout */}
       <div className="p-3 sm:p-4 space-y-3 sm:space-y-0 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-4">
         <div className="space-y-1 sm:space-y-2">
@@ -366,7 +366,7 @@ export function TopBar({ onResults, rides }: TopBarProps) {
         </div>
       </div>
 
-      <div className="border-t border-gray-100 p-3 sm:p-4">
+      <div className="p-3 sm:p-4">
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 sm:justify-center">
           {hasSearched ? (
             <>
