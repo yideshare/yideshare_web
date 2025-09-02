@@ -22,6 +22,7 @@ import { TimeSelect } from "@/components/ui/time-select";
 import { LocationCombobox } from "@/components/location-combobox";
 import { createStartEndDateTimes, isNextDay } from "@/lib/time";
 import ShareYideDialog from "./ShareYideDialog";
+import { DateTime } from "luxon";
 
 import { Ride } from "@prisma/client";
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
@@ -267,10 +268,34 @@ export function TopBar({ onResults, rides }: TopBarProps) {
               <Calendar
                 mode="single"
                 selected={date ?? undefined}
+                disabled={(d) => {
+                  const timeZone = "America/New_York";
+                  const etDay = DateTime.fromJSDate(d)
+                    .setZone(timeZone)
+                    .startOf("day");
+                  const etToday = DateTime.now()
+                    .setZone(timeZone)
+                    .startOf("day");
+                  return etDay < etToday;
+                }}
                 onSelect={(selectedDate) => {
-                  if (selectedDate) {
-                    setDate(selectedDate);
+                  if (!selectedDate) return;
+                  const timeZone = "America/New_York";
+                  const etDay = DateTime.fromJSDate(selectedDate)
+                    .setZone(timeZone)
+                    .startOf("day");
+                  const etToday = DateTime.now()
+                    .setZone(timeZone)
+                    .startOf("day");
+                  if (etDay < etToday) {
+                    toast({
+                      title: "Invalid date",
+                      description: "Please select today or a future date (ET).",
+                      variant: "destructive",
+                    });
+                    return;
                   }
+                  setDate(selectedDate);
                 }}
                 initialFocus
               />
