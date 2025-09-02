@@ -270,9 +270,14 @@ export function TopBar({ onResults, rides }: TopBarProps) {
                 selected={date ?? undefined}
                 disabled={(d) => {
                   const timeZone = "America/New_York";
-                  const etDay = DateTime.fromJSDate(d)
-                    .setZone(timeZone)
-                    .startOf("day");
+                  const etDay = DateTime.fromObject(
+                    {
+                      year: d.getFullYear(),
+                      month: d.getMonth() + 1,
+                      day: d.getDate(),
+                    },
+                    { zone: timeZone }
+                  ).startOf("day");
                   const etToday = DateTime.now()
                     .setZone(timeZone)
                     .startOf("day");
@@ -281,9 +286,14 @@ export function TopBar({ onResults, rides }: TopBarProps) {
                 onSelect={(selectedDate) => {
                   if (!selectedDate) return;
                   const timeZone = "America/New_York";
-                  const etDay = DateTime.fromJSDate(selectedDate)
-                    .setZone(timeZone)
-                    .startOf("day");
+                  const etDay = DateTime.fromObject(
+                    {
+                      year: selectedDate.getFullYear(),
+                      month: selectedDate.getMonth() + 1,
+                      day: selectedDate.getDate(),
+                    },
+                    { zone: timeZone }
+                  ).startOf("day");
                   const etToday = DateTime.now()
                     .setZone(timeZone)
                     .startOf("day");
