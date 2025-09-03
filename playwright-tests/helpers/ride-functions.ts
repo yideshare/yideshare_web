@@ -6,14 +6,33 @@ export class RideFunctions {
     const today = new Date();
     return today.getDate().toString();
   }
+  private async clickCalendarDay(date: Date) {
+    const day = date.getDate();
+    const exactDayLocator = this.page.getByRole("gridcell", {
+      name: new RegExp(`^${day}$`),
+    });
+    if (await exactDayLocator.count()) {
+      await exactDayLocator.first().click();
+      return;
+    }
+    const monthName = date.toLocaleString("en-US", { month: "long" });
+    const year = date.getFullYear();
+    const fullDatePattern = new RegExp(
+      `${monthName}\\s+${day}(?:st|nd|rd|th)?(?:,)?\\s+${year}`,
+      "i"
+    );
+    await this.page
+      .getByRole("gridcell", { name: fullDatePattern })
+      .first()
+      .click();
+  }
 
   async createValidRideViaPopup() {
     //temp: first fill in date in the top-bar because it's not yet in the ShareYideDialog
     await this.page
-      .getByRole("combobox", { name: /select departure date/i }) 
+      .getByRole("combobox", { name: /select departure date/i })
       .click();
-    const dayNumber = this.getTodayDayNumber();
-    await this.page.getByRole("gridcell", { name: dayNumber }).click();
+    await this.clickCalendarDay(new Date());
     await this.page.keyboard.press("Escape");
     const openBtn = this.page.getByRole("button", { name: /^post ride$/i });
     await openBtn.waitFor({ state: "visible" });
@@ -50,8 +69,7 @@ export class RideFunctions {
     await this.page
       .getByRole("combobox", { name: /select departure date/i })
       .click();
-    const dayNumber = this.getTodayDayNumber();
-    await this.page.getByRole("gridcell", { name: dayNumber }).click();
+    await this.clickCalendarDay(new Date());
     await this.page.keyboard.press("Escape");
 
     await this.page
@@ -80,8 +98,7 @@ export class RideFunctions {
     await this.page
       .getByRole("combobox", { name: /select departure date/i })
       .click();
-    const dayNumber = new Date(Date.now() - 86400000).getDate().toString();
-    await this.page.getByRole("gridcell", { name: dayNumber }).click();
+    await this.clickCalendarDay(new Date(Date.now() - 86400000));
     await this.page.keyboard.press("Escape");
 
     await this.page
