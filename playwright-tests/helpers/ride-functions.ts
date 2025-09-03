@@ -18,7 +18,7 @@ export class RideFunctions {
     const monthName = date.toLocaleString("en-US", { month: "long" });
     const year = date.getFullYear();
     const fullDatePattern = new RegExp(
-      `${monthName}\\s+${day}(?:st|nd|rd|th)?(?:,)?\\s+${year}`,
+  `${monthName}\\s+${day}(?:st|nd|rd|th)?(?:,)?\\s+${year}`,
       "i"
     );
     await this.page
@@ -27,12 +27,23 @@ export class RideFunctions {
       .click();
   }
 
-  async createValidRideViaPopup() {
+  async selectDepartureDate(date: Date) {
+    await this.page
+      .getByRole("combobox", { name: /select departure date/i })
+      .click();
+    await this.clickCalendarDay(date);
+    await this.page.keyboard.press("Escape");
+  }
+  async selectDepartureDateToday() {
+    await this.selectDepartureDate(new Date());
+  }
+
+  async createValidRideViaPopup(date?: Date) {
     //temp: first fill in date in the top-bar because it's not yet in the ShareYideDialog
     await this.page
       .getByRole("combobox", { name: /select departure date/i })
       .click();
-    await this.clickCalendarDay(new Date());
+    await this.clickCalendarDay(date ?? new Date());
     await this.page.keyboard.press("Escape");
     const openBtn = this.page.getByRole("button", { name: /^post ride$/i });
     await openBtn.waitFor({ state: "visible" });
@@ -121,5 +132,6 @@ export class RideFunctions {
     await destinationInput.waitFor({ state: "visible" });
     await destinationInput.fill("Miami");
     await destinationInput.press("Enter");
+    await this.page.waitForLoadState("networkidle");
   }
 }
