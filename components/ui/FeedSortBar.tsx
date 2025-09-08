@@ -22,7 +22,7 @@ export function FeedSortBar({
           <SelectValue placeholder="Sort" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="recent">Most Recent</SelectItem>
+          <SelectItem value="recent">Upcoming</SelectItem>
           <SelectItem value="oldest">Oldest</SelectItem>
           <SelectItem value="alphabetical">Alphabetical</SelectItem>
         </SelectContent>
