@@ -8,7 +8,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   
-  // Production settings from your CJS file
+  // Production settings from your MJS file
   output: 'standalone',
   env: {
     NEXT_PUBLIC_API_BASE: process.env.NEXT_PUBLIC_API_BASE || '',
