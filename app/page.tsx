@@ -105,6 +105,28 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ================= FRIENDS PREVIEW (BOTTOM) ================= */}
+      <section className="bg-[#7DA395]/60 py-16 sm:py-20">
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 text-center">
+          <h3 className="font-righteous text-white text-2xl sm:text-3xl md:text-4xl tracking-wide mb-8">
+            See where your friends are going
+          </h3>
+
+          <div className="mx-auto w-full max-w-5xl">
+            <div className="relative w-full rounded-xl overflow-hidden shadow-lg bg-white/10 ring-1 ring-black/5">
+              <Image
+                src="/assets/feed.png"
+                alt="Yideshare feed preview"
+                width={1600}
+                height={900}
+                className="w-full h-auto object-contain"
+                priority
+              />
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
