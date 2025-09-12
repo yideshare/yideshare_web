@@ -1,12 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Disable checks to get the build working
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+  // eslint: {
+  //   ignoreDuringBuilds: true,
+  // },
+  // typescript: {
+  //   ignoreBuildErrors: true,
+  // },
   
   // Production settings from your CJS file
   output: 'standalone',
