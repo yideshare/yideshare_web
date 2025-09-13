@@ -56,7 +56,7 @@ export default function Home() {
                   : "/api/auth/cas-login";
                 window.location.href = target;
               }}
-              name="Login"
+              aria-label="Login"
               className="inline-flex items-center gap-2 rounded-full bg-white/90 px-5 py-3 text-sm sm:text-base font-semibold text-primary shadow hover:bg-white"
             >
               <LogIn size={18} className="w-5 h-5" />
