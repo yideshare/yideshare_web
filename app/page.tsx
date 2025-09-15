@@ -2,15 +2,6 @@
 
 import Image from "next/image";
 import { LogIn, MapPin, Calendar, Users } from "lucide-react";
-// import { LocationCombobox } from "@/components/location-combobox";
-// import { Button } from "@/components/ui/button";
-// import { Calendar as ShadCalendar } from "@/components/ui/calendar";
-// import {
-//   Popover,
-//   PopoverTrigger,
-//   PopoverContent,
-// } from "@/components/ui/popover";
-// import { format } from "date-fns";
 import * as React from "react";
 import Link from "next/link";
 
@@ -34,12 +25,28 @@ export default function Home() {
         {/* NAV + HERO CONTENT */}
         <div className="relative z-10 flex flex-col h-full">
           {/* ---- NAV ---- */}
-          <nav className="flex items-center justify-between px-4 py-4 sm:px-6 lg:px-12">
+          <nav className="flex items-center justify-center px-4 py-4 sm:px-6 lg:px-12">
             <Link href="/feed">
               <h1 className="font-righteous tracking-wide text-white text-xl sm:text-2xl md:text-3xl hover:text-white/90 transition-colors">
                 Yideshare
               </h1>
             </Link>
+          </nav>
+
+          {/* ---- HERO CONTENT ---- */}
+          <div className="flex-1 flex flex-col justify-center px-6 sm:px-8 mb-12 sm:mb-16">
+            {/* Headline & Subtitle */}
+            <div className="max-w-3xl mt-6 sm:mt-10 mx-auto text-center">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-righteous tracking-wide leading-tight text-white">
+                Share the ride. Save the planet.
+                <br />
+                Split the cost.
+              </h2>
+            </div>
+          </div>
+
+          {/* ---- LOGIN BUTTON ---- */}
+          <div className="px-4 sm:px-6 pb-12 sm:pb-16 flex justify-center">
             <button
               onClick={() => {
                 const params = new URLSearchParams(window.location.search);
@@ -49,27 +56,12 @@ export default function Home() {
                   : "/api/auth/cas-login";
                 window.location.href = target;
               }}
-              className="inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-2 sm:px-5 text-xs sm:text-sm font-semibold text-primary shadow hover:bg-white"
+              aria-label="Login"
+              className="inline-flex items-center gap-2 rounded-full bg-white/90 px-5 py-3 text-sm sm:text-base font-semibold text-primary shadow hover:bg-white"
             >
-              <LogIn size={16} className="sm:w-[18px] sm:h-[18px]" />
-              <span className="hidden xs:inline">Log in with CAS</span>
-              <span className="xs:hidden">Login</span>
+              <LogIn size={18} className="w-5 h-5" />
+              <span>Log in with CAS</span>
             </button>
-          </nav>
-
-          {/* ---- HERO CONTENT ---- */}
-          <div className="flex-1 flex flex-col justify-center px-4 sm:px-6">
-            {/* Headline & Subtitle */}
-            <div className="max-w-3xl mt-6 sm:mt-10 mx-auto text-center">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-white">
-                Ride together.{" "}
-                <span className="text-white">Split the cost.</span>
-              </h2>
-              <p className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg font-light text-white/90 px-2">
-                Headed to the airport? A concert? Home for break? Yideshare
-                helps Yale students coordinate cheap, reliable rides.
-              </p>
-            </div>
           </div>
         </div>
       </section>
@@ -111,6 +103,28 @@ export default function Home() {
             <p className="text-xs sm:text-sm text-gray-600 px-4 sm:px-0">
               Split fares and reduce emissions—everyone wins.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ================= FRIENDS PREVIEW (BOTTOM) ================= */}
+      <section className="bg-[#7DA395]/60 py-16 sm:py-20">
+        <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 text-center">
+          <h3 className="font-righteous text-white text-2xl sm:text-3xl md:text-4xl tracking-wide mb-8">
+            See where your friends are going
+          </h3>
+
+          <div className="mx-auto w-full max-w-5xl">
+            <div className="relative w-full rounded-xl overflow-hidden shadow-lg bg-white/10 ring-1 ring-black/5">
+              <Image
+                src="/assets/feed.png"
+                alt="Yideshare feed preview"
+                width={1600}
+                height={900}
+                className="w-full h-auto object-contain"
+                priority
+              />
+            </div>
           </div>
         </div>
       </section>
