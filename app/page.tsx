@@ -25,7 +25,7 @@ export default function Home() {
         {/* NAV + HERO CONTENT */}
         <div className="relative z-10 flex flex-col h-full">
           {/* ---- NAV ---- */}
-          <nav className="flex items-center justify-center px-6 py-6 sm:px-6 lg:px-12">
+          <nav className="flex items-center justify-center px-5 py-5 sm:px-6 lg:px-12 mb-10">
             
             <Link href="/feed">
               <h1 className="font-righteous font-light tracking-wide text-white text-xl sm:text-2xl md:text-3xl hover:text-white/90 transition-colors">
@@ -35,7 +35,7 @@ export default function Home() {
           </nav>
 
           {/* ---- HERO CONTENT ---- */}
-          <div className="flex-1 flex flex-col justify-center px-6 sm:px-8 mb-12 sm:mb-16 mt-20">
+          <div className="flex-1 flex flex-col justify-center px-6 sm:px-8 mb-8 sm:mb-10 mt-20">
             {/* Headline & Subtitle */}
             <div className="max-w-3xl mt-6 sm:mt-10 mx-auto text-center">
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-righteous font-light tracking-wide leading-tight text-white">
@@ -58,7 +58,7 @@ export default function Home() {
                 window.location.href = target;
               }}
               aria-label="Login"
-              className="inline-flex items-center gap-2 rounded-full bg-white/90 px-5 py-3 text-sm sm:text-base font-semibold text-primary shadow hover:bg-white"
+              className="inline-flex items-center gap-2 rounded-full bg-primary/90 px-5 py-3 text-sm sm:text-base font-semibold text-white shadow hover:bg-primary"
             >
               <LogIn size={18} className="w-5 h-5" />
               <span>Log in with CAS</span>
