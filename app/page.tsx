@@ -99,7 +99,7 @@ export default function Home() {
       {/* ================= FRIENDS PREVIEW (BOTTOM) ================= */}
       <section className="bg-[#7DA395]/60 py-16 sm:py-20">
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 text-center">
-          <h3 className="font-righteous font-normal text-white text-2xl sm:text-3xl md:text-4xl tracking-wide mb-8">
+          <h3 className="font-righteous font-normal text-white text-2xl sm:text-3xl md:text-4xl tracking-wide mb-12">
             See where your friends are going
           </h3>
 
@@ -117,6 +117,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ================= QUESTIONS + SHARE LINK ================= */}
     </main>
   );
 }
