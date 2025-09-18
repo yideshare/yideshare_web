@@ -53,6 +53,9 @@ model Ride {
 
   // many-to-many relationship with Users
   bookmarks Bookmark[]
+
+  // one-to-many relationship with Message
+  messages Message[]
 }
 
 // junction table for many-to-many User-Ride relationship for bookmarks
@@ -98,7 +101,15 @@ model Message {
   receiverNetId String
   timestamp     DateTime @default(now())
   payload       String
+  rideId        String
 
   sender   User @relation("MessageSender", fields: [senderNetId], references: [netId])
   receiver User @relation("MessageReceiver", fields: [receiverNetId], references: [netId])
+  ride     Ride @relation(fields: [rideId], references: [rideId])
+
+  // isRead Boolean @default(false) @map("is_read")
+  @@index([senderNetId, receiverNetId, timestamp])
+  @@index([receiverNetId, senderNetId, timestamp])
+  @@index([rideId, timestamp])
+  @@index([rideId, senderNetId, receiverNetId, timestamp])
 }
