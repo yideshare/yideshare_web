@@ -1,33 +1,48 @@
 import { NextResponse } from "next/server";
+import { createHmac } from "node:crypto";
 import { withApiErrorHandler, ApiError } from "@/lib/withApiErrorHandler";
-import { prisma } from "@/lib/prisma"; 
+import { prisma } from "@/lib/prisma";
+import { getVerifiedUserNetIdFromRequest } from "@/lib/user";
 
 async function resolveNetId(req: Request, body?: any): Promise<string> {
-  const cookieHeader = req.headers.get("cookie");
-  if (cookieHeader) {
-    const parts = cookieHeader.split(/;\s*/);
-    for (const p of parts) {
-      const [k, ...rest] = p.split("=");
-      if (k === "user") {
-        const raw = rest.join("=");
-        try {
-          const decoded = decodeURIComponent(raw);
-          const parsed = JSON.parse(decoded);
-          if (parsed?.netId && typeof parsed.netId === "string") {
-            return parsed.netId as string;
-          }
-        } catch {
+  const cookieHeader = req.headers.get("cookie") || "";
+  const cookies = Object.fromEntries(
+    cookieHeader
+      .split(/;\s*/)
+      .filter(Boolean)
+      .map((p) => {
+        const idx = p.indexOf("=");
+        if (idx === -1) return [p, ""] as const;
+        return [p.substring(0, idx), p.substring(idx + 1)] as const;
+      })
+  );
+
+  const userRaw = cookies["user"];
+  const sigRaw = cookies["user_sig"];
+  if (userRaw && sigRaw) {
+    try {
+      const decoded = decodeURIComponent(userRaw);
+      const secret = process.env.COOKIE_SECRET || "dev-cookie-secret";
+      const expected = createHmac("sha256", secret)
+        .update(decoded)
+        .digest("hex");
+      if (expected === sigRaw) {
+        const parsed = JSON.parse(decoded);
+        if (parsed?.netId && typeof parsed.netId === "string") {
+          return parsed.netId as string;
         }
       }
-    }
+    } catch {}
   }
 
-  const headerNetId = req.headers.get("x-user-netid");
-  if (headerNetId) return headerNetId;
-
-  if (body?.senderNetId) return body.senderNetId;
-
-  throw new Error("Unauthorized: netId not found");
+  const verified = getVerifiedUserNetIdFromRequest(req);
+  if (verified) return verified;
+  if (process.env.NODE_ENV !== "production") {
+    const headerNetId = req.headers.get("x-user-netid");
+    if (headerNetId) return headerNetId;
+    if (body?.senderNetId) return body.senderNetId;
+  }
+  throw new Error("Unauthorized: netId not found or signature invalid");
 }
 
 export const GET = withApiErrorHandler(async (req: Request) => {
@@ -38,7 +53,7 @@ export const GET = withApiErrorHandler(async (req: Request) => {
       OR: [{ senderNetId: netId }, { receiverNetId: netId }],
     },
     orderBy: { timestamp: "desc" },
-    take: 400, 
+    take: 400,
   });
 
   const summariesMap = new Map<
