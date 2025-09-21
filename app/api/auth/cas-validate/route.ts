@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { createHmac } from "node:crypto";
 import { findOrCreateUser } from "@/lib/user";
 import { fetchYaliesData } from "@/lib/yalies";
 import { validateCASTicket } from "@/lib/cas-validate";
@@ -73,17 +74,28 @@ async function getHandler(req: Request) {
   const redirectTo = resolveSafeRedirect(redirectPath, baseUrl);
 
   const successResponse = NextResponse.redirect(redirectTo);
-  successResponse.cookies.set(
-    "user",
-    JSON.stringify({ firstName, lastName, email, netId }),
-    {
-      httpOnly: false,
-      path: "/",
-      secure: baseUrl.startsWith("https"),
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 7,
-    }
-  );
+  const userValue = JSON.stringify({ firstName, lastName, email, netId });
+  const secret = process.env.COOKIE_SECRET || "dev-cookie-secret";
+  const signature = createHmac("sha256", secret)
+    .update(userValue)
+    .digest("hex");
+
+  // Preserve existing non-httpOnly cookie if the client relies on it
+  successResponse.cookies.set("user", userValue, {
+    httpOnly: false,
+    path: "/",
+    secure: baseUrl.startsWith("https"),
+    sameSite: "lax",
+    maxAge: 60 * 60 * 24 * 7, // 7 days
+  });
+  // Add an httpOnly signature cookie so server can verify authenticity
+  successResponse.cookies.set("user_sig", signature, {
+    httpOnly: true,
+    path: "/",
+    secure: baseUrl.startsWith("https"),
+    sameSite: "lax",
+    maxAge: 60 * 60 * 24 * 7,
+  });
 
   console.log("CAS Validate - Successfully authenticated user:", netId);
   console.log("CAS Validate - Redirecting to:", redirectTo);
@@ -95,7 +107,6 @@ export const GET = withApiErrorHandler(async (req: Request) => {
     return await getHandler(req);
   } catch (error) {
     console.error("CAS Validate - Error in handler:", error);
-    // Redirect back to the same origin instead of a build-time env
     const baseUrl = getBaseUrl(req);
     return NextResponse.redirect(baseUrl);
   }

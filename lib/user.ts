@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import logger from "@/lib/logger";
+import { createHmac } from "node:crypto";
 
 export async function findOrCreateUser(
   netId: string,
@@ -53,4 +54,70 @@ export async function getUserNetIdFromCookies() {
   // check that cookies exist
   if (!userCookie) return null;
   return JSON.parse(userCookie.value).netId;
+}
+/**
+ * Verify the signed "user" cookie using HMAC and return the parsed user object on success.
+ * Expects two cookies:
+ *  - user: JSON string containing at least { netId: string }
+ *  - user_sig: hex HMAC-SHA256 signature of the raw user cookie value
+ */
+export function getVerifiedUserFromCookieStore(
+  cookieStore: ReadonlyRequestCookies
+): {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  netId: string;
+} | null {
+  const userCookie = cookieStore.get("user");
+  const sigCookie = cookieStore.get("user_sig");
+  if (!userCookie || !sigCookie) return null;
+
+  const raw = userCookie.value; // raw (not JSON-parsed) value
+  const secret = process.env.COOKIE_SECRET || "dev-cookie-secret";
+  try {
+    const expected = createHmac("sha256", secret).update(raw).digest("hex");
+    if (expected !== sigCookie.value) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed?.netId || typeof parsed.netId !== "string") return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+export async function getVerifiedUserNetIdFromCookies(): Promise<
+  string | null
+> {
+  const store = await cookies();
+  const user = getVerifiedUserFromCookieStore(
+    store as unknown as ReadonlyRequestCookies
+  );
+  return user?.netId ?? null;
+}
+export function getVerifiedUserNetIdFromRequest(req: Request): string | null {
+  const header = req.headers.get("cookie") || "";
+  if (!header) return null;
+  const jar = Object.fromEntries(
+    header
+      .split(/;\s*/)
+      .filter(Boolean)
+      .map((p) => {
+        const idx = p.indexOf("=");
+        if (idx === -1) return [p, ""] as const;
+        return [p.substring(0, idx), p.substring(idx + 1)] as const;
+      })
+  );
+  const userRaw = jar["user"];
+  const sig = jar["user_sig"];
+  if (!userRaw || !sig) return null;
+  try {
+    const decoded = decodeURIComponent(userRaw);
+    const secret = process.env.COOKIE_SECRET || "dev-cookie-secret";
+    const expected = createHmac("sha256", secret).update(decoded).digest("hex");
+    if (expected !== sig) return null;
+    const parsed = JSON.parse(decoded);
+    return typeof parsed?.netId === "string" ? parsed.netId : null;
+  } catch {
+    return null;
+  }
 }
