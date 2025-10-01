@@ -10,6 +10,16 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  if (pathname.startsWith("/api/test-utils")) {
+    const provided = request.headers.get("x-test-utils-secret") || "";
+    const expected = process.env.PLAYWRIGHT_SECRET || "";
+    if (expected && provided === expected) {
+      return NextResponse.next();
+    } else {
+      return new NextResponse("Not allowed", { status: 403 });
+    }
+  }
+
   // try to get user cookie
   const token = request.cookies.get("auth")?.value;
 
