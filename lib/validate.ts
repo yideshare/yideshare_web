@@ -1,10 +1,6 @@
 import logger from "./logger";
 import { SignJWT } from "jose";
 
-/**
- * Validate CAS ticket using the same approach as YCrush (passport-cas2)
- * This mimics the behavior of passport-cas2 without requiring Express middleware
- */
 export async function validateCASTicket(
   ticket: string,
   serviceUrl: string
