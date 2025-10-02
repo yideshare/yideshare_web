@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
-import { jwtVerify } from "jose";
 import logger from "@/lib/logger";
 
 export async function findOrCreateUser(
@@ -47,19 +46,11 @@ export function getUserFromCookies(cookieStore: ReadonlyRequestCookies) {
   }
 }
 
-// chat helped here, check
 export async function getUserNetIdFromCookies() {
-
   // retrieve cookies
   const cookieStore = await cookies();
-  // parse value
-  const token = cookieStore.get("auth")?.value;
-  if (!token) return null;
-
-  try {
-    const { payload } = await jwtVerify(token, new TextEncoder().encode(process.env.JWT_SECRET!));
-    return (payload as any).netId ?? null;
-  } catch {
-    return null;
-  }
+  const userCookie = cookieStore.get("user");
+  // check that cookies exist
+  if (!userCookie) return null;
+  return JSON.parse(userCookie.value).netId;
 }
