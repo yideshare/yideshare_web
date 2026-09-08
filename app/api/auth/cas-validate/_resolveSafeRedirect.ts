@@ -1,4 +1,4 @@
-const ALLOWED_REDIRECT_PREFIXES = ["/feed", "/bookmarks", "/your-rides"];
+const ALLOWED_REDIRECT_PREFIXES = ["/feed", "/bookmarks", "/your-rides", "/messages"];
 
 /**
  * @internal
@@ -16,7 +16,7 @@ export function resolveSafeRedirect(
 
   /**
    * The `?.` operator indicates optional chaining.
-   * If the redirectPath is null or undefined,
+   * If the redirectPath is null or undefined,j
    * the expression evaluates to undefined,
    * and the if condition fails.
    */
