@@ -1,6 +1,6 @@
 -- ==========================================
 -- MIGRATION: Message ride threads
--- Status: NOT YET APPLIED
+-- Status: APPLIED (2026-08-25)
 -- ==========================================
 -- Adds the schema the messaging feature needs. Messages become scoped to a
 -- ride, so a conversation is identified by (rideId, sender, receiver) rather
