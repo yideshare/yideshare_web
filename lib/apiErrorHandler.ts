@@ -18,9 +18,9 @@ export class ApiError extends Error {
 /**
  * Wraps a route handler with centralized error handling.
  *
- * Catches any thrown errors and returns a structured JSON error response.
- * If the error is an {@link ApiError}, its status code is used; otherwise
- * defaults to 500. Non-Error throws are returned as a generic message.
+ * Catches any thrown errors and returns `{ error }` as JSON. If the error is
+ * an {@link ApiError}, its status becomes the HTTP status code; anything else
+ * becomes a 500 carrying a generic message.
  *
  * @param handler The route handler function to wrap
  * @param ctx Dynamic route parameters (e.g. the id from /users/[id])
@@ -45,12 +45,7 @@ export function withApiErrorHandler<Ctx>(
         statusCode = 500;
         errorMessage = "An unexpected error occurred";
       }
-      return NextResponse.json(
-        {
-          error: errorMessage,
-          status: statusCode
-        }
-      );
+      return NextResponse.json({ error: errorMessage }, { status: statusCode });
     }
   };
 }
