@@ -33,8 +33,6 @@ export function withApiErrorHandler<Ctx>(
     try {
       return await handler(req, ctx);
     } catch (error) {
-      console.error("API Error:", error);
-
       let statusCode: number;
       let errorMessage: string;
 
@@ -42,6 +40,7 @@ export function withApiErrorHandler<Ctx>(
         statusCode = error.status;
         errorMessage = error.message;
       } else {
+        console.error("API Error:", error);
         statusCode = 500;
         errorMessage = "An unexpected error occurred";
       }
